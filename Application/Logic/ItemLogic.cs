@@ -33,7 +33,7 @@ public class ItemLogic : IItemLogic
         return created;
     }
 
-    private void ValidateItem(ItemCreationDto dto)
+    private static void ValidateItem(ItemCreationDto dto)
     {
         if (string.IsNullOrEmpty(dto.Title) || string.IsNullOrEmpty(dto.Description))
             throw new Exception("Title and description may not be empty.");
