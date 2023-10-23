@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "/pdJGCmnRP4f7MLJsTNICQ1sf0oJeKqfHsRWGjIr4YWUHnJiHF1MvJT+FcE475opXcaERfTtRnW4dbLI/5kdWg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\Application\\Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Misho\\.nuget\\packages\\google.protobuf\\3.24.4\\google.protobuf.3.24.4.nupkg.sha512",
+    "C:\\Users\\Misho\\.nuget\\packages\\grpc.core.api\\2.58.0-pre1\\grpc.core.api.2.58.0-pre1.nupkg.sha512",
+    "C:\\Users\\Misho\\.nuget\\packages\\grpc.net.client\\2.58.0-pre1\\grpc.net.client.2.58.0-pre1.nupkg.sha512",
+    "C:\\Users\\Misho\\.nuget\\packages\\grpc.net.common\\2.58.0-pre1\\grpc.net.common.2.58.0-pre1.nupkg.sha512",
+    "C:\\Users\\Misho\\.nuget\\packages\\grpc.tools\\2.58.0\\grpc.tools.2.58.0.nupkg.sha512",
+    "C:\\Users\\Misho\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.0\\microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
