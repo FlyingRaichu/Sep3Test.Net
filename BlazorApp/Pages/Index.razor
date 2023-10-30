@@ -1,0 +1,55 @@
+﻿@page "/"
+@using HttpClients.Implementations
+@inject IItemService ItemService;
+
+<PageTitle>Index</PageTitle>
+
+<h1>Items</h1>
+
+@if (items == null)
+{
+    
+}
+else if (!items.Any())
+{
+    <p>No items to display.</p>
+}
+else
+{
+    <ul class="items">
+        @foreach (var item in items)
+        {
+            <li>
+                <strong><h3>@item.Title</h3></strong>
+                <strong><p>@item.Description</p></strong>
+                <strong><p>Price: @item.Price</p></strong>
+            </li>
+        }
+    </ul>
+}
+
+
+@code
+{
+    private IEnumerable<Item>? items;
+    private string statusMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPosts();
+    }
+
+    private async Task LoadPosts()
+    {
+        try
+        {
+            items = await ItemService.GetPostsAsync(null, null, null);
+        }
+        
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            statusMessage = e.Message;
+        }
+    }
+}

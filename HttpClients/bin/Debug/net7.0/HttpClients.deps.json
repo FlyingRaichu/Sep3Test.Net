@@ -1,0 +1,134 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v7.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v7.0": {
+      "HttpClients/1.0.0": {
+        "dependencies": {
+          "Domain": "1.0.0",
+          "RPCInterfaces": "1.0.0"
+        },
+        "runtime": {
+          "HttpClients.dll": {}
+        }
+      },
+      "Google.Protobuf/3.24.4": {
+        "runtime": {
+          "lib/net5.0/Google.Protobuf.dll": {
+            "assemblyVersion": "3.24.4.0",
+            "fileVersion": "3.24.4.0"
+          }
+        }
+      },
+      "Grpc.Core.Api/2.58.0-pre1": {
+        "runtime": {
+          "lib/netstandard2.1/Grpc.Core.Api.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.58.0.0"
+          }
+        }
+      },
+      "Grpc.Net.Client/2.58.0-pre1": {
+        "dependencies": {
+          "Grpc.Net.Common": "2.58.0-pre1",
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.0"
+        },
+        "runtime": {
+          "lib/net7.0/Grpc.Net.Client.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.58.0.0"
+          }
+        }
+      },
+      "Grpc.Net.Common/2.58.0-pre1": {
+        "dependencies": {
+          "Grpc.Core.Api": "2.58.0-pre1"
+        },
+        "runtime": {
+          "lib/net7.0/Grpc.Net.Common.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.58.0.0"
+          }
+        }
+      },
+      "Microsoft.Extensions.Logging.Abstractions/6.0.0": {
+        "runtime": {
+          "lib/net6.0/Microsoft.Extensions.Logging.Abstractions.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        }
+      },
+      "Domain/1.0.0": {
+        "runtime": {
+          "Domain.dll": {}
+        }
+      },
+      "RPCInterfaces/1.0.0": {
+        "dependencies": {
+          "Domain": "1.0.0",
+          "Google.Protobuf": "3.24.4",
+          "Grpc.Net.Client": "2.58.0-pre1"
+        },
+        "runtime": {
+          "RPCInterfaces.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "HttpClients/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Google.Protobuf/3.24.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-TmUI4ndd3x5HePyLmqAmGT6oVvoRCu+bMmrJmOpAFtCPEB+oUMWF8dyVY1zxXry/8cqsTHWszYRIAwpuUNpUyA==",
+      "path": "google.protobuf/3.24.4",
+      "hashPath": "google.protobuf.3.24.4.nupkg.sha512"
+    },
+    "Grpc.Core.Api/2.58.0-pre1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-CLZAij2d1Tt71AWtpqihMIyxAvTm98m9vmf7w3m8agTA37EsNGsyFXMPpZKbEjcXbZ+jBpBfaL+iyVtXp6O6Ew==",
+      "path": "grpc.core.api/2.58.0-pre1",
+      "hashPath": "grpc.core.api.2.58.0-pre1.nupkg.sha512"
+    },
+    "Grpc.Net.Client/2.58.0-pre1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8CLnyB7hL457aYDMirAF5II3pXe6jGIc5GebRVLadEjvfAOmdp8BBtRba3tADXuNymGF8jBgpfCx6pIIfpE28g==",
+      "path": "grpc.net.client/2.58.0-pre1",
+      "hashPath": "grpc.net.client.2.58.0-pre1.nupkg.sha512"
+    },
+    "Grpc.Net.Common/2.58.0-pre1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2Fpk1VyUherTMF5wngRhAH9vCSNX0RwBJMgVnbypZCfPbdpDEJaYaChix6Z7q8p8ShpcaEj2aPR4HNakuO5HBw==",
+      "path": "grpc.net.common/2.58.0-pre1",
+      "hashPath": "grpc.net.common.2.58.0-pre1.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Logging.Abstractions/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/HggWBbTwy8TgebGSX5DBZ24ndhzi93sHUBDvP1IxbZD7FDokYzdAr6+vbWGjw2XAfR2EJ1sfKUotpjHnFWPxA==",
+      "path": "microsoft.extensions.logging.abstractions/6.0.0",
+      "hashPath": "microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512"
+    },
+    "Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "RPCInterfaces/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
