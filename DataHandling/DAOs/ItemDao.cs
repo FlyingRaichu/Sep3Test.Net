@@ -7,26 +7,26 @@ namespace DataHandling.DAOs;
 
 public class ItemDao : IItemDao
 {
-    private readonly ItemRpc context;
+    private readonly IRpcBase<Item> context;
 
-    public ItemDao(ItemRpc context)
+    public ItemDao(IRpcBase<Item> context)
     {
         this.context = context;
     }
 
     public Task<IEnumerable<Item>> GetAsync(SearchItemParametersDto searchParameters)
     {
-        IEnumerable<Item> items = context.Items.AsEnumerable();
+        IEnumerable<Item> items = context.Elements.AsEnumerable();
 
         if (!string.IsNullOrEmpty(searchParameters.TitleContains))
         {
-            items = context.Items.Where(item =>
+            items = context.Elements.Where(item =>
                 item.Title.Contains(searchParameters.TitleContains, StringComparison.OrdinalIgnoreCase));
         }
 
         if (!string.IsNullOrEmpty(searchParameters.DescriptionContains))
         {
-            items = context.Items.Where(item =>
+            items = context.Elements.Where(item =>
                 item.Description.Contains(searchParameters.DescriptionContains, StringComparison.OrdinalIgnoreCase));
         }
 
@@ -41,9 +41,9 @@ public class ItemDao : IItemDao
     public Task<Item> CreateAsync(Item item)
     {
         int id = 1;
-        if (context.Items.Any())
+        if (context.Elements.Any())
         {
-            id = context.Items.Max(i => i.Id);
+            id = context.Elements.Max(i => i.Id);
             id++;
         }
 

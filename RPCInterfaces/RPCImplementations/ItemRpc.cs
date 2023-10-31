@@ -9,8 +9,8 @@ namespace RPCInterface.RPCImplementations;
 public class ItemRpc : IRpcBase<Item>
 {
     private GrpcChannel channel = GrpcChannel.ForAddress("http://localhost:8090");
-
-    public ICollection<Item> Items => LoadData().Result;
+    
+    public ICollection<Item> Elements =>  LoadData().Result;
 
     public async Task<ICollection<Item>> LoadData()
     {
@@ -34,7 +34,7 @@ public class ItemRpc : IRpcBase<Item>
         try
         {
             var response = client.addItem(item);
-            Items.Add(item);
+            Elements.Add(item);
         }
         catch (Exception e)
         {

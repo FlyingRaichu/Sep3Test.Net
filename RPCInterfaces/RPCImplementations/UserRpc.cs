@@ -24,8 +24,10 @@ public class UserRpc : IRpcBase<User>
     //
     //     return new UserService.UserServiceClient(channel).usernameContains(StringValue);
     // }
-    
-    
+
+
+    public ICollection<User> Elements { get; }
+
     public Task<ICollection<User>> LoadData()
     {
         throw new NotImplementedException();
