@@ -6,5 +6,5 @@ namespace Application.DaoInterfaces;
 public interface IItemDao
 {
     Task<IEnumerable<Item>> GetAsync(SearchItemParametersDto searchParameters);
-    Task<Item> CreateAsync(Item todo);
+    Task<Item> CreateAsync(Item item);
 }
