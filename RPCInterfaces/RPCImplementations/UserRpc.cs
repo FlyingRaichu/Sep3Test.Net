@@ -31,6 +31,11 @@ public class UserRpc : IRpcBase<User>
         throw new NotImplementedException();
     }
 
+    public Task Add(User user)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task SaveChanges()
     {
         throw new NotImplementedException();

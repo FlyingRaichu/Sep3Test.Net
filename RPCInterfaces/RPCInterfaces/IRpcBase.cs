@@ -3,5 +3,5 @@
 public interface IRpcBase<T>
 {
     Task<ICollection<T>> LoadData();
-    Task SaveChanges();
+    Task Add(T element);
 }

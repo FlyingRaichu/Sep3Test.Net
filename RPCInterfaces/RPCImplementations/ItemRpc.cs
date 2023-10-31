@@ -28,11 +28,6 @@ public class ItemRpc : IRpcBase<Item>
         return items;
     }
 
-    public Task SaveChanges()
-    {
-        throw new NotImplementedException();
-    }
-
     public Task Add(Item item)
     {
         var client = new ItemService.ItemServiceClient(channel);
