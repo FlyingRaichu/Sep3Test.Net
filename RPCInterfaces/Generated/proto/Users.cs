@@ -25,18 +25,18 @@ namespace Via.Sep4.Protobuf {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChFwcm90by91c2Vycy5wcm90bxobZ29vZ2xlL3Byb3RvYnVmL2VtcHR5LnBy",
-            "b3RvGh5nb29nbGUvcHJvdG9idWYvd3JhcHBlcnMucHJvdG8iRQoEVXNlchIK",
+            "b3RvGh5nb29nbGUvcHJvdG9idWYvd3JhcHBlcnMucHJvdG8iUwoEVXNlchIK",
             "CgJpZBgBIAEoBRIQCgh1c2VybmFtZRgCIAEoCRIQCghwYXNzd29yZBgDIAEo",
-            "CRINCgVlbWFpbBgEIAEoCTKrAQoLVXNlclNlcnZpY2USLwoHZ2V0VXNlchIb",
-            "Lmdvb2dsZS5wcm90b2J1Zi5JbnQzMlZhbHVlGgUuVXNlciIAEjAKC2dldEFs",
-            "bFVzZXJzEhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5GgUuVXNlciIAMAESOQoQ",
-            "dXNlcm5hbWVDb250YWlucxIcLmdvb2dsZS5wcm90b2J1Zi5TdHJpbmdWYWx1",
-            "ZRoFLlVzZXIiAEI1ChF2aWEuc2VwNC5wcm90b2J1ZkIKVXNlcnNQcm90b1AB",
-            "qgIRVmlhLlNlcDQuUHJvdG9idWZiBnByb3RvMw=="));
+            "CRINCgVlbWFpbBgEIAEoCRIMCgRyb2xlGAUgASgJMqsBCgtVc2VyU2Vydmlj",
+            "ZRIvCgdnZXRVc2VyEhsuZ29vZ2xlLnByb3RvYnVmLkludDMyVmFsdWUaBS5V",
+            "c2VyIgASMAoLZ2V0QWxsVXNlcnMSFi5nb29nbGUucHJvdG9idWYuRW1wdHka",
+            "BS5Vc2VyIgAwARI5ChB1c2VybmFtZUNvbnRhaW5zEhwuZ29vZ2xlLnByb3Rv",
+            "YnVmLlN0cmluZ1ZhbHVlGgUuVXNlciIAQjUKEXZpYS5zZXA0LnByb3RvYnVm",
+            "QgpVc2Vyc1Byb3RvUAGqAhFWaWEuU2VwNC5Qcm90b2J1ZmIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Via.Sep4.Protobuf.User), global::Via.Sep4.Protobuf.User.Parser, new[]{ "Id", "Username", "Password", "Email" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Via.Sep4.Protobuf.User), global::Via.Sep4.Protobuf.User.Parser, new[]{ "Id", "Username", "Password", "Email", "Role" }, null, null, null, null)
           }));
     }
     #endregion
@@ -81,6 +81,7 @@ namespace Via.Sep4.Protobuf {
       username_ = other.username_;
       password_ = other.password_;
       email_ = other.email_;
+      role_ = other.role_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -129,15 +130,27 @@ namespace Via.Sep4.Protobuf {
     /// <summary>Field number for the "email" field.</summary>
     public const int EmailFieldNumber = 4;
     private string email_ = "";
-    /// <summary>
-    ///TODO Add the required fields in here
-    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Email {
       get { return email_; }
       set {
         email_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "role" field.</summary>
+    public const int RoleFieldNumber = 5;
+    private string role_ = "";
+    /// <summary>
+    ///TODO Add the required fields in here
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Role {
+      get { return role_; }
+      set {
+        role_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -160,6 +173,7 @@ namespace Via.Sep4.Protobuf {
       if (Username != other.Username) return false;
       if (Password != other.Password) return false;
       if (Email != other.Email) return false;
+      if (Role != other.Role) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -171,6 +185,7 @@ namespace Via.Sep4.Protobuf {
       if (Username.Length != 0) hash ^= Username.GetHashCode();
       if (Password.Length != 0) hash ^= Password.GetHashCode();
       if (Email.Length != 0) hash ^= Email.GetHashCode();
+      if (Role.Length != 0) hash ^= Role.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -205,6 +220,10 @@ namespace Via.Sep4.Protobuf {
         output.WriteRawTag(34);
         output.WriteString(Email);
       }
+      if (Role.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(Role);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -231,6 +250,10 @@ namespace Via.Sep4.Protobuf {
         output.WriteRawTag(34);
         output.WriteString(Email);
       }
+      if (Role.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(Role);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -252,6 +275,9 @@ namespace Via.Sep4.Protobuf {
       }
       if (Email.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Email);
+      }
+      if (Role.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Role);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -276,6 +302,9 @@ namespace Via.Sep4.Protobuf {
       }
       if (other.Email.Length != 0) {
         Email = other.Email;
+      }
+      if (other.Role.Length != 0) {
+        Role = other.Role;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -308,6 +337,10 @@ namespace Via.Sep4.Protobuf {
             Email = input.ReadString();
             break;
           }
+          case 42: {
+            Role = input.ReadString();
+            break;
+          }
         }
       }
     #endif
@@ -337,6 +370,10 @@ namespace Via.Sep4.Protobuf {
           }
           case 34: {
             Email = input.ReadString();
+            break;
+          }
+          case 42: {
+            Role = input.ReadString();
             break;
           }
         }
