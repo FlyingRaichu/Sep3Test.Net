@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+SSoopIYEIO/Mc3xCe9kPmjNrluvgKkxBSDjbtHMQqmVCWuHDW1aqcQ9TTKg55GSZkXSGXDR5msZHCf6I5qwrA==",
+  "dgSpecHash": "P9I8Ze9Q8EhQ9JH81WpdZIz6Sl3XRZwpfHPxyAu98+pImFfYTadhU8Bg3u6eW/nxHR2DQm8TVaVYlvHAE71oaA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\RPCInterfaces\\RPCInterfaces.csproj",
+  "projectFilePath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\RPCInterfaces\\RPCInterfaces.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Misho\\.nuget\\packages\\google.protobuf\\3.24.4\\google.protobuf.3.24.4.nupkg.sha512",
     "C:\\Users\\Misho\\.nuget\\packages\\grpc.core.api\\2.58.0-pre1\\grpc.core.api.2.58.0-pre1.nupkg.sha512",

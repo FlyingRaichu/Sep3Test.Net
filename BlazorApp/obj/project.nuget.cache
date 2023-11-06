@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9EKNT2xNfenIpnQ1Yd8wVZAl5gF2kFQ8g7ePMJs1V8EXOzfEa4FlFDHP12dEY7A204srexSi6wBmEut22BYgNw==",
+  "dgSpecHash": "eTBXC67EQ1yYwZ1xclvy3M5jtE5WmzGHnKOeswNgRwiZBx7mINa8iEwXBvguxJ9qQ5DiN/cYNhhvEtIj5jd2JQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\BlazorApp\\BlazorApp.csproj",
+  "projectFilePath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\BlazorApp\\BlazorApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Misho\\.nuget\\packages\\google.protobuf\\3.24.4\\google.protobuf.3.24.4.nupkg.sha512",
     "C:\\Users\\Misho\\.nuget\\packages\\grpc.core.api\\2.58.0-pre1\\grpc.core.api.2.58.0-pre1.nupkg.sha512",

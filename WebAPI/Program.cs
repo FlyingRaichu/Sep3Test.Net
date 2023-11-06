@@ -2,6 +2,8 @@ using Application.DaoInterfaces;
 using Application.Logic;
 using Application.LogicInterfaces;
 using DataHandling.DAOs;
+using RPCInterface.RPCImplementations;
+using Via.Sep4.Protobuf;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +13,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<RPCInterface.RPCImplementations.ItemRpc>();
+builder.Services.AddScoped<IRpcBase<Item>, ItemRpc>();
+builder.Services.AddScoped<IRpcBase<User>, UserRpc>();
 builder.Services.AddScoped<IItemDao, ItemDao>();
 builder.Services.AddScoped<IItemLogic, ItemLogic>();
 

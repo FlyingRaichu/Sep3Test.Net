@@ -1,36 +1,41 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\WebAPI\\WebAPI.csproj": {}
+    "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\WebAPI\\WebAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\Application\\Application.csproj": {
+    "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Application\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\Application\\Application.csproj",
+        "projectUniqueName": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Application\\Application.csproj",
         "projectName": "Application",
-        "projectPath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\Application\\Application.csproj",
+        "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Application\\Application.csproj",
         "packagesPath": "C:\\Users\\Misho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\Application\\obj\\",
+        "outputPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Application\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Misho\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Misho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\Domain\\Domain.csproj"
+              "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Domain\\Domain.csproj"
               },
-              "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\RPCInterfaces\\RPCInterfaces.csproj": {
-                "projectPath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\RPCInterfaces\\RPCInterfaces.csproj"
+              "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\RPCInterfaces\\RPCInterfaces.csproj": {
+                "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\RPCInterfaces\\RPCInterfaces.csproj"
               }
             }
           }
@@ -76,37 +81,42 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\DataHandling\\DataHandling.csproj": {
+    "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\DataHandling\\DataHandling.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\DataHandling\\DataHandling.csproj",
+        "projectUniqueName": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\DataHandling\\DataHandling.csproj",
         "projectName": "DataHandling",
-        "projectPath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\DataHandling\\DataHandling.csproj",
+        "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\DataHandling\\DataHandling.csproj",
         "packagesPath": "C:\\Users\\Misho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\DataHandling\\obj\\",
+        "outputPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\DataHandling\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Misho\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Misho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\Application\\Application.csproj": {
-                "projectPath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\Application\\Application.csproj"
+              "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Application\\Application.csproj": {
+                "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Application\\Application.csproj"
               },
-              "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\RPCInterfaces\\RPCInterfaces.csproj": {
-                "projectPath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\RPCInterfaces\\RPCInterfaces.csproj"
+              "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\RPCInterfaces\\RPCInterfaces.csproj": {
+                "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\RPCInterfaces\\RPCInterfaces.csproj"
               }
             }
           }
@@ -136,26 +146,31 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\Domain\\Domain.csproj": {
+    "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\Domain\\Domain.csproj",
+        "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\Misho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\Domain\\obj\\",
+        "outputPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Domain\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Misho\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Misho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -189,34 +204,39 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\RPCInterfaces\\RPCInterfaces.csproj": {
+    "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\RPCInterfaces\\RPCInterfaces.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\RPCInterfaces\\RPCInterfaces.csproj",
+        "projectUniqueName": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\RPCInterfaces\\RPCInterfaces.csproj",
         "projectName": "RPCInterfaces",
-        "projectPath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\RPCInterfaces\\RPCInterfaces.csproj",
+        "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\RPCInterfaces\\RPCInterfaces.csproj",
         "packagesPath": "C:\\Users\\Misho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\RPCInterfaces\\obj\\",
+        "outputPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\RPCInterfaces\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Misho\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Misho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\Domain\\Domain.csproj"
+              "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Domain\\Domain.csproj"
               }
             }
           }
@@ -262,37 +282,43 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\WebAPI\\WebAPI.csproj": {
+    "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\WebAPI\\WebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\WebAPI\\WebAPI.csproj",
+        "projectUniqueName": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\WebAPI\\WebAPI.csproj",
         "projectName": "WebAPI",
-        "projectPath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\WebAPI\\WebAPI.csproj",
+        "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\WebAPI\\WebAPI.csproj",
         "packagesPath": "C:\\Users\\Misho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\WebAPI\\obj\\",
+        "outputPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\WebAPI\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Misho\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Misho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\sdk\\7.0.306\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\Application\\Application.csproj": {
-                "projectPath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\Application\\Application.csproj"
+              "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Application\\Application.csproj": {
+                "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Application\\Application.csproj"
               },
-              "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\DataHandling\\DataHandling.csproj": {
-                "projectPath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\DataHandling\\DataHandling.csproj"
+              "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\DataHandling\\DataHandling.csproj": {
+                "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\DataHandling\\DataHandling.csproj"
               }
             }
           }
@@ -335,7 +361,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
         }
       }
     }

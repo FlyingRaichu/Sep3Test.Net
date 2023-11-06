@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ZsFOvdY6pdctRhteNjdp2SaGKYhKFm3T0oz8U7JeYDDh2w1RTqtiyW88w9r2giZ/xNwTFqMj0zDhAWn99giCKQ==",
+  "dgSpecHash": "IxUz5NgHQ3pzD27WstL82zi/SmBpIB728fM8bclsSWSsh+iZKeQko00nQu6amI95dsc7BVky/K8ZXsdbFbdSjA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Misho\\RiderProjects\\SEP4Test\\DataHandling\\DataHandling.csproj",
+  "projectFilePath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\DataHandling\\DataHandling.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Misho\\.nuget\\packages\\google.protobuf\\3.24.4\\google.protobuf.3.24.4.nupkg.sha512",
     "C:\\Users\\Misho\\.nuget\\packages\\grpc.core.api\\2.58.0-pre1\\grpc.core.api.2.58.0-pre1.nupkg.sha512",

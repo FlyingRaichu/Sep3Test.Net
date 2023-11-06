@@ -9,6 +9,6 @@ Console.WriteLine("Hello, World!");
 var rpc = new ItemRpc();
 
 
-foreach(Item item in rpc.Items){
+foreach(Item item in rpc.Elements){
     Console.WriteLine(item);
 }
