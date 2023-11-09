@@ -556,4 +556,4 @@ FodyWeavers.xsd
 !/BlazorApp/bin/
 !/BlazorApp/obj/
 
-**/packages/
+*.nuget
