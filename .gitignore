@@ -1,0 +1,16 @@
+﻿/Application/bin/
+/Application/obj/
+/BlazorApp/bin/
+/BlazorApp/obj/
+/DataHandling/bin/
+/DataHandling/obj/
+/Domain/bin/
+/Domain/obj/
+/HttpClients/bin/
+/HttpClients/obj/
+/RPCInterfaces/bin/
+/RPCInterfaces/obj/
+/Testing/bin/
+/Testing/obj/
+/WebAPI/bin/
+/WebAPI/obj/
