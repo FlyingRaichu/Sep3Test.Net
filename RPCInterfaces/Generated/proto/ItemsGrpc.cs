@@ -75,6 +75,22 @@ public static partial class ItemService
       __Marshaller_Item,
       __Marshaller_google_protobuf_Empty);
 
+  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+  static readonly grpc::Method<global::Item, global::Google.Protobuf.WellKnownTypes.Empty> __Method_updateItem = new grpc::Method<global::Item, global::Google.Protobuf.WellKnownTypes.Empty>(
+      grpc::MethodType.Unary,
+      __ServiceName,
+      "updateItem",
+      __Marshaller_Item,
+      __Marshaller_google_protobuf_Empty);
+
+  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+  static readonly grpc::Method<global::Item, global::Google.Protobuf.WellKnownTypes.Empty> __Method_deleteItem = new grpc::Method<global::Item, global::Google.Protobuf.WellKnownTypes.Empty>(
+      grpc::MethodType.Unary,
+      __ServiceName,
+      "deleteItem",
+      __Marshaller_Item,
+      __Marshaller_google_protobuf_Empty);
+
   /// <summary>Service descriptor</summary>
   public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
   {
@@ -157,6 +173,46 @@ public static partial class ItemService
     public virtual grpc::AsyncUnaryCall<global::Google.Protobuf.WellKnownTypes.Empty> addItemAsync(global::Item request, grpc::CallOptions options)
     {
       return CallInvoker.AsyncUnaryCall(__Method_addItem, null, options, request);
+    }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual global::Google.Protobuf.WellKnownTypes.Empty updateItem(global::Item request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+    {
+      return updateItem(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+    }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual global::Google.Protobuf.WellKnownTypes.Empty updateItem(global::Item request, grpc::CallOptions options)
+    {
+      return CallInvoker.BlockingUnaryCall(__Method_updateItem, null, options, request);
+    }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual grpc::AsyncUnaryCall<global::Google.Protobuf.WellKnownTypes.Empty> updateItemAsync(global::Item request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+    {
+      return updateItemAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+    }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual grpc::AsyncUnaryCall<global::Google.Protobuf.WellKnownTypes.Empty> updateItemAsync(global::Item request, grpc::CallOptions options)
+    {
+      return CallInvoker.AsyncUnaryCall(__Method_updateItem, null, options, request);
+    }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual global::Google.Protobuf.WellKnownTypes.Empty deleteItem(global::Item request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+    {
+      return deleteItem(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+    }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual global::Google.Protobuf.WellKnownTypes.Empty deleteItem(global::Item request, grpc::CallOptions options)
+    {
+      return CallInvoker.BlockingUnaryCall(__Method_deleteItem, null, options, request);
+    }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual grpc::AsyncUnaryCall<global::Google.Protobuf.WellKnownTypes.Empty> deleteItemAsync(global::Item request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+    {
+      return deleteItemAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+    }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual grpc::AsyncUnaryCall<global::Google.Protobuf.WellKnownTypes.Empty> deleteItemAsync(global::Item request, grpc::CallOptions options)
+    {
+      return CallInvoker.AsyncUnaryCall(__Method_deleteItem, null, options, request);
     }
     /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
