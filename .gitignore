@@ -6,6 +6,9 @@ Application/bin/
 Application/obj/
 WebAPI/bin/
 WebAPI/obj/
+Application/bin/
+BlazorApp/bin/
+BlazorApp/obj/
 
 # Common node modules locations
 /node_modules
@@ -552,8 +555,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 
-/Application/bin/
-/BlazorApp/bin/
-/BlazorApp/obj/
+
 #
 #*.nuget
