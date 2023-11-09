@@ -25,11 +25,13 @@ public static partial class ItemsReflection {
           "ChFwcm90by9pdGVtcy5wcm90bxobZ29vZ2xlL3Byb3RvYnVmL2VtcHR5LnBy",
           "b3RvGh5nb29nbGUvcHJvdG9idWYvd3JhcHBlcnMucHJvdG8iRQoESXRlbRIK",
           "CgJpZBgBIAEoBRINCgV0aXRsZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEo",
-          "CRINCgVwcmljZRgEIAEoATKcAQoLSXRlbVNlcnZpY2USLwoHZ2V0SXRlbRIb",
+          "CRINCgVwcmljZRgEIAEoATL6AQoLSXRlbVNlcnZpY2USLwoHZ2V0SXRlbRIb",
           "Lmdvb2dsZS5wcm90b2J1Zi5JbnQzMlZhbHVlGgUuSXRlbSIAEjAKC2dldEFs",
           "bEl0ZW1zEhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5GgUuSXRlbSIAMAESKgoH",
-          "YWRkSXRlbRIFLkl0ZW0aFi5nb29nbGUucHJvdG9idWYuRW1wdHkiAEIhChF2",
-          "aWEuc2VwNC5wcm90b2J1ZkIKSXRlbXNQcm90b1ABYgZwcm90bzM="));
+          "YWRkSXRlbRIFLkl0ZW0aFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABItCgp1",
+          "cGRhdGVJdGVtEgUuSXRlbRoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAEi0K",
+          "CmRlbGV0ZUl0ZW0SBS5JdGVtGhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgBC",
+          "IQoRdmlhLnNlcDQucHJvdG9idWZCCkl0ZW1zUHJvdG9QAWIGcHJvdG8z"));
     descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
         new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
         new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
