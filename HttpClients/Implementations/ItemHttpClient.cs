@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using Domain.DTOs;
 using Domain.DTOs.Item;
@@ -26,7 +27,7 @@ public class ItemHttpClient : IItemService
             throw new Exception(content);
         }
 
-        ICollection<Item> items = JsonSerializer.Deserialize<ICollection<Item>>(content, new JsonSerializerOptions
+        var items = JsonSerializer.Deserialize<ICollection<Item>>(content, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         })!;
@@ -52,18 +53,36 @@ public class ItemHttpClient : IItemService
 
         return item;
     }
-    
+
+    public async Task UpdateAsync(ItemUpdateDto dto)
+    {
+        var response = await client.PatchAsJsonAsync("/items", dto);
+        var content = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception(content);
+        }
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        //TODO Continue work on this nonsense
+        // HttpResponseMessage response = await client.DeleteFromJsonAsync($"/items/{id}" );
+        // var content = await response.
+    }
+
     private string ConstructQuery(string? title, string? description, double? price)
     {
-        string query = "";
+        var query = "";
 
-        if (!String.IsNullOrEmpty(title))
+        if (!string.IsNullOrEmpty(title))
         {
             query += string.IsNullOrEmpty(query) ? "?" : "&";
             query += $"title={title}";
         }
 
-        if (!String.IsNullOrEmpty(description))
+        if (!string.IsNullOrEmpty(description))
         {
             query += string.IsNullOrEmpty(query) ? "?" : "&";
             query += $"description={description}";
