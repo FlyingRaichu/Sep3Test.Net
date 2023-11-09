@@ -6,7 +6,6 @@ Application/bin/
 Application/obj/
 WebAPI/bin/
 WebAPI/obj/
-Application/bin/
 BlazorApp/bin/
 BlazorApp/obj/
 
@@ -556,5 +555,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 
 
-#
-#*.nuget
+
