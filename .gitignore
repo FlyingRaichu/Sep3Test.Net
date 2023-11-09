@@ -552,8 +552,8 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 
-!/Application/bin/
-!/BlazorApp/bin/
-!/BlazorApp/obj/
+#!/Application/bin/
+#!/BlazorApp/bin/
+#!/BlazorApp/obj/
 
-*.nuget
+#*.nuget
