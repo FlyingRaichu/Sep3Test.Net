@@ -555,3 +555,5 @@ FodyWeavers.xsd
 !/Application/bin/
 !/BlazorApp/bin/
 !/BlazorApp/obj/
+
+**/packages/
