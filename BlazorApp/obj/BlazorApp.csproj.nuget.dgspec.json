@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\BlazorApp\\BlazorApp.csproj": {}
+    "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\BlazorApp\\BlazorApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\BlazorApp\\BlazorApp.csproj": {
+    "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\BlazorApp\\BlazorApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\BlazorApp\\BlazorApp.csproj",
+        "projectUniqueName": "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\BlazorApp\\BlazorApp.csproj",
         "projectName": "BlazorApp",
-        "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\BlazorApp\\BlazorApp.csproj",
-        "packagesPath": "C:\\Users\\Misho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\BlazorApp\\obj\\",
+        "projectPath": "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\BlazorApp\\BlazorApp.csproj",
+        "packagesPath": "C:\\Users\\Anna\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\BlazorApp\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Misho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Anna\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -25,15 +22,15 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\sdk\\7.0.306\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
+          "C:\\Program Files\\dotnet\\sdk\\7.0.304\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\HttpClients\\HttpClients.csproj": {
-                "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\HttpClients\\HttpClients.csproj"
+              "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\HttpClients\\HttpClients.csproj": {
+                "projectPath": "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\HttpClients\\HttpClients.csproj"
               }
             }
           }
@@ -66,24 +63,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Domain\\Domain.csproj": {
+    "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Domain\\Domain.csproj",
-        "packagesPath": "C:\\Users\\Misho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Domain\\obj\\",
+        "projectPath": "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\Anna\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\Domain\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Misho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Anna\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -130,24 +124,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\HttpClients\\HttpClients.csproj": {
+    "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\HttpClients\\HttpClients.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\HttpClients\\HttpClients.csproj",
+        "projectUniqueName": "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\HttpClients\\HttpClients.csproj",
         "projectName": "HttpClients",
-        "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\HttpClients\\HttpClients.csproj",
-        "packagesPath": "C:\\Users\\Misho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\HttpClients\\obj\\",
+        "projectPath": "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\HttpClients\\HttpClients.csproj",
+        "packagesPath": "C:\\Users\\Anna\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\HttpClients\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Misho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Anna\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -161,11 +152,11 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Domain\\Domain.csproj"
+              "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\Domain\\Domain.csproj"
               },
-              "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\RPCInterfaces\\RPCInterfaces.csproj": {
-                "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\RPCInterfaces\\RPCInterfaces.csproj"
+              "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\RPCInterfaces\\RPCInterfaces.csproj": {
+                "projectPath": "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\RPCInterfaces\\RPCInterfaces.csproj"
               }
             }
           }
@@ -195,24 +186,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\RPCInterfaces\\RPCInterfaces.csproj": {
+    "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\RPCInterfaces\\RPCInterfaces.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\RPCInterfaces\\RPCInterfaces.csproj",
+        "projectUniqueName": "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\RPCInterfaces\\RPCInterfaces.csproj",
         "projectName": "RPCInterfaces",
-        "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\RPCInterfaces\\RPCInterfaces.csproj",
-        "packagesPath": "C:\\Users\\Misho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\RPCInterfaces\\obj\\",
+        "projectPath": "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\RPCInterfaces\\RPCInterfaces.csproj",
+        "packagesPath": "C:\\Users\\Anna\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\RPCInterfaces\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Misho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Anna\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -226,8 +214,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\Domain\\Domain.csproj"
+              "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\Anna\\Documents\\VIA\\Semester 3\\SEP\\Sep3Test.Net\\Domain\\Domain.csproj"
               }
             }
           }
@@ -273,7 +261,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
         }
       }
     }
