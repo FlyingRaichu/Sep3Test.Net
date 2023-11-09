@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Components.Web;
 using BlazorApp.Data;
 using HttpClients.Implementations;
 using HttpClients.Interfaces;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddMudServices();
 builder.Services.AddSingleton<HttpClient>(new HttpClient
 {
     BaseAddress = new Uri("https://localhost:7248/swagger/index.html")

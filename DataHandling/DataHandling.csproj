@@ -11,4 +11,8 @@
       <ProjectReference Include="..\RPCInterfaces\RPCInterfaces.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MudBlazor" Version="6.11.0" />
+    </ItemGroup>
+
 </Project>

@@ -1,10 +1,13 @@
 ﻿@page "/"
 @using HttpClients.Implementations
 @inject IItemService ItemService;
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager;
+
 
 <PageTitle>Index</PageTitle>
 
 <h1>Items</h1>
+<button class="btn btn-primary" @onclick="GoToCheckoutPage">Go to Checkout</button>
 
 @if (items == null)
 {
@@ -51,5 +54,9 @@ else
             Console.WriteLine(e);
             statusMessage = e.Message;
         }
+    }
+    private void GoToCheckoutPage()
+    {
+        NavigationManager.NavigateTo("/Checkout");
     }
 }
