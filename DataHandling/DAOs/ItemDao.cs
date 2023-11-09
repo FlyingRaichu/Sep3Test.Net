@@ -52,4 +52,22 @@ public class ItemDao : IItemDao
         context.Add(item);
         return Task.FromResult(item);
     }
+
+    public Task UpdateAsync(Item item)
+    {
+        context.Update(item);
+        return Task.CompletedTask;
+    }
+
+    public Task DeleteAsync(int id)
+    {
+        context.Delete(id);
+        return Task.CompletedTask;
+    }
+
+    public Task<Item?> GetByIdAsync(int id)
+    {
+        var item = context.Elements.FirstOrDefault(i => i.Id == id);
+        return Task.FromResult<Item>(item);
+    }
 }

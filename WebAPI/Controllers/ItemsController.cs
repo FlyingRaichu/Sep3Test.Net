@@ -1,5 +1,6 @@
 ﻿using Application.LogicInterfaces;
 using Domain.DTOs;
+using Domain.DTOs.Item;
 using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
 using Via.Sep4.Protobuf;
@@ -41,6 +42,36 @@ public class ItemsController : ControllerBase
         {
             Item created = await logic.CreateAsync(dto);
             return Created($"/items/{created.Id}", created);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+
+    [HttpPatch]
+    public async Task<ActionResult<Item>> UpdateAsync(ItemUpdateDto dto)
+    {
+        try
+        {
+            await logic.UpdateAsync(dto);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult<Item>> DeleteASync([FromRoute]int id)
+    {
+        try
+        {
+            await logic.DeleteAsync(id);
+            return Ok();
         }
         catch (Exception e)
         {
