@@ -35,6 +35,21 @@ public class ItemsController : ControllerBase
         }
     }
 
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<Item>> GetByIdAsync([FromRoute] int id)
+    {
+        try
+        {
+            var item = await logic.GetByIdAsync(id);
+            return Ok(item);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+
     [HttpPost]
     public async Task<ActionResult<Item>> CreateAsync([FromBody] ItemCreationDto dto)
     {

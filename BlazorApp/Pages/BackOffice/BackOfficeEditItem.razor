@@ -1,0 +1,62 @@
+﻿@page "/BackOfficeEditItem/{itemId:int}"
+@using HttpClients.Implementations
+@using Domain.DTOs.Item
+@inject NavigationManager NavigationManager
+@inject IItemService ItemService
+@if (item != null)
+{
+    <h3>Edit @item.Title</h3>
+}
+
+<span>
+    <input type="text" @bind="title" @bind:event="oninput" placeholder="Enter title..."/>
+    <input type="text" @bind="description" @bind:event="oninput" placeholder="Enter description..."/>
+    <input type="text" @bind="priceString" @bind:event="oninput" placeholder="Enter price..."/>
+    <button @onclick="EditItem" disabled="@(string.IsNullOrEmpty(title) || string.IsNullOrEmpty(description) || string.IsNullOrEmpty(priceString))" class="acceptbtn">Confirm</button>
+</span>
+
+<label style="color: red">@msg</label>
+@code {
+    [Parameter]
+    public int itemId { get; set; }
+
+    private Item? item;
+    private string? title, description, priceString;
+    private string msg = "";
+
+    private async void EditItem()
+    {
+        if (double.TryParse(priceString, out var price))
+        {
+        
+
+            ItemUpdateDto dto = new ItemUpdateDto(itemId)
+            {
+                Title = title,
+                Description = description,
+                Price = price
+            };
+            await ItemService.UpdateAsync(dto);
+            NavigationManager.NavigateTo("/BackOfficeItems");
+        }
+        else
+        {
+            msg = "Please insert a correct formatting for the price.";
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        item = await ItemService.GetByIdAsync(itemId);
+        if (item == null)
+        {
+            Console.WriteLine(itemId);
+        }
+        title = item.Title;
+        description = item.Description;
+        priceString = item.Price.ToString();
+        
+    }
+
+}

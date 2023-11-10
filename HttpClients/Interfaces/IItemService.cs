@@ -13,4 +13,5 @@ public interface IItemService
     Task<Item> CreateAsync(ItemCreationDto dto);
     Task UpdateAsync(ItemUpdateDto dto);
     Task DeleteAsync(int id);
+    Task<Item> GetByIdAsync(int id);
 }

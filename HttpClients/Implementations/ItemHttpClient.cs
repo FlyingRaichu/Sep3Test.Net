@@ -67,9 +67,31 @@ public class ItemHttpClient : IItemService
 
     public async Task DeleteAsync(int id)
     {
-        //TODO Continue work on this nonsense
-        // HttpResponseMessage response = await client.DeleteFromJsonAsync($"/items/{id}" );
-        // var content = await response.
+        var response = await client.DeleteAsync($"/items/{id}" );
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            throw new Exception(content);
+        }
+    }
+
+    public async Task<Item> GetByIdAsync(int id)
+    {
+        var response = await client.GetAsync($"/items/{id}");
+        string content = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception(content);
+        }
+
+        Item item = JsonSerializer.Deserialize<Item>(content, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
+        
+        return item;
     }
 
     private string ConstructQuery(string? title, string? description, double? price)
