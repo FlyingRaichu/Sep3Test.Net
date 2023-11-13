@@ -1,0 +1,35 @@
+@using HttpClients.Implementations
+@using BlazorApp.Service
+@using MudBlazor
+@inject IItemService ItemService
+@inject NavService navService
+@inject NavigationManager navMgr
+
+<MudAppBar Color="Color.Primary" Fixed="false">
+    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" />
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@Search">Search</MudButton>
+    <MudTextField @bind-Value="searchContent" Variant="Variant.Outlined" Placeholder="Search Knithub"></MudTextField>
+    <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" />
+</MudAppBar>
+
+@code {
+    private string searchContent;
+    private ICollection<Item> searchResults;
+
+    private async Task Search()
+    {
+        try
+        {
+            Console.WriteLine("search");
+            searchResults = await ItemService.GetPostsAsync(searchContent, null, null);
+            searchContent = string.Empty;
+
+            navService.SearchItems = searchResults;
+            navMgr.NavigateTo("/search");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+}

@@ -51,7 +51,7 @@ public class ItemHttpClient : IItemService
 
         return item;
     }
-    
+
     private string ConstructQuery(string? title, string? description, double? price)
     {
         string query = "";

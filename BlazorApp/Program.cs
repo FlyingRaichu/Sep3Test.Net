@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using BlazorApp.Data;
+using BlazorApp.Service;
 using HttpClients.Implementations;
 using HttpClients.Interfaces;
 using MudBlazor.Services;
@@ -16,6 +17,7 @@ builder.Services.AddSingleton<HttpClient>(new HttpClient
     BaseAddress = new Uri("https://localhost:7248/swagger/index.html")
 });
 builder.Services.AddScoped<IItemService, ItemHttpClient>();
+builder.Services.AddSingleton<NavService>();
 
 var app = builder.Build();
 
