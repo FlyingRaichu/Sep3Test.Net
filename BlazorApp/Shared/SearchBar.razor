@@ -5,11 +5,15 @@
 @inject NavService navService
 @inject NavigationManager navMgr
 
-<MudAppBar Color="Color.Primary" Fixed="false">
-    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" />
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@Search">Search</MudButton>
-    <MudTextField @bind-Value="searchContent" Variant="Variant.Outlined" Placeholder="Search Knithub"></MudTextField>
-    <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" />
+<!--accessing theme variants cannot be done, for some reason. mud will only take enums,not color strings.
+so css has to be overridden manually :/-->
+<MudAppBar Style=@($"background-color: {Colors.Cyan.Lighten2}") Fixed="true">
+    <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit"/>
+    <MudText Typo="Typo.h5">Knithub</MudText>
+    <MudSpacer />
+    <MudTextField Style=@($"background-color: {Colors.Cyan.Lighten3}") @bind-Value="searchContent" Variant="Variant.Outlined" Placeholder="Search Knithub"></MudTextField>
+    <MudButton Variant="Variant.Filled" Color="Color.Inherit" OnClick="@Search">Search</MudButton>
+    <MudSpacer />
 </MudAppBar>
 
 @code {
