@@ -8,6 +8,7 @@
 
 <h1>Items</h1>
 <button class="btn btn-primary" @onclick="GoToCheckoutPage">Go to Checkout</button>
+<button class="btn btn-primary" @onclick="GoToItemsFilteringPage">Go to Items Filtering</button>
 
 @if (items == null)
 {
@@ -58,5 +59,9 @@ else
     private void GoToCheckoutPage()
     {
         NavigationManager.NavigateTo("/Checkout");
+    }
+    private void GoToItemsFilteringPage()
+    {
+        NavigationManager.NavigateTo("/ItemsFiltering");
     }
 }

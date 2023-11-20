@@ -16,25 +16,39 @@ public class ItemHttpClient : IItemService
         this.client = client;
     }
     
-    public async Task<ICollection<Item>> GetPostsAsync(string? title, string? description, double? price)
+    public async Task<ICollection<Item>> GetItemsAsync(string? title, string? manufacture, string? description, double? price)
     {
-        var query = ConstructQuery(title, description, price);
-
-        var response = await client.GetAsync("/Items" + query);
-        var content = await response.Content.ReadAsStringAsync();
-        if (!response.IsSuccessStatusCode)
+        try
         {
-            throw new Exception(content);
+            var query = ConstructQuery(title,manufacture, description, price);
+
+            var response = await client.GetAsync("/Items" + query);
+            response.EnsureSuccessStatusCode(); // Throws if the response is not successful
+
+            var content = await response.Content.ReadAsStringAsync();
+            var items = JsonSerializer.Deserialize<ICollection<Item>>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            return items ?? new List<Item>(); // Return an empty list if items is null
         }
-
-        var items = JsonSerializer.Deserialize<ICollection<Item>>(content, new JsonSerializerOptions
+        catch (HttpRequestException ex)
         {
-            PropertyNameCaseInsensitive = true
-        })!;
-
-        return items;
+            // Handle HTTP request exception
+            throw new Exception("Error in HTTP request: " + ex.Message, ex);
+        }
+        catch (JsonException ex)
+        {
+            // Handle JSON deserialization exception
+            throw new Exception("Error deserializing JSON response: " + ex.Message, ex);
+        }
+        catch (Exception ex)
+        {
+            // Handle other exceptions
+            throw new Exception("An error occurred: " + ex.Message, ex);
+        }
     }
-    
 
     public async Task<Item> CreateAsync(ItemCreationDto dto)
     {
@@ -94,7 +108,7 @@ public class ItemHttpClient : IItemService
         return item;
     }
 
-    private string ConstructQuery(string? title, string? description, double? price)
+    private string ConstructQuery(string? title,string? manufacture, string? description, double? price)
     {
         var query = "";
 
@@ -102,6 +116,11 @@ public class ItemHttpClient : IItemService
         {
             query += string.IsNullOrEmpty(query) ? "?" : "&";
             query += $"title={title}";
+        }
+        if (!string.IsNullOrEmpty(manufacture))
+        {
+            query += string.IsNullOrEmpty(query) ? "?" : "&";
+            query += $"manufacture={manufacture}";
         }
 
         if (!string.IsNullOrEmpty(description))
