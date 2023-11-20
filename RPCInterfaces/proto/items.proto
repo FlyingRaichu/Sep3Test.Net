@@ -2,6 +2,7 @@
 syntax = "proto3";
 import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
+import "reviews.proto";
 
 option java_multiple_files = true;
 option java_package = "via.sep4.protobuf";
@@ -10,7 +11,7 @@ option java_outer_classname = "ItemsProto";
 service ItemService {
   rpc getItem(google.protobuf.Int32Value) returns (Item) {};
   rpc getAllItems(google.protobuf.Empty) returns (stream Item) {};
-  rpc addItem(Item) returns (google.protobuf.Empty) {};
+  rpc addItem(Item) returns (ItemResponse) {};
   rpc updateItem(Item) returns (google.protobuf.Empty) {};
   rpc deleteItem(Item) returns (google.protobuf.Empty) {};
 }
@@ -18,7 +19,13 @@ service ItemService {
 message Item {
   int32 id = 1;
   string title = 2;
-  string description = 3;
-  double price = 4;
-  //TODO Add the required fields in here
+  string manufacture = 3;
+  string description = 4;
+  double price = 5;
+  int32 stock = 6;
+  repeated Review reviews = 7;
+}
+
+message ItemResponse{
+  string response = 1;
 }

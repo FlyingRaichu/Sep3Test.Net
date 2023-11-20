@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     "net7.0": {
-      "Google.Protobuf/3.24.4": {
+      "Google.Protobuf/3.25.1": {
         "type": "package",
         "compile": {
           "lib/net5.0/Google.Protobuf.dll": {
@@ -192,7 +192,7 @@
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
           "Domain": "1.0.0",
-          "Google.Protobuf": "3.24.4",
+          "Google.Protobuf": "3.25.1",
           "Grpc.Net.Client": "2.58.0-pre1"
         },
         "compile": {
@@ -205,14 +205,14 @@
     }
   },
   "libraries": {
-    "Google.Protobuf/3.24.4": {
-      "sha512": "TmUI4ndd3x5HePyLmqAmGT6oVvoRCu+bMmrJmOpAFtCPEB+oUMWF8dyVY1zxXry/8cqsTHWszYRIAwpuUNpUyA==",
+    "Google.Protobuf/3.25.1": {
+      "sha512": "Sw9bq4hOD+AaS3RrnmP5IT25cyZ/T1qpM0e8+G+23Nojhv7+ScJFPEAQo1m4EFQWhXoI4FRZDrK+wjHCPw9yxg==",
       "type": "package",
-      "path": "google.protobuf/3.24.4",
+      "path": "google.protobuf/3.25.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "google.protobuf.3.24.4.nupkg.sha512",
+        "google.protobuf.3.25.1.nupkg.sha512",
         "google.protobuf.nuspec",
         "lib/net45/Google.Protobuf.dll",
         "lib/net45/Google.Protobuf.pdb",
@@ -523,39 +523,32 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Misho\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\USER\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\BlazorApp\\BlazorApp.csproj",
+      "projectUniqueName": "C:\\Users\\USER\\RiderProjects\\Sep3Test.Net\\BlazorApp\\BlazorApp.csproj",
       "projectName": "BlazorApp",
-      "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\BlazorApp\\BlazorApp.csproj",
-      "packagesPath": "C:\\Users\\Misho\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\BlazorApp\\obj\\",
+      "projectPath": "C:\\Users\\USER\\RiderProjects\\Sep3Test.Net\\BlazorApp\\BlazorApp.csproj",
+      "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\USER\\RiderProjects\\Sep3Test.Net\\BlazorApp\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Misho\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\sdk\\7.0.306\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\HttpClients\\HttpClients.csproj": {
-              "projectPath": "C:\\Users\\Misho\\RiderProjects\\Sep3Test.NetActual\\HttpClients\\HttpClients.csproj"
+            "C:\\Users\\USER\\RiderProjects\\Sep3Test.Net\\HttpClients\\HttpClients.csproj": {
+              "projectPath": "C:\\Users\\USER\\RiderProjects\\Sep3Test.Net\\HttpClients\\HttpClients.csproj"
             }
           }
         }
@@ -588,7 +581,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.404\\RuntimeIdentifierGraph.json"
       }
     }
   }
