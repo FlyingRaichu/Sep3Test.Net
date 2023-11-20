@@ -5,8 +5,9 @@ namespace HttpClients.Implementations;
 
 public interface IItemService
 {
-    Task<ICollection<Item>> GetPostsAsync(
+    Task<ICollection<Item>> GetItemsAsync(
         string? title,
+        string? manufacture,
         string? description,
         double? price);
 
