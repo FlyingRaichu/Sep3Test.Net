@@ -5,32 +5,33 @@
 @inject IItemService ItemService
 <h3>Create new item</h3>
 <span>
-    <input type="text" @bind="title" @bind:event="oninput" placeholder="Enter title..."/>
-    <input type="text" @bind="description" @bind:event="oninput" placeholder="Enter description..."/>
-    <input type="text" @bind="priceString" @bind:event="oninput" placeholder="Enter price..."/>
-    <button @onclick="Create" disabled="@(string.IsNullOrEmpty(title) || string.IsNullOrEmpty(description) || string.IsNullOrEmpty(priceString))" class="acceptbtn">Create</button>
+    <input type="text" @bind="title" @bind:event="oninput" placeholder="Enter title..." />
+    <input type="text" @bind="manufacture" @bind:event="oninput" placeholder="Enter manufacture..." />
+    <input type="text" @bind="description" @bind:event="oninput" placeholder="Enter description..." />
+    <input type="text" @bind="priceString" @bind:event="oninput" placeholder="Enter price..." />
+    <input type="text" @bind="stockString" @bind:event="oninput" placeholder="Enter stock..." />
+    <button @onclick="Create" disabled="@(string.IsNullOrEmpty(title) || string.IsNullOrEmpty(manufacture) || string.IsNullOrEmpty(description) || string.IsNullOrEmpty(priceString) || string.IsNullOrEmpty(stockString))" class="acceptbtn">Create</button>
 </span>
-<br/>
-<br/>
+<br />
+<br />
 <label style="color: red">@msg</label>
 
 @code {
-    string title, description, priceString;
+    string title, manufacture, description, priceString, stockString;
     string msg = "";
 
     private async Task Create()
     {
         msg = "";
-        if (Double.TryParse(priceString, out var price))
+        if (Double.TryParse(priceString, out var price) && Int32.TryParse(stockString, out var stock))
         {
-            var itemDto = new ItemCreationDto(title, description, price);
+            var itemDto = new ItemCreationDto(title, manufacture, description, price, stock);
             var item = await ItemService.CreateAsync(itemDto);
             NavigationManager.NavigateTo("/BackOfficeItems");
         }
         else
         {
-            msg = "Please insert a correct formatting for the price.";
+            msg = "Please insert correct formatting for price and stock.";
         }
     }
-
 }
