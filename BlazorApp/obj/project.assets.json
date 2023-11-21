@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     "net7.0": {
-      "Google.Protobuf/3.25.1": {
+      "Google.Protobuf/3.24.4": {
         "type": "package",
         "compile": {
           "lib/net5.0/Google.Protobuf.dll": {
@@ -192,7 +192,7 @@
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
           "Domain": "1.0.0",
-          "Google.Protobuf": "3.25.1",
+          "Google.Protobuf": "3.24.4",
           "Grpc.Net.Client": "2.58.0-pre1"
         },
         "compile": {
@@ -205,14 +205,14 @@
     }
   },
   "libraries": {
-    "Google.Protobuf/3.25.1": {
-      "sha512": "Sw9bq4hOD+AaS3RrnmP5IT25cyZ/T1qpM0e8+G+23Nojhv7+ScJFPEAQo1m4EFQWhXoI4FRZDrK+wjHCPw9yxg==",
+    "Google.Protobuf/3.24.4": {
+      "sha512": "TmUI4ndd3x5HePyLmqAmGT6oVvoRCu+bMmrJmOpAFtCPEB+oUMWF8dyVY1zxXry/8cqsTHWszYRIAwpuUNpUyA==",
       "type": "package",
-      "path": "google.protobuf/3.25.1",
+      "path": "google.protobuf/3.24.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "google.protobuf.3.25.1.nupkg.sha512",
+        "google.protobuf.3.24.4.nupkg.sha512",
         "google.protobuf.nuspec",
         "lib/net45/Google.Protobuf.dll",
         "lib/net45/Google.Protobuf.pdb",
