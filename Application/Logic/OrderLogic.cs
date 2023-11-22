@@ -11,16 +11,16 @@ public class OrderLogic : IOrderLogic
     private readonly IAddressDao addressDto;
     private readonly IFullNameDao fullNameDto;
     private readonly IOrderItemDao orderItemDto;
-    private readonly IUserDao userDto;
+    //private readonly IUserDao userDto;
 
 
-    public OrderLogic(IOrderDao orderDao, IAddressDao addressDto, IFullNameDao fullNameDto, IOrderItemDao orderItemDto, IUserDao userDto)
+    public OrderLogic(IOrderDao orderDao, IAddressDao addressDto, IFullNameDao fullNameDto, IOrderItemDao orderItemDto/*, IUserDao userDto*/)
     {
         this.orderDao = orderDao;
         this.addressDto = addressDto;
         this.fullNameDto = fullNameDto;
         this.orderItemDto = orderItemDto;
-        this.userDto = userDto;
+        //this.userDto = userDto;
     }
 
 

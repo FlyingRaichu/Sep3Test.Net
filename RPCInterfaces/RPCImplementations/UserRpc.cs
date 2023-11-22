@@ -40,6 +40,11 @@ public class UserRpc : IRpcBase<User>
         throw new NotImplementedException();
     }
 
+    public Task<User> GetByIdAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task SaveChanges()
     {
         throw new NotImplementedException();

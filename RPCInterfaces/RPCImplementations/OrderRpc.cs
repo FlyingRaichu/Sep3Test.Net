@@ -42,4 +42,9 @@ public class OrderRpc : IRpcBase<Order>
         return Task.CompletedTask;
 
     }
+
+    public Task<Order> GetByIdAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
 }

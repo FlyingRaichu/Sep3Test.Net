@@ -41,4 +41,9 @@ public class AddressRpc : IRpcBase<Address>
 
         return Task.CompletedTask;
     }
+
+    public Task<Address> GetByIdAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
 }

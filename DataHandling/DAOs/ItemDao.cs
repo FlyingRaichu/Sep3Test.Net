@@ -65,7 +65,12 @@ public class ItemDao : IItemDao
         return Task.FromResult(item);
     }
 
-    
+    public Task<Item> GetItemByIdAsync(int id)
+    {
+        return context.GetByIdAsync(id);
+    }
+
+
     //todo what iz this????
     Task<IEnumerable<Item>> IItemDao.GetAsync(SearchItemParametersDto searchParameters)
     {

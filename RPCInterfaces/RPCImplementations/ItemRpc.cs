@@ -44,4 +44,24 @@ public class ItemRpc : IRpcBase<Item>
 
         return Task.CompletedTask;
     }
+
+    public async Task<Item?> GetByIdAsync(int id)
+    {
+        Item? response = null;
+        var client = new ItemService.ItemServiceClient(channel);
+        try
+        {
+            var int32 = new Google.Protobuf.WellKnownTypes.Int32Value
+            {
+                Value = id
+            };
+            response = client.getItem(int32);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return response;
+    }
 }

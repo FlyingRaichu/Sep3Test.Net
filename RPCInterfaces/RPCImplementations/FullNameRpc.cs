@@ -42,4 +42,9 @@ public class FullNameRpc : IRpcBase<FullName>
 
         return Task.CompletedTask;
     }
+
+    public Task<FullName> GetByIdAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
 }
