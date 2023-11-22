@@ -6,6 +6,6 @@ namespace Application.DaoInterfaces;
 
 public interface IOrderDao
 {
-    Task<IEnumerable<Order>> GetAsync(SearchOrderParametersDto searchParameter);
+    Task<IEnumerable<Order>> GetAsync(SearchOrderParametersDto searchParameters);
     Task<Order> CreateAsync(Order order);
 }
