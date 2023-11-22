@@ -7,202 +7,224 @@
 
 using grpc = global::Grpc.Core;
 
-public static partial class FullNameService
-{
-  static readonly string __ServiceName = "FullNameService";
-
-  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static void __Helper_SerializeMessage(global::Google.Protobuf.IMessage message, grpc::SerializationContext context)
+namespace proto {
+  public static partial class FullNameService
   {
-    #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
-    if (message is global::Google.Protobuf.IBufferMessage)
+    static readonly string __ServiceName = "proto.FullNameService";
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static void __Helper_SerializeMessage(global::Google.Protobuf.IMessage message, grpc::SerializationContext context)
     {
-      context.SetPayloadLength(message.CalculateSize());
-      global::Google.Protobuf.MessageExtensions.WriteTo(message, context.GetBufferWriter());
-      context.Complete();
-      return;
+      #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
+      if (message is global::Google.Protobuf.IBufferMessage)
+      {
+        context.SetPayloadLength(message.CalculateSize());
+        global::Google.Protobuf.MessageExtensions.WriteTo(message, context.GetBufferWriter());
+        context.Complete();
+        return;
+      }
+      #endif
+      context.Complete(global::Google.Protobuf.MessageExtensions.ToByteArray(message));
     }
-    #endif
-    context.Complete(global::Google.Protobuf.MessageExtensions.ToByteArray(message));
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static class __Helper_MessageCache<T>
+    {
+      public static readonly bool IsBufferMessage = global::System.Reflection.IntrospectionExtensions.GetTypeInfo(typeof(global::Google.Protobuf.IBufferMessage)).IsAssignableFrom(typeof(T));
+    }
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static T __Helper_DeserializeMessage<T>(grpc::DeserializationContext context, global::Google.Protobuf.MessageParser<T> parser) where T : global::Google.Protobuf.IMessage<T>
+    {
+      #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
+      if (__Helper_MessageCache<T>.IsBufferMessage)
+      {
+        return parser.ParseFrom(context.PayloadAsReadOnlySequence());
+      }
+      #endif
+      return parser.ParseFrom(context.PayloadAsNewBuffer());
+    }
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::Google.Protobuf.WellKnownTypes.Int32Value> __Marshaller_google_protobuf_Int32Value = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Google.Protobuf.WellKnownTypes.Int32Value.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::proto.FullName> __Marshaller_proto_FullName = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::proto.FullName.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::Google.Protobuf.WellKnownTypes.Empty> __Marshaller_google_protobuf_Empty = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Google.Protobuf.WellKnownTypes.Empty.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::proto.FullNameResponse> __Marshaller_proto_FullNameResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::proto.FullNameResponse.Parser));
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::Google.Protobuf.WellKnownTypes.Int32Value, global::proto.FullName> __Method_getFullName = new grpc::Method<global::Google.Protobuf.WellKnownTypes.Int32Value, global::proto.FullName>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "getFullName",
+        __Marshaller_google_protobuf_Int32Value,
+        __Marshaller_proto_FullName);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::proto.FullName> __Method_getAllFullNames = new grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::proto.FullName>(
+        grpc::MethodType.ServerStreaming,
+        __ServiceName,
+        "getAllFullNames",
+        __Marshaller_google_protobuf_Empty,
+        __Marshaller_proto_FullName);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::proto.FullName, global::proto.FullNameResponse> __Method_addFullName = new grpc::Method<global::proto.FullName, global::proto.FullNameResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "addFullName",
+        __Marshaller_proto_FullName,
+        __Marshaller_proto_FullNameResponse);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::proto.FullName, global::proto.FullNameResponse> __Method_updateFullName = new grpc::Method<global::proto.FullName, global::proto.FullNameResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "updateFullName",
+        __Marshaller_proto_FullName,
+        __Marshaller_proto_FullNameResponse);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::proto.FullName, global::proto.FullNameResponse> __Method_deleteFullName = new grpc::Method<global::proto.FullName, global::proto.FullNameResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "deleteFullName",
+        __Marshaller_proto_FullName,
+        __Marshaller_proto_FullNameResponse);
+
+    /// <summary>Service descriptor</summary>
+    public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
+    {
+      get { return global::proto.FullNamesReflection.Descriptor.Services[0]; }
+    }
+
+    /// <summary>Client for FullNameService</summary>
+    public partial class FullNameServiceClient : grpc::ClientBase<FullNameServiceClient>
+    {
+      /// <summary>Creates a new client for FullNameService</summary>
+      /// <param name="channel">The channel to use to make remote calls.</param>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public FullNameServiceClient(grpc::ChannelBase channel) : base(channel)
+      {
+      }
+      /// <summary>Creates a new client for FullNameService that uses a custom <c>CallInvoker</c>.</summary>
+      /// <param name="callInvoker">The callInvoker to use to make remote calls.</param>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public FullNameServiceClient(grpc::CallInvoker callInvoker) : base(callInvoker)
+      {
+      }
+      /// <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      protected FullNameServiceClient() : base()
+      {
+      }
+      /// <summary>Protected constructor to allow creation of configured clients.</summary>
+      /// <param name="configuration">The client configuration.</param>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      protected FullNameServiceClient(ClientBaseConfiguration configuration) : base(configuration)
+      {
+      }
+
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::proto.FullName getFullName(global::Google.Protobuf.WellKnownTypes.Int32Value request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return getFullName(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::proto.FullName getFullName(global::Google.Protobuf.WellKnownTypes.Int32Value request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_getFullName, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::proto.FullName> getFullNameAsync(global::Google.Protobuf.WellKnownTypes.Int32Value request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return getFullNameAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::proto.FullName> getFullNameAsync(global::Google.Protobuf.WellKnownTypes.Int32Value request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_getFullName, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncServerStreamingCall<global::proto.FullName> getAllFullNames(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return getAllFullNames(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncServerStreamingCall<global::proto.FullName> getAllFullNames(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncServerStreamingCall(__Method_getAllFullNames, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::proto.FullNameResponse addFullName(global::proto.FullName request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return addFullName(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::proto.FullNameResponse addFullName(global::proto.FullName request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_addFullName, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::proto.FullNameResponse> addFullNameAsync(global::proto.FullName request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return addFullNameAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::proto.FullNameResponse> addFullNameAsync(global::proto.FullName request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_addFullName, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::proto.FullNameResponse updateFullName(global::proto.FullName request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return updateFullName(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::proto.FullNameResponse updateFullName(global::proto.FullName request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_updateFullName, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::proto.FullNameResponse> updateFullNameAsync(global::proto.FullName request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return updateFullNameAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::proto.FullNameResponse> updateFullNameAsync(global::proto.FullName request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_updateFullName, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::proto.FullNameResponse deleteFullName(global::proto.FullName request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return deleteFullName(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::proto.FullNameResponse deleteFullName(global::proto.FullName request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_deleteFullName, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::proto.FullNameResponse> deleteFullNameAsync(global::proto.FullName request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return deleteFullNameAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::proto.FullNameResponse> deleteFullNameAsync(global::proto.FullName request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_deleteFullName, null, options, request);
+      }
+      /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      protected override FullNameServiceClient NewInstance(ClientBaseConfiguration configuration)
+      {
+        return new FullNameServiceClient(configuration);
+      }
+    }
+
   }
-
-  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static class __Helper_MessageCache<T>
-  {
-    public static readonly bool IsBufferMessage = global::System.Reflection.IntrospectionExtensions.GetTypeInfo(typeof(global::Google.Protobuf.IBufferMessage)).IsAssignableFrom(typeof(T));
-  }
-
-  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static T __Helper_DeserializeMessage<T>(grpc::DeserializationContext context, global::Google.Protobuf.MessageParser<T> parser) where T : global::Google.Protobuf.IMessage<T>
-  {
-    #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
-    if (__Helper_MessageCache<T>.IsBufferMessage)
-    {
-      return parser.ParseFrom(context.PayloadAsReadOnlySequence());
-    }
-    #endif
-    return parser.ParseFrom(context.PayloadAsNewBuffer());
-  }
-
-  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static readonly grpc::Marshaller<global::Google.Protobuf.WellKnownTypes.Int32Value> __Marshaller_google_protobuf_Int32Value = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Google.Protobuf.WellKnownTypes.Int32Value.Parser));
-  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static readonly grpc::Marshaller<global::FullName> __Marshaller_FullName = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::FullName.Parser));
-  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static readonly grpc::Marshaller<global::FullNameResponse> __Marshaller_FullNameResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::FullNameResponse.Parser));
-
-  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static readonly grpc::Method<global::Google.Protobuf.WellKnownTypes.Int32Value, global::FullName> __Method_getFullName = new grpc::Method<global::Google.Protobuf.WellKnownTypes.Int32Value, global::FullName>(
-      grpc::MethodType.Unary,
-      __ServiceName,
-      "getFullName",
-      __Marshaller_google_protobuf_Int32Value,
-      __Marshaller_FullName);
-
-  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static readonly grpc::Method<global::FullName, global::FullNameResponse> __Method_addFullName = new grpc::Method<global::FullName, global::FullNameResponse>(
-      grpc::MethodType.Unary,
-      __ServiceName,
-      "addFullName",
-      __Marshaller_FullName,
-      __Marshaller_FullNameResponse);
-
-  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static readonly grpc::Method<global::FullName, global::FullNameResponse> __Method_updateFullName = new grpc::Method<global::FullName, global::FullNameResponse>(
-      grpc::MethodType.Unary,
-      __ServiceName,
-      "updateFullName",
-      __Marshaller_FullName,
-      __Marshaller_FullNameResponse);
-
-  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static readonly grpc::Method<global::FullName, global::FullNameResponse> __Method_deleteFullName = new grpc::Method<global::FullName, global::FullNameResponse>(
-      grpc::MethodType.Unary,
-      __ServiceName,
-      "deleteFullName",
-      __Marshaller_FullName,
-      __Marshaller_FullNameResponse);
-
-  /// <summary>Service descriptor</summary>
-  public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
-  {
-    get { return global::FullNamesReflection.Descriptor.Services[0]; }
-  }
-
-  /// <summary>Client for FullNameService</summary>
-  public partial class FullNameServiceClient : grpc::ClientBase<FullNameServiceClient>
-  {
-    /// <summary>Creates a new client for FullNameService</summary>
-    /// <param name="channel">The channel to use to make remote calls.</param>
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public FullNameServiceClient(grpc::ChannelBase channel) : base(channel)
-    {
-    }
-    /// <summary>Creates a new client for FullNameService that uses a custom <c>CallInvoker</c>.</summary>
-    /// <param name="callInvoker">The callInvoker to use to make remote calls.</param>
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public FullNameServiceClient(grpc::CallInvoker callInvoker) : base(callInvoker)
-    {
-    }
-    /// <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    protected FullNameServiceClient() : base()
-    {
-    }
-    /// <summary>Protected constructor to allow creation of configured clients.</summary>
-    /// <param name="configuration">The client configuration.</param>
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    protected FullNameServiceClient(ClientBaseConfiguration configuration) : base(configuration)
-    {
-    }
-
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual global::FullName getFullName(global::Google.Protobuf.WellKnownTypes.Int32Value request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-    {
-      return getFullName(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-    }
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual global::FullName getFullName(global::Google.Protobuf.WellKnownTypes.Int32Value request, grpc::CallOptions options)
-    {
-      return CallInvoker.BlockingUnaryCall(__Method_getFullName, null, options, request);
-    }
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual grpc::AsyncUnaryCall<global::FullName> getFullNameAsync(global::Google.Protobuf.WellKnownTypes.Int32Value request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-    {
-      return getFullNameAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-    }
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual grpc::AsyncUnaryCall<global::FullName> getFullNameAsync(global::Google.Protobuf.WellKnownTypes.Int32Value request, grpc::CallOptions options)
-    {
-      return CallInvoker.AsyncUnaryCall(__Method_getFullName, null, options, request);
-    }
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual global::FullNameResponse addFullName(global::FullName request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-    {
-      return addFullName(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-    }
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual global::FullNameResponse addFullName(global::FullName request, grpc::CallOptions options)
-    {
-      return CallInvoker.BlockingUnaryCall(__Method_addFullName, null, options, request);
-    }
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual grpc::AsyncUnaryCall<global::FullNameResponse> addFullNameAsync(global::FullName request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-    {
-      return addFullNameAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-    }
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual grpc::AsyncUnaryCall<global::FullNameResponse> addFullNameAsync(global::FullName request, grpc::CallOptions options)
-    {
-      return CallInvoker.AsyncUnaryCall(__Method_addFullName, null, options, request);
-    }
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual global::FullNameResponse updateFullName(global::FullName request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-    {
-      return updateFullName(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-    }
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual global::FullNameResponse updateFullName(global::FullName request, grpc::CallOptions options)
-    {
-      return CallInvoker.BlockingUnaryCall(__Method_updateFullName, null, options, request);
-    }
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual grpc::AsyncUnaryCall<global::FullNameResponse> updateFullNameAsync(global::FullName request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-    {
-      return updateFullNameAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-    }
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual grpc::AsyncUnaryCall<global::FullNameResponse> updateFullNameAsync(global::FullName request, grpc::CallOptions options)
-    {
-      return CallInvoker.AsyncUnaryCall(__Method_updateFullName, null, options, request);
-    }
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual global::FullNameResponse deleteFullName(global::FullName request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-    {
-      return deleteFullName(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-    }
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual global::FullNameResponse deleteFullName(global::FullName request, grpc::CallOptions options)
-    {
-      return CallInvoker.BlockingUnaryCall(__Method_deleteFullName, null, options, request);
-    }
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual grpc::AsyncUnaryCall<global::FullNameResponse> deleteFullNameAsync(global::FullName request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-    {
-      return deleteFullNameAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-    }
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual grpc::AsyncUnaryCall<global::FullNameResponse> deleteFullNameAsync(global::FullName request, grpc::CallOptions options)
-    {
-      return CallInvoker.AsyncUnaryCall(__Method_deleteFullName, null, options, request);
-    }
-    /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    protected override FullNameServiceClient NewInstance(ClientBaseConfiguration configuration)
-    {
-      return new FullNameServiceClient(configuration);
-    }
-  }
-
 }
 #endregion

@@ -1,5 +1,5 @@
 ﻿using Domain.DTOs;
-using Via.Sep4.Protobuf;
+using proto;
 
 namespace Application.DaoInterfaces;
 

@@ -1,6 +1,7 @@
 ﻿using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Grpc.Net.Client;
+using proto;
 using RPCInterface.RPCImplementations;
 //using Via.Sep4.Protobuf;
 

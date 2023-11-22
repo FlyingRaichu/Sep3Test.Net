@@ -1,7 +1,8 @@
 ﻿using Application.DaoInterfaces;
 using Application.LogicInterfaces;
 using Domain.DTOs;
-using Via.Sep4.Protobuf;
+using Domain.DTOs.Item;
+using proto;
 
 namespace Application.Logic;
 
@@ -26,8 +27,10 @@ public class ItemLogic : IItemLogic
         var item = new Item
         {
             Title = dto.Title,
+            Manufacture = dto.Manufacture,
             Description = dto.Description,
-            Price = dto.Price
+            Price = dto.Price,
+            Stock = dto.Stock
         };
         var created = await itemDao.CreateAsync(item);
         return created;

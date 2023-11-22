@@ -1,6 +1,8 @@
 ﻿using Domain.DTOs;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Net.Client;
+using proto;
+
 //using Via.Sep4.Protobuf;
 
 namespace RPCInterface.RPCImplementations;

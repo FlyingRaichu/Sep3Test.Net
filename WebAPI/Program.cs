@@ -7,7 +7,7 @@ using Domain.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using RPCInterface.RPCImplementations;
-using Via.Sep4.Protobuf;
+using proto;
 
 var builder = WebApplication.CreateBuilder(args);
 

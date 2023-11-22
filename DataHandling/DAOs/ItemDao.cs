@@ -1,7 +1,7 @@
 ﻿using Application.DaoInterfaces;
 using Domain.DTOs;
+using proto;
 using RPCInterface.RPCImplementations;
-using Via.Sep4.Protobuf;
 
 namespace DataHandling.DAOs;
 
@@ -23,6 +23,12 @@ public class ItemDao : IItemDao
             items = context.Elements.Where(item =>
                 item.Title.Contains(searchParameters.TitleContains, StringComparison.OrdinalIgnoreCase));
         }
+        
+        if (!string.IsNullOrEmpty(searchParameters.ManufactureContains))
+        {
+            items = context.Elements.Where(item =>
+                item.Manufacture.Contains(searchParameters.ManufactureContains, StringComparison.OrdinalIgnoreCase));
+        }
 
         if (!string.IsNullOrEmpty(searchParameters.DescriptionContains))
         {
@@ -34,10 +40,16 @@ public class ItemDao : IItemDao
         {
             items = items.Where(item => item.Price.Equals(searchParameters.Price));
         }
+        
+        if (searchParameters.Stock != null)
+        {
+            items = items.Where(item => item.Stock.Equals(searchParameters.Stock));
+        }
 
         return Task.FromResult(items);
     }
-
+    
+    
     public Task<Item> CreateAsync(Item item)
     {
         int id = 1;
@@ -52,4 +64,17 @@ public class ItemDao : IItemDao
         context.Add(item);
         return Task.FromResult(item);
     }
+
+    
+    //todo what iz this????
+    Task<IEnumerable<Item>> IItemDao.GetAsync(SearchItemParametersDto searchParameters)
+    {
+        return GetAsync(searchParameters);
+    }
+
+    //todo same q here
+    // Task IItemDao.GetAsync(SearchItemParametersDto searchParameters)
+    // {
+    //     return GetAsync(searchParameters);
+    // }
 }

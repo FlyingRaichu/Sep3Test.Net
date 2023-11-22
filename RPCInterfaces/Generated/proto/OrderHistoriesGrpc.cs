@@ -7,164 +7,166 @@
 
 using grpc = global::Grpc.Core;
 
-public static partial class OrderHistoryService
-{
-  static readonly string __ServiceName = "OrderHistoryService";
-
-  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static void __Helper_SerializeMessage(global::Google.Protobuf.IMessage message, grpc::SerializationContext context)
+namespace proto {
+  public static partial class OrderHistoryService
   {
-    #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
-    if (message is global::Google.Protobuf.IBufferMessage)
+    static readonly string __ServiceName = "proto.OrderHistoryService";
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static void __Helper_SerializeMessage(global::Google.Protobuf.IMessage message, grpc::SerializationContext context)
     {
-      context.SetPayloadLength(message.CalculateSize());
-      global::Google.Protobuf.MessageExtensions.WriteTo(message, context.GetBufferWriter());
-      context.Complete();
-      return;
+      #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
+      if (message is global::Google.Protobuf.IBufferMessage)
+      {
+        context.SetPayloadLength(message.CalculateSize());
+        global::Google.Protobuf.MessageExtensions.WriteTo(message, context.GetBufferWriter());
+        context.Complete();
+        return;
+      }
+      #endif
+      context.Complete(global::Google.Protobuf.MessageExtensions.ToByteArray(message));
     }
-    #endif
-    context.Complete(global::Google.Protobuf.MessageExtensions.ToByteArray(message));
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static class __Helper_MessageCache<T>
+    {
+      public static readonly bool IsBufferMessage = global::System.Reflection.IntrospectionExtensions.GetTypeInfo(typeof(global::Google.Protobuf.IBufferMessage)).IsAssignableFrom(typeof(T));
+    }
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static T __Helper_DeserializeMessage<T>(grpc::DeserializationContext context, global::Google.Protobuf.MessageParser<T> parser) where T : global::Google.Protobuf.IMessage<T>
+    {
+      #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
+      if (__Helper_MessageCache<T>.IsBufferMessage)
+      {
+        return parser.ParseFrom(context.PayloadAsReadOnlySequence());
+      }
+      #endif
+      return parser.ParseFrom(context.PayloadAsNewBuffer());
+    }
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::Google.Protobuf.WellKnownTypes.Int32Value> __Marshaller_google_protobuf_Int32Value = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Google.Protobuf.WellKnownTypes.Int32Value.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::proto.OrderHistory> __Marshaller_proto_OrderHistory = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::proto.OrderHistory.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::Google.Protobuf.WellKnownTypes.Empty> __Marshaller_google_protobuf_Empty = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Google.Protobuf.WellKnownTypes.Empty.Parser));
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::Google.Protobuf.WellKnownTypes.Int32Value, global::proto.OrderHistory> __Method_getOrderHistory = new grpc::Method<global::Google.Protobuf.WellKnownTypes.Int32Value, global::proto.OrderHistory>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "getOrderHistory",
+        __Marshaller_google_protobuf_Int32Value,
+        __Marshaller_proto_OrderHistory);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::proto.OrderHistory> __Method_getHistoryOrdersByUser = new grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::proto.OrderHistory>(
+        grpc::MethodType.ServerStreaming,
+        __ServiceName,
+        "getHistoryOrdersByUser",
+        __Marshaller_google_protobuf_Empty,
+        __Marshaller_proto_OrderHistory);
+
+    /// <summary>Service descriptor</summary>
+    public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
+    {
+      get { return global::proto.OrderHistoriesReflection.Descriptor.Services[0]; }
+    }
+
+    /// <summary>Client for OrderHistoryService</summary>
+    public partial class OrderHistoryServiceClient : grpc::ClientBase<OrderHistoryServiceClient>
+    {
+      /// <summary>Creates a new client for OrderHistoryService</summary>
+      /// <param name="channel">The channel to use to make remote calls.</param>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public OrderHistoryServiceClient(grpc::ChannelBase channel) : base(channel)
+      {
+      }
+      /// <summary>Creates a new client for OrderHistoryService that uses a custom <c>CallInvoker</c>.</summary>
+      /// <param name="callInvoker">The callInvoker to use to make remote calls.</param>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public OrderHistoryServiceClient(grpc::CallInvoker callInvoker) : base(callInvoker)
+      {
+      }
+      /// <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      protected OrderHistoryServiceClient() : base()
+      {
+      }
+      /// <summary>Protected constructor to allow creation of configured clients.</summary>
+      /// <param name="configuration">The client configuration.</param>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      protected OrderHistoryServiceClient(ClientBaseConfiguration configuration) : base(configuration)
+      {
+      }
+
+      /// <summary>
+      ///needs to be string bc username is the unique value
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The response received from the server.</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::proto.OrderHistory getOrderHistory(global::Google.Protobuf.WellKnownTypes.Int32Value request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return getOrderHistory(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      /// <summary>
+      ///needs to be string bc username is the unique value
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The response received from the server.</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::proto.OrderHistory getOrderHistory(global::Google.Protobuf.WellKnownTypes.Int32Value request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_getOrderHistory, null, options, request);
+      }
+      /// <summary>
+      ///needs to be string bc username is the unique value
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The call object.</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::proto.OrderHistory> getOrderHistoryAsync(global::Google.Protobuf.WellKnownTypes.Int32Value request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return getOrderHistoryAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      /// <summary>
+      ///needs to be string bc username is the unique value
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The call object.</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::proto.OrderHistory> getOrderHistoryAsync(global::Google.Protobuf.WellKnownTypes.Int32Value request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_getOrderHistory, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncServerStreamingCall<global::proto.OrderHistory> getHistoryOrdersByUser(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return getHistoryOrdersByUser(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncServerStreamingCall<global::proto.OrderHistory> getHistoryOrdersByUser(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncServerStreamingCall(__Method_getHistoryOrdersByUser, null, options, request);
+      }
+      /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      protected override OrderHistoryServiceClient NewInstance(ClientBaseConfiguration configuration)
+      {
+        return new OrderHistoryServiceClient(configuration);
+      }
+    }
+
   }
-
-  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static class __Helper_MessageCache<T>
-  {
-    public static readonly bool IsBufferMessage = global::System.Reflection.IntrospectionExtensions.GetTypeInfo(typeof(global::Google.Protobuf.IBufferMessage)).IsAssignableFrom(typeof(T));
-  }
-
-  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static T __Helper_DeserializeMessage<T>(grpc::DeserializationContext context, global::Google.Protobuf.MessageParser<T> parser) where T : global::Google.Protobuf.IMessage<T>
-  {
-    #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
-    if (__Helper_MessageCache<T>.IsBufferMessage)
-    {
-      return parser.ParseFrom(context.PayloadAsReadOnlySequence());
-    }
-    #endif
-    return parser.ParseFrom(context.PayloadAsNewBuffer());
-  }
-
-  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static readonly grpc::Marshaller<global::Google.Protobuf.WellKnownTypes.Int32Value> __Marshaller_google_protobuf_Int32Value = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Google.Protobuf.WellKnownTypes.Int32Value.Parser));
-  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static readonly grpc::Marshaller<global::OrderHistory> __Marshaller_OrderHistory = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::OrderHistory.Parser));
-  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static readonly grpc::Marshaller<global::Google.Protobuf.WellKnownTypes.Empty> __Marshaller_google_protobuf_Empty = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Google.Protobuf.WellKnownTypes.Empty.Parser));
-
-  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static readonly grpc::Method<global::Google.Protobuf.WellKnownTypes.Int32Value, global::OrderHistory> __Method_getOrderHistory = new grpc::Method<global::Google.Protobuf.WellKnownTypes.Int32Value, global::OrderHistory>(
-      grpc::MethodType.Unary,
-      __ServiceName,
-      "getOrderHistory",
-      __Marshaller_google_protobuf_Int32Value,
-      __Marshaller_OrderHistory);
-
-  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static readonly grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::OrderHistory> __Method_getHistoryOrdersByUser = new grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::OrderHistory>(
-      grpc::MethodType.ServerStreaming,
-      __ServiceName,
-      "getHistoryOrdersByUser",
-      __Marshaller_google_protobuf_Empty,
-      __Marshaller_OrderHistory);
-
-  /// <summary>Service descriptor</summary>
-  public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
-  {
-    get { return global::OrderHistoriesReflection.Descriptor.Services[0]; }
-  }
-
-  /// <summary>Client for OrderHistoryService</summary>
-  public partial class OrderHistoryServiceClient : grpc::ClientBase<OrderHistoryServiceClient>
-  {
-    /// <summary>Creates a new client for OrderHistoryService</summary>
-    /// <param name="channel">The channel to use to make remote calls.</param>
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public OrderHistoryServiceClient(grpc::ChannelBase channel) : base(channel)
-    {
-    }
-    /// <summary>Creates a new client for OrderHistoryService that uses a custom <c>CallInvoker</c>.</summary>
-    /// <param name="callInvoker">The callInvoker to use to make remote calls.</param>
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public OrderHistoryServiceClient(grpc::CallInvoker callInvoker) : base(callInvoker)
-    {
-    }
-    /// <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    protected OrderHistoryServiceClient() : base()
-    {
-    }
-    /// <summary>Protected constructor to allow creation of configured clients.</summary>
-    /// <param name="configuration">The client configuration.</param>
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    protected OrderHistoryServiceClient(ClientBaseConfiguration configuration) : base(configuration)
-    {
-    }
-
-    /// <summary>
-    ///needs to be string bc username is the unique value
-    /// </summary>
-    /// <param name="request">The request to send to the server.</param>
-    /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
-    /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
-    /// <param name="cancellationToken">An optional token for canceling the call.</param>
-    /// <returns>The response received from the server.</returns>
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual global::OrderHistory getOrderHistory(global::Google.Protobuf.WellKnownTypes.Int32Value request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-    {
-      return getOrderHistory(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-    }
-    /// <summary>
-    ///needs to be string bc username is the unique value
-    /// </summary>
-    /// <param name="request">The request to send to the server.</param>
-    /// <param name="options">The options for the call.</param>
-    /// <returns>The response received from the server.</returns>
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual global::OrderHistory getOrderHistory(global::Google.Protobuf.WellKnownTypes.Int32Value request, grpc::CallOptions options)
-    {
-      return CallInvoker.BlockingUnaryCall(__Method_getOrderHistory, null, options, request);
-    }
-    /// <summary>
-    ///needs to be string bc username is the unique value
-    /// </summary>
-    /// <param name="request">The request to send to the server.</param>
-    /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
-    /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
-    /// <param name="cancellationToken">An optional token for canceling the call.</param>
-    /// <returns>The call object.</returns>
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual grpc::AsyncUnaryCall<global::OrderHistory> getOrderHistoryAsync(global::Google.Protobuf.WellKnownTypes.Int32Value request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-    {
-      return getOrderHistoryAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-    }
-    /// <summary>
-    ///needs to be string bc username is the unique value
-    /// </summary>
-    /// <param name="request">The request to send to the server.</param>
-    /// <param name="options">The options for the call.</param>
-    /// <returns>The call object.</returns>
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual grpc::AsyncUnaryCall<global::OrderHistory> getOrderHistoryAsync(global::Google.Protobuf.WellKnownTypes.Int32Value request, grpc::CallOptions options)
-    {
-      return CallInvoker.AsyncUnaryCall(__Method_getOrderHistory, null, options, request);
-    }
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual grpc::AsyncServerStreamingCall<global::OrderHistory> getHistoryOrdersByUser(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-    {
-      return getHistoryOrdersByUser(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-    }
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual grpc::AsyncServerStreamingCall<global::OrderHistory> getHistoryOrdersByUser(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::CallOptions options)
-    {
-      return CallInvoker.AsyncServerStreamingCall(__Method_getHistoryOrdersByUser, null, options, request);
-    }
-    /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    protected override OrderHistoryServiceClient NewInstance(ClientBaseConfiguration configuration)
-    {
-      return new OrderHistoryServiceClient(configuration);
-    }
-  }
-
 }
 #endregion

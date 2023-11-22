@@ -8,7 +8,7 @@
 
 @if (items == null)
 {
-    
+
 }
 else if (!items.Any())
 {
@@ -45,7 +45,7 @@ else
         {
             items = await ItemService.GetPostsAsync(null, null, null);
         }
-        
+
         catch (Exception e)
         {
             Console.WriteLine(e);
