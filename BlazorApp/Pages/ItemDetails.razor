@@ -8,16 +8,16 @@
 <MudGrid>
     <!--Image section-->
     <MudItem xs="6">
-        
+        <MudImage Src="" Alt="navigation.Selected.Title">img</MudImage>
     </MudItem>
     <!--details section-->
     <MudItem xs="6">
         <MudGrid>
             <MudItem xs="6">
-                <MudText><!--navigation.Selected.Title--></MudText>
+                <MudText>navigation.Selected.Title test</MudText>
             </MudItem>
             <MudItem xs="6">
-                <MudText><!--navigation.Selected.Price--></MudText>
+                <MudText>navigation.Selected.Price test</MudText>
             </MudItem>
         </MudGrid>
         <MudGrid>
@@ -25,7 +25,7 @@
                 <MudText><!--navigation.Selected.Description--></MudText>
             </MudItem>
             <MudItem xs="6">
-                <MudNumericField @bind-Value="quantity" Label="Quantity" Variant="Variant.Text" Min="0" />
+                @*<MudNumericField @bind-Value="quantity" Label="Quantity" Variant="Variant.Text" Min="0"/>*@
                 <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.AddShoppingCart" OnClick="AddToCart">Add to Cart</MudButton>
                 <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Star" OnClick="AddFavorite">Favorite</MudButton>
             </MudItem>
