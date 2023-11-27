@@ -19,12 +19,12 @@ public class ItemsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Item>>> GetAsync([FromQuery] string? title,
-        [FromQuery] string? description, [FromQuery] double? price)
+    public async Task<ActionResult<IEnumerable<Item>>> GetAsync([FromQuery] string? title, [FromQuery] string manufacturer,
+        [FromQuery] string? description, [FromQuery] double? price, [FromQuery] int? stock)
     {
         try
         {
-            SearchItemParametersDto parameters = new(title, description, price);
+            SearchItemParametersDto parameters = new(title, manufacturer, description, price, stock);
             var items = await logic.GetAsync(parameters);
             return Ok(items);
         }

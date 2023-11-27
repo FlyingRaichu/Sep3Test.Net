@@ -52,4 +52,9 @@ public class FullNameDao : IFullNameDao
         context.Add(fullName);
         return Task.FromResult(fullName);
     }
+
+    public async Task<FullName?> GetFullNameById(int id)
+    {
+        return await context.GetByIdAsync(id);
+    }
 }

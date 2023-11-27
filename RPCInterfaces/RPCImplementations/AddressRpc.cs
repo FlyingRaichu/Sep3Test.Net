@@ -42,8 +42,23 @@ public class AddressRpc : IRpcBase<Address>
         return Task.CompletedTask;
     }
 
-    public Task<Address> GetByIdAsync(int id)
+    public async Task<Address?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        Address? response = null;
+        var client = new AddressService.AddressServiceClient(channel);
+        try
+        {
+            var int32 = new Google.Protobuf.WellKnownTypes.Int32Value
+            {
+                Value = id
+            };
+            response = client.getAddress(int32);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return response;
     }
 }

@@ -7,4 +7,5 @@ public interface IFullNameDao
 {
     Task<IEnumerable<FullName>> GetAsync(SearchFullNameParametersDto searchParameters);
     Task<FullName> CreateAsync(FullName fullName);
+    Task<FullName?> GetFullNameById(int id);
 }

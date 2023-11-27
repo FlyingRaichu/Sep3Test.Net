@@ -39,4 +39,9 @@ public class OrderItemDao : IOrderItemDao
         await orderItemContext.Add(orderItem);
         return await Task.FromResult(orderItem);
     }
+
+    public async Task<OrderItem?> GetOrderItemByIdAsync(int id)
+    {
+        return await orderItemContext.GetByIdAsync(id);
+    }
 }

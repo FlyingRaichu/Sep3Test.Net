@@ -17,10 +17,30 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IRpcBase<Address>, AddressRpc>();
+builder.Services.AddScoped<IRpcBase<FullName>, FullNameRpc>();
 builder.Services.AddScoped<IRpcBase<Item>, ItemRpc>();
+builder.Services.AddScoped<IRpcBase<OrderItem>, OrderItemRpc>();
+builder.Services.AddScoped<IRpcBase<Order>, OrderRpc>();
 builder.Services.AddScoped<IRpcBase<User>, UserRpc>();
+
+builder.Services.AddScoped<IAddressDao, AddressDao>();
+builder.Services.AddScoped<IAddressLogic, AddressLogic>();
+
+builder.Services.AddScoped<IFullNameDao, FullNameDao>();
+builder.Services.AddScoped<IFullNameLogic, FullNameLogic>();
+
 builder.Services.AddScoped<IItemDao, ItemDao>();
 builder.Services.AddScoped<IItemLogic, ItemLogic>();
+
+builder.Services.AddScoped<IOrderItemDao, OrderItemDao>();
+builder.Services.AddScoped<IOrderItemLogic, OrderItemLogic>();
+
+builder.Services.AddScoped<IOrderDao, OrderDao>();
+builder.Services.AddScoped<IOrderLogic, OrderLogic>();
+
+
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;

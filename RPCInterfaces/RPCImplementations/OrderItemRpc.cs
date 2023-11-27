@@ -42,8 +42,23 @@ public class OrderItemRpc : IRpcBase<OrderItem>
         return Task.CompletedTask;
     }
 
-    public Task<OrderItem> GetByIdAsync(int id)
+    public async Task<OrderItem?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        OrderItem? response = null;
+        var client = new OrderItemService.OrderItemServiceClient(channel);
+        try
+        {
+            var int32 = new Google.Protobuf.WellKnownTypes.Int32Value
+            {
+                Value = id
+            };
+            response = client.getOrderItem(int32);
+        }
+        catch(Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return response;
     }
 }

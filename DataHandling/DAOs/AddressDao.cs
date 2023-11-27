@@ -62,4 +62,9 @@ public class AddressDao : IAddressDao
         address.Id = id;
         return Task.FromResult(address);
     }
+
+    public async Task<Address?> GetAddressByIdAysinc(int id)
+    {
+        return await context.GetByIdAsync(id);
+    }
 }

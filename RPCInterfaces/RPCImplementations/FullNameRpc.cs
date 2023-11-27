@@ -43,8 +43,23 @@ public class FullNameRpc : IRpcBase<FullName>
         return Task.CompletedTask;
     }
 
-    public Task<FullName> GetByIdAsync(int id)
+    public async Task<FullName?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        FullName? response = null;
+        var client = new FullNameService.FullNameServiceClient(channel);
+        try
+        {
+            var int32 = new Google.Protobuf.WellKnownTypes.Int32Value
+            {
+                Value = id
+            };
+            response = client.getFullName(int32);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return response;
     }
 }
