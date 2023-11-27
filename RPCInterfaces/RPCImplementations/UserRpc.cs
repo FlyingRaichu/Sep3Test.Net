@@ -42,4 +42,5 @@ public class UserRpc : IRpcBase<User>
     {
         throw new NotImplementedException();
     }
+    
 }

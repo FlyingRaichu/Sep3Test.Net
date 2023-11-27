@@ -1,0 +1,53 @@
+@page "/ItemDetails"
+@using BlazorApp.Service
+@using MudBlazor
+@inject NavService navigation;
+
+<h3>Item Details</h3>
+
+<MudGrid>
+    <!--Image section-->
+    <MudItem xs="6">
+        
+    </MudItem>
+    <!--details section-->
+    <MudItem xs="6">
+        <MudGrid>
+            <MudItem xs="6">
+                <MudText><!--navigation.Selected.Title--></MudText>
+            </MudItem>
+            <MudItem xs="6">
+                <MudText><!--navigation.Selected.Price--></MudText>
+            </MudItem>
+        </MudGrid>
+        <MudGrid>
+            <MudItem xs="6">
+                <MudText><!--navigation.Selected.Description--></MudText>
+            </MudItem>
+            <MudItem xs="6">
+                <MudNumericField @bind-Value="quantity" Label="Quantity" Variant="Variant.Text" Min="0" />
+                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.AddShoppingCart" OnClick="AddToCart">Add to Cart</MudButton>
+                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Star" OnClick="AddFavorite">Favorite</MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+    <!--Ratings section-->
+    <MudItem xs="12">
+    </MudItem>
+</MudGrid>
+
+@code {
+    private int quantity { get; set; }
+
+    private void AddToCart()
+    {
+        
+    }
+
+    private void AddFavorite()
+    {
+        
+    }
+    
+    private void AddReview() {}
+}

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using BlazorApp.Data;
+using BlazorApp.Service;
 using HttpClients.Implementations;
 using HttpClients.Interfaces;
 
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddSingleton<NavService>();
 builder.Services.AddSingleton<HttpClient>(new HttpClient
 {
     BaseAddress = new Uri("https://localhost:7248/swagger/index.html")
