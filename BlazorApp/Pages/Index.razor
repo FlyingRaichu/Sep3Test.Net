@@ -21,7 +21,13 @@
                     <MudSelectItem Value="@manufacturer" @key="manufacturer" />
                 }
             </MudSelect>
-            <MudSlider @bind-Value="maxPrice" Min="20" Max="200" Color="Color.Info">Max Price: @maxPrice.ToString()</MudSlider>
+            <MudSlider @bind-Value="minPrice" Min="0" Max="200" Step="10" Color="Color.Info">Min Price: @minPrice.ToString() dollars</MudSlider>
+            <MudSlider @bind-Value="maxPrice" Min="0" Max="200" Step="10" Color="Color.Error">Max Price: @maxPrice.ToString() yen</MudSlider>
+            
+            @if (maxPrice.HasValue && maxPrice <= 10)
+                        {
+                            <MudText Typo="Typo.body2" Class="mt-2">You poor bastard, lol</MudText>
+                        }
 
         </MudContainer>
     </MudDrawer>
@@ -37,7 +43,12 @@
                 filteredItems = filteredItems.Where(item => item.Manufacture == _manufacturerFilter).ToList();
             }
 
-            // Apply max price filter
+            // Apply price range filters
+            if (minPrice.HasValue)
+            {
+                filteredItems = filteredItems.Where(item => item.Price >= minPrice).ToList();
+            }
+
             if (maxPrice.HasValue)
             {
                 filteredItems = filteredItems.Where(item => item.Price <= maxPrice).ToList();
@@ -56,7 +67,7 @@
                             {
                                 <MudItem xs="12" md="6" lg="4">
                                     <MudCard>
-                                        <MudCardMedia Image="BlazorApp/images/s.jpg" Height="200" />
+                                        <MudCardMedia Image="images/s.jpg" Height="200" />
                                         <MudCardContent>
                                             <MudText Typo="Typo.h5">@item.Title</MudText>
                                             <MudText Typo="Typo.body2">Price: @item.Price</MudText>
@@ -72,11 +83,10 @@
                 </MudContainer>
             }
         }
-        <button class="btn btn-primary" @onclick="GoToCheckoutPage">Go to Checkout</button>
-        <button class="btn btn-primary" @onclick="GoToItemsFilteringPage">Go to Items Filtering</button>
     </MudMainContent>
 
     @code {
+        private double? minPrice;
         private double? maxPrice;
         private string _manufacturerFilter;
         private IEnumerable<Item> items;
@@ -94,7 +104,7 @@
         {
             try
             {
-                Console.WriteLine($"Filter: {_manufacturerFilter}, {maxPrice}");
+                Console.WriteLine($"Filter: {_manufacturerFilter}, Min Price: {minPrice}, Max Price: {maxPrice}");
 
                 items = await ItemService.GetItemsAsync(null, _manufacturerFilter, null, null);
 
@@ -127,11 +137,6 @@
         private void GoToCheckoutPage()
         {
             NavigationManager.NavigateTo("/Checkout");
-        }
-
-        private void GoToItemsFilteringPage()
-        {
-            NavigationManager.NavigateTo("/ItemsFiltering");
         }
     }
 </MudLayout>

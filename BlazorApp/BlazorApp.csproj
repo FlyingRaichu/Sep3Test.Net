@@ -16,11 +16,9 @@
 
     <ItemGroup>
       <None Remove="Pages\BackOffice\wool.jpg" />
+      <None Include="wwwroot\images\s.jpg" />
     </ItemGroup>
 
 
-    <ItemGroup>
-      <Folder Include="images\" />
-    </ItemGroup>
 
 </Project>
