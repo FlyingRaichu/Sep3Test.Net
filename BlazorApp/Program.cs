@@ -4,6 +4,7 @@ using BlazorApp.Data;
 using BlazorApp.Service;
 using HttpClients.Implementations;
 using HttpClients.Interfaces;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,10 @@ builder.Services.AddSingleton<HttpClient>(new HttpClient
     BaseAddress = new Uri("https://localhost:7248/swagger/index.html")
 });
 builder.Services.AddScoped<IItemService, ItemHttpClient>();
+
+
+
+builder.Services.AddMudServices();
 
 var app = builder.Build();
 
