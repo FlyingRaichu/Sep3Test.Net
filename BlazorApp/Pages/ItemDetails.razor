@@ -1,11 +1,10 @@
 @page "/ItemDetails"
 @using BlazorApp.Service
 @using HttpClients.Implementations
-@using Microsoft.AspNetCore.SignalR
-@using MudBlazor
 @inject NavService Navigation;
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject IFavoriteService FavService;
+
 <h3>Item Details</h3>
 <MudGrid Justify="Justify.Center">
     <!--Image section-->

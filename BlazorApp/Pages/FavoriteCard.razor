@@ -1,0 +1,21 @@
+<MudPaper Class="pa-16 ma-2" Outlined="true">
+    <MudGrid>
+        <MudItem md="3">
+            <MudImage Src="" Alt="@Title"></MudImage>
+        </MudItem>
+        <MudItem>
+            <MudText Typo="Typo.h5">@Title</MudText>
+            <MudText>@Description</MudText>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+@code {
+    //also include image
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public string Description { get; set; }
+    [Parameter]
+    public double Price { get; set; }
+}

@@ -1,0 +1,31 @@
+@page "/Favorites"
+<h3>Favorites</h3>
+<!--can only view if logged in-->
+@foreach (var fav in favorites)
+        {
+            <FavoriteCard Title="" Description="" Price=""></FavoriteCard>
+        }
+
+@code {
+    private IEnumerable<Favorite>? favorites;
+    private string statusMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadFavs();
+    }
+
+    private async Task LoadFavs()
+    {
+        try
+        {
+            favorites = await FavoriteService.GetAllAsync(userId);
+        }
+        
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            statusMessage = e.Message;
+        }
+    }
+}
