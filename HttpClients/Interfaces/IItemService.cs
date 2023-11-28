@@ -8,7 +8,10 @@ public interface IItemService
     Task<ICollection<Item>> GetPostsAsync(
         string? title,
         string? description,
-        double? price);
+        double? price,
+        string? manufacturer,
+        int? stock, 
+        List<int>? tags);
 
     Task<Item> CreateAsync(ItemCreationDto dto);
     Task UpdateAsync(ItemUpdateDto dto);

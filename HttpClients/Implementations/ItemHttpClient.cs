@@ -1,11 +1,8 @@
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
-using Domain.DTOs;
 using Domain.DTOs.Item;
-using HttpClients.Implementations;
 
-namespace HttpClients.Interfaces;
+namespace HttpClients.Implementations;
 
 public class ItemHttpClient : IItemService
 {
@@ -16,9 +13,9 @@ public class ItemHttpClient : IItemService
         this.client = client;
     }
     
-    public async Task<ICollection<Item>> GetPostsAsync(string? title, string? description, double? price)
+    public async Task<ICollection<Item>> GetPostsAsync(string? title, string? description, double? price, string? manufacturer, int? stock, List<int>? tags)
     {
-        var query = ConstructQuery(title, description, price);
+        var query = ConstructQuery(title, description, price, manufacturer, stock, tags);
 
         var response = await client.GetAsync("/Items" + query);
         var content = await response.Content.ReadAsStringAsync();
@@ -94,7 +91,7 @@ public class ItemHttpClient : IItemService
         return item;
     }
 
-    private string ConstructQuery(string? title, string? description, double? price)
+    private string ConstructQuery(string? title, string? description, double? price, string? manufacturer, int? stock, List<int>? tags)
     {
         var query = "";
 
@@ -116,6 +113,26 @@ public class ItemHttpClient : IItemService
             query += $"price={price}";
         }
 
+        if (!string.IsNullOrEmpty(manufacturer))
+        {
+            query += string.IsNullOrEmpty(query) ? "?" : "&";
+            query += $"manufacturer={manufacturer}";
+        }
+
+        if (stock != null)
+        {
+            query += string.IsNullOrEmpty(query) ? "?" : "&";
+            query += $"stock={stock}";
+        }
+
+        if (tags != null && tags.Any())
+        {
+            foreach (var i in tags)
+            {
+                query += string.IsNullOrEmpty(query) ? "?" : "&";
+                query += $"tags={i}";
+            }    
+        }
         return query;
     }
 }
