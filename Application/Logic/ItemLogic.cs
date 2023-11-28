@@ -14,8 +14,7 @@ public class ItemLogic : IItemLogic
     {
         this.itemDao = itemDao;
     }
-
-
+    
     public Task<IEnumerable<Item>> GetAsync(SearchItemParametersDto searchParameters)
     {
         return itemDao.GetAsync(searchParameters);
@@ -62,7 +61,7 @@ public class ItemLogic : IItemLogic
 
     public async Task<Item> GetByIdAsync(int id)
     {
-        Item? item = await itemDao.GetByIdAsync(id);
+        var item = await itemDao.GetByIdAsync(id);
 
         if (item == null)
         {
