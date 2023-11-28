@@ -14,4 +14,13 @@
       <PackageReference Include="MudBlazor" Version="6.11.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Pages\BackOffice\wool.jpg" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Folder Include="images\" />
+    </ItemGroup>
+
 </Project>

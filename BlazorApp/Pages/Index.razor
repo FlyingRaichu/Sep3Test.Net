@@ -1,67 +1,137 @@
 ﻿@page "/"
 @using HttpClients.Implementations
-@inject IItemService ItemService;
-@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager;
+@inject IItemService ItemService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudSpacer/>
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End"/>
+    </MudAppBar>
+    <MudDrawer Open="true" Elevation="2">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h5" Class="mt-1">Filter Items</MudText>
+        </MudDrawerHeader>
+        <MudContainer MaxWidth="MaxWidth.Medium">
+         <!-- MudSelect for Manufacturer -->
+         <MudSelect T="string" Label="Manufacturer" Value="@_manufacturerFilter" ValueChanged="HandleManufacturerFilterChange" AnchorOrigin="Origin.BottomCenter">
+             @foreach (var manufacturer in _allManufacturers)
+             {
+                 <MudSelectItem Value="@manufacturer" @key="manufacturer"/>
+             }
+         </MudSelect>
+         <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" OnClick="ClearFilters" Size="Size.Small" Color="Color.Error">Clear Filter</MudButton>
 
-<PageTitle>Index</PageTitle>
+          </MudContainer>
+    </MudDrawer>
 
-<h1>Items</h1>
-<button class="btn btn-primary" @onclick="GoToCheckoutPage">Go to Checkout</button>
-<button class="btn btn-primary" @onclick="GoToItemsFilteringPage">Go to Items Filtering</button>
-
-@if (items == null)
-{
-    
-}
-else if (!items.Any())
-{
-    <p>No items to display.</p>
-}
-else
-{
-    <ul class="items">
-        @foreach (var item in items)
+    <MudMainContent>
+        @if (items == null)
         {
-            <li>
-                <strong><h3>@item.Title</h3></strong>
-                <strong><p>@item.Description</p></strong>
-                <strong><p>Price: @item.Price</p></strong>
-            </li>
         }
-    </ul>
-}
+        else if (!items.Any())
+        {
+            <p>No items to display.</p>
+        }
+        else
+        {
+            <MudContainer>
+                <MudPaper Elevation="2" Class="m-2 p-2">
+                    <MudGrid>
+                        @foreach (var item in items)
+                        {
+                            <MudItem xs="12" md="6" lg="4">
+                                <MudCard>
+                                    <MudCardMedia Image="BlazorApp/images/s.jpg" Height="200" />
+                                    <MudCardContent>
+                                        <MudText Typo="Typo.h5">@item.Title</MudText>
+                                        <MudText Typo="Typo.body2">Price: @item.Price</MudText>
+                                    </MudCardContent>
+                                    <MudCardActions>
+                                        <MudButton Variant="Variant.Text" Color="Color.Primary">Details</MudButton>
+                                    </MudCardActions>
+                                </MudCard>
+                            </MudItem>
+                        }
+                    </MudGrid>
+                </MudPaper>
+            </MudContainer>
+        }
+        <button class="btn btn-primary" @onclick="GoToCheckoutPage">Go to Checkout</button>
+        <button class="btn btn-primary" @onclick="GoToItemsFilteringPage">Go to Items Filtering</button>
+    </MudMainContent>
+</MudLayout>
 
+@code {
+    private string _manufacturerFilter;
+    private double? _priceRangeFilter;
+    private IEnumerable<Item> items;
+    private IEnumerable<string> _allManufacturers = Enumerable.Empty<string>(); // Initialize to an empty enumerable
+    private IEnumerable<string> _manufacturers = Enumerable.Empty<string>(); // Initialize to an empty enumerable
 
-@code
-{
-    private IEnumerable<Item>? items;
     private string statusMessage = "";
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadPosts();
+        await LoadItems();
     }
 
-    private async Task LoadPosts()
+    private async Task LoadItems()
     {
         try
         {
-            items = await ItemService.GetItemsAsync(null, null, null, null);
+            Console.WriteLine($"Filter: {_manufacturerFilter}, {_priceRangeFilter}");
+
+            items = await ItemService.GetItemsAsync(null, _manufacturerFilter, null, _priceRangeFilter);
+
+            if (_manufacturerFilter != null)
+            {
+                Console.WriteLine($"Items after manufacturer filter: {items.Count()}");
+            }
+
+            if (!_allManufacturers.Any())
+            {
+                _allManufacturers = items?.Select(item => item.Manufacture)?.Distinct() ?? Enumerable.Empty<string>();
+            }
+
+            _manufacturers = _allManufacturers; // Use _allManufacturers for rendering options
+            StateHasChanged();
         }
-        
         catch (Exception e)
         {
             Console.WriteLine(e);
             statusMessage = e.Message;
         }
     }
+    
+
+    private void HandleManufacturerFilterChange(string value)
+    {
+        _manufacturerFilter = value;
+        LoadItems(); // No need for 'await' here since you don't use the result
+    }
+
+    private void HandlePriceRangeFilterChange(double? value)
+    {
+        _priceRangeFilter = value;
+        LoadItems(); // No need for 'await' here since you don't use the result
+    }
+    private void ClearFilters()
+    {
+        _manufacturerFilter = null;
+        _priceRangeFilter = null;
+        LoadItems();
+    }
+
     private void GoToCheckoutPage()
     {
         NavigationManager.NavigateTo("/Checkout");
     }
+
     private void GoToItemsFilteringPage()
     {
         NavigationManager.NavigateTo("/ItemsFiltering");
     }
+}
+
 }
