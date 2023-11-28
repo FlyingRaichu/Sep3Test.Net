@@ -1,4 +1,6 @@
-﻿namespace Domain.DTOs.Item;
+﻿using System.Text.Json.Serialization;
+
+namespace Domain.DTOs.Item;
 
 public class ItemCreationDto
 {
@@ -9,6 +11,7 @@ public class ItemCreationDto
     public int Stock { get; }
     public List<int> Tags { get; }
 
+    [JsonConstructor]
     public ItemCreationDto(string title, string description, double price, string manufacturer, int stock, List<int> tags)
     {
         Title = title;
@@ -17,15 +20,5 @@ public class ItemCreationDto
         Manufacturer = manufacturer;
         Stock = stock;
         Tags = tags;
-    }
-
-    public ItemCreationDto(string title, string description, double price, string manufacturer, int stock)
-    {
-        Title = title;
-        Description = description;
-        Price = price;
-        Manufacturer = manufacturer;
-        Stock = stock;
-        Tags = new List<int>();
     }
 }

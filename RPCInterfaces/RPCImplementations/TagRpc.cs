@@ -7,7 +7,7 @@ namespace RPCInterface.RPCImplementations;
 public class TagRpc : IRpcBase<Tag>
 {
     private GrpcChannel channel = GrpcChannel.ForAddress("http://localhost:8090");
-    public ICollection<Tag> Elements { get; }
+    public ICollection<Tag> Elements => LoadData().Result;
     
     
     public async Task<ICollection<Tag>> LoadData()

@@ -35,6 +35,22 @@ public class ItemDao : IItemDao
             items = items.Where(item => item.Price.Equals(searchParameters.Price));
         }
 
+        if (!string.IsNullOrEmpty(searchParameters.ManufacturerContains))
+        {
+            items = context.Elements.Where(item =>
+                item.Manufacturer.Contains(searchParameters.ManufacturerContains, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (searchParameters.Stock != null)
+        {
+            items = items.Where(item => item.Stock == searchParameters.Stock);
+        }
+
+        if (searchParameters.ContainsTags != null && searchParameters.ContainsTags.Any())
+        {
+            items = items.Where(item => item.Tags.Any(tag => searchParameters.ContainsTags.Contains(tag)));
+        }
+        
         return Task.FromResult(items);
     }
 

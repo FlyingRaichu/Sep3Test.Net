@@ -2,6 +2,7 @@
 using Application.LogicInterfaces;
 using Domain.DTOs;
 using Domain.DTOs.Item;
+using Google.Protobuf.Collections;
 using Via.Sep4.Protobuf;
 
 namespace Application.Logic;
@@ -27,8 +28,11 @@ public class ItemLogic : IItemLogic
         {
             Title = dto.Title,
             Description = dto.Description,
-            Price = dto.Price
+            Price = dto.Price,
+            Manufacturer = dto.Manufacturer,
+            Stock = dto.Stock,
         };
+        item.Tags.AddRange(dto.Tags);
         var created = await itemDao.CreateAsync(item);
         return created;
     }

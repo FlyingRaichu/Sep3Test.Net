@@ -13,7 +13,7 @@ public class TagLogic : ITagLogic
         this.tagDao = tagDao;
     }
 
-    public Task<IEnumerable<Item>> GetAsync(SearchTagParametersDto searchParameters)
+    public Task<IEnumerable<Tag>> GetAsync(SearchTagParametersDto searchParameters)
     {
         return tagDao.GetAsync(searchParameters);
     }
