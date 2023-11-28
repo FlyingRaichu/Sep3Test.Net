@@ -19,7 +19,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRpcBase<Item>, ItemRpc>();
 builder.Services.AddScoped<IRpcBase<User>, UserRpc>();
+builder.Services.AddScoped<IRpcBase<Favorite>, FavoriteRpc>();
 builder.Services.AddScoped<IItemDao, ItemDao>();
+builder.Services.AddScoped<IFavoriteDao, FavoriteDao>();
 builder.Services.AddScoped<IItemLogic, ItemLogic>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {

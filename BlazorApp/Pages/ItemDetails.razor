@@ -1,10 +1,11 @@
 @page "/ItemDetails"
 @using BlazorApp.Service
+@using HttpClients.Implementations
 @using Microsoft.AspNetCore.SignalR
 @using MudBlazor
 @inject NavService Navigation;
 @inject AuthenticationStateProvider AuthStateProvider;
-
+@inject IFavoriteService FavService;
 <h3>Item Details</h3>
 <MudGrid Justify="Justify.Center">
     <!--Image section-->
@@ -67,6 +68,7 @@
 @code {
     private int quantity { get; set; }
     private AuthenticationState authState;
+    private bool isFavorited;
     
     protected override async Task OnInitializedAsync()
     {
@@ -75,17 +77,18 @@
         //if logged in, toggle isFavorite to change button display
         if (authState.User.Identity.IsAuthenticated)
         {
+            isFavorited = (await FavService.GetAsync(userId, Navigation.Selected.Id) == null);
         }
     }
     
-    private void AddFavorite()
+    private async void AddFavorite()
     {
-        //await UserService.AddFavoriteAsync(userId, Navigation.Selected.Id);
+        await FavService.CreateAsync(userId, Navigation.Selected.Id);
     }
 
-    private void RemoveFavorite()
+    private async void RemoveFavorite()
     {
-        //await UserService.RemoveFavoriteAsync(userId, Navigation.Selected.Id);
+        await FavService.DeleteAsync(userId, Navigation.Selected.Id);
     }
 
     private void AddToCart()

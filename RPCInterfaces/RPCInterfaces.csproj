@@ -37,6 +37,17 @@
             <Generator>MSBuild:Compile</Generator>
         </Protobuf>
     </ItemGroup>
+
+    <ItemGroup>
+        <Protobuf Include="proto\favorites.proto">
+            <GrpcServices>Client</GrpcServices>
+            <Access>Public</Access>
+            <ProtoCompile>True</ProtoCompile>
+            <CompileOutputs>True</CompileOutputs>
+            <OutputDir>Generated\</OutputDir>
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+    </ItemGroup>
     
     <ItemGroup>
       <ProjectReference Include="..\Domain\Domain.csproj" />
