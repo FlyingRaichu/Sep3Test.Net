@@ -2,6 +2,7 @@
 @using HttpClients.Implementations
 @using HttpClients.Interfaces
 @inject IItemService ItemService
+@attribute [Authorize("MustBeVia")]
 
 <h3>Back Office Index</h3>
 
