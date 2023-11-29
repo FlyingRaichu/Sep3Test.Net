@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 using BlazorApp.Data;
 using BlazorApp.Pages.Services;
 using Domain.Auth;
+using BlazorApp.Service;
 using HttpClients.Implementations;
 using HttpClients.Interfaces;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -25,6 +26,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthProvider>();
 builder.Services.AddSingleton<NavigationService>();
 
 AuthorizationPolicies.AddPolicies(builder.Services);
+builder.Services.AddSingleton<NavService>();
 
 var app = builder.Build();
 

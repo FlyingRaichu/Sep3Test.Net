@@ -1,0 +1,39 @@
+@using HttpClients.Implementations
+@using BlazorApp.Service
+@using MudBlazor
+@inject IItemService ItemService
+@inject NavService navService
+@inject NavigationManager navMgr
+
+<!--accessing theme variants cannot be done, for some reason. mud will only take enums,not color strings.
+so css has to be overridden manually :/-->
+<MudAppBar Style=@($"background-color: {Colors.Cyan.Lighten2}") Fixed="true">
+    <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit"/>
+    <MudText Typo="Typo.h5">Knithub</MudText>
+    <MudSpacer />
+    <MudTextField Style=@($"background-color: {Colors.Cyan.Lighten3}") @bind-Value="searchContent" Variant="Variant.Outlined" Placeholder="Search Knithub"></MudTextField>
+    <MudButton Variant="Variant.Filled" Color="Color.Inherit" OnClick="@Search">Search</MudButton>
+    <MudSpacer />
+</MudAppBar>
+
+@code {
+    private string searchContent;
+    private ICollection<Item> searchResults;
+
+    private async Task Search()
+    {
+        try
+        {
+            Console.WriteLine("search");
+            searchResults = await ItemService.GetPostsAsync(searchContent, null, null);
+            searchContent = string.Empty;
+
+            navService.SearchItems = searchResults;
+            navMgr.NavigateTo("/search");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+}
