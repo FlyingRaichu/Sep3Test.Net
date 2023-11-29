@@ -24,13 +24,25 @@ public class FavoriteLogic : IFavoriteLogic
         return created;
     }
 
-    public Task<Favorite> GetAsync(FavoriteDto dto)
+    public async Task<Favorite> GetAsync(FavoriteDto dto)
     {
-        throw new NotImplementedException();
+        var fav = new Favorite
+        {
+            UserId = dto.UserId,
+            ItemId = dto.ItemId
+        };
+        var fetched = await favDao.GetAsync(fav);
+        return fetched;
     }
 
-    public Task<Favorite> DeleteAsync(FavoriteDto dto)
+    public async Task<Favorite> DeleteAsync(FavoriteDto dto)
     {
-        throw new NotImplementedException();
+        var fav = new Favorite
+        {
+            UserId = dto.UserId,
+            ItemId = dto.ItemId
+        };
+        var removed = await favDao.DeleteAsync(fav);
+        return removed;
     }
 }

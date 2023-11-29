@@ -4,9 +4,26 @@ using Grpc.Net.Client;
 
 namespace RPCInterface.RPCImplementations;
 
-public class FavoriteRpc : IRpcBase<Favorite>
+public class FavoriteRpc : IRpcFavorite<Favorite>
 {
     private GrpcChannel channel = GrpcChannel.ForAddress("http://localhost:8090");
+
+    public Task Delete(Favorite element)
+    {
+        var client = new FavoriteService.FavoriteServiceClient(channel);
+        try
+        {
+            var response = client.deleteFavorite(element);
+            Elements.Remove(element);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return Task.CompletedTask;
+    }
+
     public ICollection<Favorite> Elements { get; }
 
     public Task<ICollection<Favorite>> LoadData()

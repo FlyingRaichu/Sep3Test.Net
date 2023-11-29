@@ -5,37 +5,28 @@ namespace DataHandling.DAOs;
 
 public class FavoriteDao : IFavoriteDao
 {
-    private readonly IRpcBase<Favorite> context;
+    private readonly IRpcFavorite<Favorite> context;
 
-    public FavoriteDao(IRpcBase<Favorite> context)
+    public FavoriteDao(IRpcFavorite<Favorite> context)
     {
         this.context = context;
     }
     
     public Task<Favorite> CreateAsync(Favorite favorite)
     {
-        int id = 1;
-        if (context.Elements.Any())
-        {
-            id = context.Elements.Max(i => i.ItemId);
-            id++;
-        }
-
-        favorite.ItemId = id;
-
         context.Add(favorite);
         return Task.FromResult(favorite);
     }
 
     public Task<Favorite> GetAsync(Favorite fav)
     {
-        var favorite = context.Elements.SingleOrDefault(f => f.ItemId == fav.ItemId);
-    
-        return Task.FromResult(favorite);
+        var favorite = context.Get(fav);
+        return Task.FromResult(fav);
     }
 
     public Task<Favorite> DeleteAsync(Favorite fav)
     {
-        throw new NotImplementedException();
+        var favorite = context.Delete(fav);
+        return Task.FromResult(fav);
     }
 }

@@ -12,8 +12,6 @@ service UserService {
   rpc getUser(google.protobuf.Int32Value) returns (User) {};
   rpc getAllUsers(google.protobuf.Empty) returns (stream User) {};
   rpc usernameContains(google.protobuf.StringValue) returns (User) {};
-  rpc addFavorite(FavoriteRequest) returns (google.protobuf.Empty) {};
-  rpc removeFavorite(FavoriteRequest) returns (google.protobuf.Empty) {};
 }
 
 message User {
@@ -22,9 +20,4 @@ message User {
   string password = 3;
   string email = 4;
   string role = 5;
-}
-
-message FavoriteRequest {
-  int32 userId = 1;
-  int32 itemId = 2;
 }
