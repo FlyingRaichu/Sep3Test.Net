@@ -7,18 +7,12 @@
 
 
 <MudLayout>
-    <MudAppBar Elevation="1">
-        @* this is old navigation bar *@
-        
-        @* .... *@
-        <MudText Typo="Typo.h5" Class="ml-3">KnitHub</MudText>
+    <MudAppBar Style="background-color: #4DD0E1;" Elevation="1">
+        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit"/>
+        <MudText Typo="Typo.h5">Knithub</MudText>
         <MudSpacer/>
-
-        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End"/>
     </MudAppBar>
-    
     <MudMainContent>
-        <SearchBar/>
         <NavMenu/>
         @Body
     </MudMainContent>
