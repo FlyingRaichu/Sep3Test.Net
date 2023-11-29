@@ -22,6 +22,7 @@ builder.Services.AddSingleton<HttpClient>(new HttpClient
 });
 builder.Services.AddScoped<IItemService, ItemHttpClient>();
 builder.Services.AddScoped<IUserService, UserHttpClient>();
+builder.Services.AddScoped<ITagService, TagHttpClient>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthProvider>();
 builder.Services.AddSingleton<NavigationService>();
 

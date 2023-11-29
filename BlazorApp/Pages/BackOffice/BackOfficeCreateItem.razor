@@ -4,6 +4,7 @@
 @using HttpClients.Interfaces
 @inject NavigationManager NavigationManager
 @inject IItemService ItemService
+@inject ITagService TagService
 @attribute [Authorize("MustBeAdmin")]
 
 <h3>Create new item</h3>
@@ -22,13 +23,15 @@
 @code {
     string title, description, priceString, manufacturer, stockString;
     string msg = "";
+    ICollection<Tag> tags;
+    List<int> tagIdsForSending;
 
     private async Task Create()
     {
         msg = "";
         if (double.TryParse(priceString, out var price) && int.TryParse(stockString, out var stock))
         {
-            var itemDto = new ItemCreationDto(title, description, price, manufacturer, stock, null);
+            var itemDto = new ItemCreationDto(title, description, price, manufacturer, stock, tagIdsForSending);
             var item = await ItemService.CreateAsync(itemDto);
             NavigationManager.NavigateTo("/BackOfficeItems");
         }
@@ -36,5 +39,10 @@
         {
             msg = "Please insert correct formatting for price and stock.";
         }
+    }
+
+    private async Task PopulateTags()
+    {
+        tags = TagService.GetTagsAsync(null).Result;
     }
 }
