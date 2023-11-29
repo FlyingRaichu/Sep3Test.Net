@@ -1,7 +1,7 @@
 ﻿using Application.DaoInterfaces;
 using Domain.DTOs;
 using RPCInterface.RPCImplementations;
-using Via.Sep4.Protobuf;
+using RPCInterface.RPCInterfaces;
 
 namespace DataHandling.DAOs;
 

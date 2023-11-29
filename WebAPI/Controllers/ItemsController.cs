@@ -3,7 +3,6 @@ using Domain.DTOs;
 using Domain.DTOs.Item;
 using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
-using Via.Sep4.Protobuf;
 
 namespace WebAPI.Controllers;
 

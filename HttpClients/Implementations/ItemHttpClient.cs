@@ -88,7 +88,7 @@ public class ItemHttpClient : IItemService
         {
             PropertyNameCaseInsensitive = true
         })!;
-
+        
         return item;
     }
 

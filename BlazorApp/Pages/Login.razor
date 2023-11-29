@@ -1,0 +1,51 @@
+﻿@page "/Login"
+@using HttpClients.Interfaces
+@using BlazorApp.Pages.Services
+@inject IUserService userService;
+@inject NavigationManager NavigationManager
+@inject NavigationService NavigationService
+
+<h3>Login</h3>
+
+<div class="field">
+    <label>User name:</label>
+    <input type="text" @bind="userName"/>
+</div>
+<div class="field">
+    <label style="text-align: center">Password:</label>
+    <input type="password" @bind="password"/>
+</div>
+@if (!string.IsNullOrEmpty(msg))
+{
+    <div class="field">
+        <label style="color: red">
+            @msg
+        </label>
+    </div>
+}
+<div class="field">
+    <button class="loginbtn" @onclick="LoginAsync">Log in</button>
+</div>
+
+@code {
+    private string userName;
+    private string password;
+    private string msg;
+
+    private async Task LoginAsync()
+    {
+        msg = "";
+        try
+        {
+            await userService.LoginAsync(userName, password);
+            //NavigationManager.NavigateTo(NavigationService.ReturnUrl);
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = $"Error: {e.Message}";
+        }
+    }
+
+}

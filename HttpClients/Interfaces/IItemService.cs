@@ -1,7 +1,7 @@
 ﻿using Domain.DTOs;
 using Domain.DTOs.Item;
 
-namespace HttpClients.Implementations;
+namespace HttpClients.Interfaces;
 
 public interface IItemService
 {

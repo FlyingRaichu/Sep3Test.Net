@@ -58,10 +58,10 @@ public static partial class TagService
       __Marshaller_Tag);
 
   [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-  static readonly grpc::Method<global::Tag, global::Google.Protobuf.WellKnownTypes.Empty> __Method_addTag = new grpc::Method<global::Tag, global::Google.Protobuf.WellKnownTypes.Empty>(
+  static readonly grpc::Method<global::Tag, global::Google.Protobuf.WellKnownTypes.Empty> __Method_addTags = new grpc::Method<global::Tag, global::Google.Protobuf.WellKnownTypes.Empty>(
       grpc::MethodType.Unary,
       __ServiceName,
-      "addTag",
+      "addTags",
       __Marshaller_Tag,
       __Marshaller_google_protobuf_Empty);
 
@@ -125,24 +125,24 @@ public static partial class TagService
       return CallInvoker.AsyncServerStreamingCall(__Method_getAllTags, null, options, request);
     }
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual global::Google.Protobuf.WellKnownTypes.Empty addTag(global::Tag request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+    public virtual global::Google.Protobuf.WellKnownTypes.Empty addTags(global::Tag request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
     {
-      return addTag(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      return addTags(request, new grpc::CallOptions(headers, deadline, cancellationToken));
     }
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual global::Google.Protobuf.WellKnownTypes.Empty addTag(global::Tag request, grpc::CallOptions options)
+    public virtual global::Google.Protobuf.WellKnownTypes.Empty addTags(global::Tag request, grpc::CallOptions options)
     {
-      return CallInvoker.BlockingUnaryCall(__Method_addTag, null, options, request);
+      return CallInvoker.BlockingUnaryCall(__Method_addTags, null, options, request);
     }
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual grpc::AsyncUnaryCall<global::Google.Protobuf.WellKnownTypes.Empty> addTagAsync(global::Tag request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+    public virtual grpc::AsyncUnaryCall<global::Google.Protobuf.WellKnownTypes.Empty> addTagsAsync(global::Tag request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
     {
-      return addTagAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      return addTagsAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
     }
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    public virtual grpc::AsyncUnaryCall<global::Google.Protobuf.WellKnownTypes.Empty> addTagAsync(global::Tag request, grpc::CallOptions options)
+    public virtual grpc::AsyncUnaryCall<global::Google.Protobuf.WellKnownTypes.Empty> addTagsAsync(global::Tag request, grpc::CallOptions options)
     {
-      return CallInvoker.AsyncUnaryCall(__Method_addTag, null, options, request);
+      return CallInvoker.AsyncUnaryCall(__Method_addTags, null, options, request);
     }
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     public virtual global::Google.Protobuf.WellKnownTypes.Empty updateTag(global::Tag request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))

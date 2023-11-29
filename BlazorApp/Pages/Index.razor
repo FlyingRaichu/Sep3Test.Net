@@ -1,5 +1,7 @@
 ﻿@page "/"
-@using HttpClients.Implementations
+@using HttpClients.Implementations;
+@inject IItemService ItemService;
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager;
 @inject IItemService ItemService
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 

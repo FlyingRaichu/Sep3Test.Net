@@ -1,8 +1,10 @@
 ﻿@page "/BackOfficeItems"
 @using HttpClients.Implementations
+@using HttpClients.Interfaces
 @inject NavigationManager NavigationManager
 @inject IItemService ItemService
 @inject IJSRuntime JsRuntime
+@attribute [Authorize("MustBeVia")]
 
 <h3>Back Office Items</h3>
 <input type="text" @bind="searchString" @oninput="LoadItemsDebounced" placeholder="Search..."/>

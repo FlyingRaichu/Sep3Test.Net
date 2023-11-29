@@ -24,12 +24,12 @@ public static partial class TagsReflection {
         string.Concat(
           "ChBwcm90by90YWdzLnByb3RvGhtnb29nbGUvcHJvdG9idWYvZW1wdHkucHJv",
           "dG8aHmdvb2dsZS9wcm90b2J1Zi93cmFwcGVycy5wcm90byIiCgNUYWcSCgoC",
-          "aWQYASABKAUSDwoHdGFnTmFtZRgCIAEoCTLAAQoKVGFnU2VydmljZRIuCgpn",
-          "ZXRBbGxUYWdzEhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5GgQuVGFnIgAwARIo",
-          "CgZhZGRUYWcSBC5UYWcaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABIrCgl1",
-          "cGRhdGVUYWcSBC5UYWcaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABIrCglk",
-          "ZWxldGVUYWcSBC5UYWcaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiAEIgChF2",
-          "aWEuc2VwNC5wcm90b2J1ZkIJVGFnc1Byb3RvUAFiBnByb3RvMw=="));
+          "aWQYASABKAUSDwoHdGFnTmFtZRgCIAEoCTLBAQoKVGFnU2VydmljZRIuCgpn",
+          "ZXRBbGxUYWdzEhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5GgQuVGFnIgAwARIp",
+          "CgdhZGRUYWdzEgQuVGFnGhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgASKwoJ",
+          "dXBkYXRlVGFnEgQuVGFnGhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgASKwoJ",
+          "ZGVsZXRlVGFnEgQuVGFnGhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgBCIAoR",
+          "dmlhLnNlcDQucHJvdG9idWZCCVRhZ3NQcm90b1ABYgZwcm90bzM="));
     descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
         new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
         new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
