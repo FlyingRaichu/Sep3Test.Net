@@ -1,11 +1,13 @@
 using Application.LogicInterfaces;
 using Domain.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class FavoritesController : ControllerBase
 {
     private readonly IFavoriteLogic favLogic;

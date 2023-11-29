@@ -1,5 +1,6 @@
 @page "/ItemDetails"
 @using BlazorApp.Service
+@using Domain.DTOs
 @using HttpClients.Implementations
 @inject NavService Navigation;
 @inject AuthenticationStateProvider AuthStateProvider;
@@ -10,51 +11,53 @@
     <!--Image section-->
     <MudItem md="6">
         <MudPaper Class="pa-16 ma-2">
-            <MudImage Src="" Alt="Navigation.Selected.Title">img</MudImage>
+            <MudImage Src="" Alt="@Navigation.Selected.Title">img</MudImage>
         </MudPaper>
     </MudItem>
-    
+
     <!--details section-->
     <MudItem md="6">
         <MudPaper Class="pa-16 ma-2">
             <MudGrid>
                 <MudItem xs="6">
-                    <MudText Typo="Typo.h5">Navigation.Selected.Title</MudText>
+                    <MudText Typo="Typo.h5">@Navigation.Selected.Title</MudText>
                 </MudItem>
                 <MudItem xs="6">
-                    <MudText>Navigation.Selected.Price</MudText>
+                    <MudText>@Navigation.Selected.Price</MudText>
                 </MudItem>
             </MudGrid>
             <MudGrid>
                 <MudItem xs="6">
-                    <MudText>Navigation.Selected.Description</MudText>
+                    <MudText>@Navigation.Selected.Description</MudText>
                 </MudItem>
                 <MudItem xs="6">
                     <MudItem>
                         <MudNumericField @bind-Value="quantity" Label="Quantity" Variant="Variant.Text" Min="0"/>
                     </MudItem>
                     <MudItem>
-                        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.AddShoppingCart" 
+                        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.AddShoppingCart"
                                    OnClick="AddToCart" FullWidth="true" Class="ma-2" Color="Color.Tertiary">Add to Cart</MudButton>
                     </MudItem>
-                    <!--gotta check for authorization here-->
-                    <MudItem>
-                        @if (true /*@navigation.Selected.IsFavorite*/)
-                        {
-                            <MudButton Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.StarOutline" 
-                                       OnClick="RemoveFavorite" FullWidth="true" Class="ma-2"  Color="Color.Warning">Unfavorite</MudButton>
-                        }
-                        else
-                        {
-                            <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Star" 
-                                       OnClick="AddFavorite" FullWidth="true" Class="ma-2"  Color="Color.Warning">Favorite</MudButton>
-                        }
-                    </MudItem>
+                    <!--gotta check for authorization here, otherwise favoriting isn't permitted-->
+                    <AuthorizeView>
+                            <Authorized>
+                                @if (isFavorite)
+                                {
+                                    <MudButton Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.StarOutline"
+                                               OnClick="RemoveFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Unfavorite</MudButton>
+                                }
+                                else
+                                {
+                                    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Star"
+                                                OnClick="AddFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Favorite</MudButton>
+                                }
+                            </Authorized>
+                        </AuthorizeView>
                 </MudItem>
             </MudGrid>
             </MudPaper>
         </MudItem>
-    
+
     <!--Ratings section-->
         <MudItem xs="12">
             <MudPaper Class="pa-16 ma-2">
@@ -67,33 +70,40 @@
 @code {
     private int quantity { get; set; }
     private AuthenticationState authState;
-    private bool isFavorited;
+    private bool isFavorite;
     
-    protected override async Task OnInitializedAsync()
-    {
-        authState = await AuthStateProvider.GetAuthenticationStateAsync();
+     protected override async Task OnInitializedAsync()
+     {
+         authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-        //if logged in, toggle isFavorite to change button display
-        if (authState.User.Identity.IsAuthenticated)
-        {
-            isFavorited = (await FavService.GetAsync(userId, Navigation.Selected.Id) == null);
-        }
-    }
-    
+         //if logged in, toggle isFavorite to change button display
+         if (authState.User.Identity.IsAuthenticated)
+         {
+             FavoriteDto dto = new(userId, Navigation.Selected.Id);
+             isFavorite = (await FavService.GetAsync(dto) == null);
+         }
+         
+         StateHasChanged(); //re-render if there are any changes
+     }
+
     private async void AddFavorite()
-    {
-        await FavService.CreateAsync(userId, Navigation.Selected.Id);
-    }
+     {
+         FavoriteDto dto = new(userId, Navigation.Selected.Id);
+         await FavService.CreateAsync(dto);
+         StateHasChanged();
+     }
 
-    private async void RemoveFavorite()
-    {
-        await FavService.DeleteAsync(userId, Navigation.Selected.Id);
-    }
+     private async void RemoveFavorite()
+     {
+         FavoriteDto dto = new(userId, Navigation.Selected.Id);
+         await FavService.DeleteAsync(dto);
+         StateHasChanged();
+     }
 
-    private void AddToCart()
-    {
-        
-    }
+     private void AddToCart()
+     {
+         
+     }
 
-    private void AddReview() {}
+     private void AddReview() {}
 }

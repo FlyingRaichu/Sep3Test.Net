@@ -1,7 +1,4 @@
 using BlazorApp.Auth;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using BlazorApp.Data;
 using BlazorApp.Pages.Services;
 using Domain.Auth;
 using BlazorApp.Service;
