@@ -1,9 +1,8 @@
 using System.Net.Http.Json;
 using System.Text.Json;
 using Domain.DTOs;
-using HttpClients.Implementations;
 
-namespace HttpClients.Interfaces;
+namespace HttpClients.Implementations;
 
 public class FavoriteHttpClient : IFavoriteService
 {
@@ -16,7 +15,7 @@ public class FavoriteHttpClient : IFavoriteService
 
     public async Task<Favorite> CreateAsync(FavoriteDto dto)
     {
-        var response = await client.PostAsJsonAsync("/Favorites", dto);
+        var response = await client.PostAsJsonAsync("/Favorites/Create", dto);
         var content = await response.Content.ReadAsStringAsync();
 
         if (!response.IsSuccessStatusCode)
@@ -32,9 +31,9 @@ public class FavoriteHttpClient : IFavoriteService
         return fav;
     }
 
-    public async Task<Favorite> GetAsync(FavoriteDto dto)
+    public async Task<Favorite?> GetAsync(FavoriteDto dto)
     {
-        HttpResponseMessage response = await client.GetAsync("/Favorites");
+        HttpResponseMessage response = await client.GetAsync($"Favorites/Get?userId={dto.UserId}&itemId={dto.ItemId}");
         string content = await response.Content.ReadAsStringAsync();
         if (!response.IsSuccessStatusCode)
         {
@@ -49,8 +48,23 @@ public class FavoriteHttpClient : IFavoriteService
         return favorite;
     }
 
-    public Task<Favorite> DeleteAsync(FavoriteDto missing_name)
+    public async Task<Favorite> DeleteAsync(FavoriteDto dto)
     {
-        throw new NotImplementedException();
+        var url = "/Favorites/Delete";
+
+        var response = await client.PostAsJsonAsync(url, dto);
+        var content = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception(content);
+        }
+
+        Favorite deleted = JsonSerializer.Deserialize<Favorite>(content, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
+
+        return deleted;
     }
 }

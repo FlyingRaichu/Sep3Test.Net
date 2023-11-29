@@ -1,12 +1,14 @@
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Grpc.Net.Client;
+using RPCInterface.RPCInterfaces;
 
 namespace RPCInterface.RPCImplementations;
 
 public class FavoriteRpc : IRpcFavorite<Favorite>
 {
     private GrpcChannel channel = GrpcChannel.ForAddress("http://localhost:8090");
+    public ICollection<Favorite> Elements =>  LoadData().Result;
 
     public Task Delete(Favorite element)
     {
@@ -24,11 +26,20 @@ public class FavoriteRpc : IRpcFavorite<Favorite>
         return Task.CompletedTask;
     }
 
-    public ICollection<Favorite> Elements { get; }
-
-    public Task<ICollection<Favorite>> LoadData()
+    public async Task<ICollection<Favorite>> LoadData()
     {
-        throw new NotImplementedException();
+        var empty = new Empty();
+        var client = new FavoriteService.FavoriteServiceClient(channel);
+        var items = new List<Favorite>();
+        var response = client.getAllFavorites(empty);
+
+
+        await foreach (var item in response.ResponseStream.ReadAllAsync())
+        {
+            items.Add(item);
+        }
+
+        return items;
     }
 
     public Task Add(Favorite favorite)
@@ -47,16 +58,6 @@ public class FavoriteRpc : IRpcFavorite<Favorite>
         return Task.CompletedTask;
     }
 
-    public Task Update(Favorite element)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task Delete(int id)
-    {
-        throw new NotImplementedException();
-    }
-
     public Task Get(Favorite favorite)
     {
         var client = new FavoriteService.FavoriteServiceClient(channel);
@@ -72,5 +73,15 @@ public class FavoriteRpc : IRpcFavorite<Favorite>
         }
 
         return Task.CompletedTask;
+    }
+    
+    public Task Update(Favorite element)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task Delete(int id)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -1,4 +1,5 @@
-﻿using Application.LogicInterfaces;
+﻿using Application.Logic;
+using Application.LogicInterfaces;
 using Domain.DTOs;
 using Domain.DTOs.Item;
 using Grpc.Core;
@@ -46,6 +47,30 @@ public class ItemsController : ControllerBase
         {
             Console.WriteLine(e);
             return StatusCode(500, e.Message);
+        }
+    }
+    
+    [HttpGet]
+    [Route("Favorites")]
+    public async Task<ActionResult> GetFavItemsByUserAsync([FromQuery] int userId)
+    {
+        try
+        {
+            var result = await logic.GetFavItemsByUserAsync(userId);
+            
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound(new { message = "Favorites not found" });
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return StatusCode(500, new { message = "Internal Server Error" });
         }
     }
 
