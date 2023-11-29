@@ -13,7 +13,7 @@ public class ItemHttpClient : IItemService
         this.client = client;
     }
 
-    public async Task<ICollection<Item>> GetItemsAsync(string? title, string? manufacture, string? description,
+    public async Task<ICollection<Item>> GetItemsAsync(string? title, string? description,
         double? price, string? manufacturer,
         int? stock, List<int>? tags)
     {

@@ -106,7 +106,7 @@
             {
                 Console.WriteLine($"Filter: {_manufacturerFilter}, Min Price: {minPrice}, Max Price: {maxPrice}");
 
-                items = await ItemService.GetItemsAsync(null, _manufacturerFilter, null, null, null, null, null);
+                items = await ItemService.GetItemsAsync(null, null, null, _manufacturerFilter, null, null);
 
                 if (_manufacturerFilter != null)
                 {

@@ -7,7 +7,6 @@ public interface IItemService
 {
     Task<ICollection<Item>> GetItemsAsync(
         string? title,
-        string? manufacture,
         string? description,
         double? price,
         string? manufacturer,
