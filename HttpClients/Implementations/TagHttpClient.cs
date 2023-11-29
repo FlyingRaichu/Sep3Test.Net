@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http.Json;
+using System.Text.Json;
 using Domain.DTOs.Tag;
 
 namespace HttpClients.Implementations;
@@ -28,23 +29,61 @@ public class TagHttpClient : ITagService
         return tags;
     }
 
-    public Task<Tag> CreateAsync(TagCreationDto dto)
+    public async Task<Tag> CreateAsync(TagCreationDto dto)
     {
-        throw new NotImplementedException();
+        var response = await client.PostAsJsonAsync("/tags", dto);
+        var content = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception(content);
+        }
+
+        var tag = JsonSerializer.Deserialize<Tag>(content, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
+
+        return tag;
     }
 
-    public Task UpdateAsync(TagUpdateDto dto)
+    public async Task UpdateAsync(TagUpdateDto dto)
     {
-        throw new NotImplementedException();
+        var response = await client.PatchAsJsonAsync("items", dto);
+        var content = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception(content);
+        }
     }
 
-    public Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var response = await client.DeleteAsync($"/tags/{id}");
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            throw new Exception(content);
+        }
     }
 
-    public Task<Tag> GetByIdAsync(int id)
+    public async Task<Tag> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var response = await client.GetAsync($"/tags/{id}");
+        string content = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception(content);
+        }
+
+        var tag = JsonSerializer.Deserialize<Tag>(content, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
+        
+        return tag;
     }
 }
