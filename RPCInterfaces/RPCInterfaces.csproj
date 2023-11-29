@@ -16,20 +16,9 @@
         </PackageReference>
         <PackageReference Include="MudBlazor" Version="6.11.0" />
     </ItemGroup>
-    
+
     <ItemGroup>
-      <Protobuf Include="proto\users.proto">
-        <GrpcServices>Client</GrpcServices>
-        <Access>Public</Access>
-        <ProtoCompile>True</ProtoCompile>
-        <CompileOutputs>True</CompileOutputs>
-        <OutputDir>Generated\</OutputDir>
-        <Generator>MSBuild:Compile</Generator>
-      </Protobuf>
-    </ItemGroup>
-    
-    <ItemGroup>
-        <Protobuf Include="proto\items.proto">
+        <Protobuf Include="proto\**\*.proto">
             <GrpcServices>Client</GrpcServices>
             <Access>Public</Access>
             <ProtoCompile>True</ProtoCompile>
@@ -38,8 +27,14 @@
             <Generator>MSBuild:Compile</Generator>
         </Protobuf>
     </ItemGroup>
-    
+
+
     <ItemGroup>
       <ProjectReference Include="..\Domain\Domain.csproj" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Folder Include="Generated\proto\" />
     </ItemGroup>
 </Project>

@@ -1,11 +1,8 @@
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
-using Domain.DTOs;
 using Domain.DTOs.Item;
-using HttpClients.Implementations;
 
-namespace HttpClients.Interfaces;
+namespace HttpClients.Implementations;
 
 public class ItemHttpClient : IItemService
 {
@@ -16,39 +13,25 @@ public class ItemHttpClient : IItemService
         this.client = client;
     }
     
-    public async Task<ICollection<Item>> GetItemsAsync(string? title, string? manufacture, string? description, double? price)
+    public async Task<ICollection<Item>> GetPostsAsync(string? title, string? description, double? price, string? manufacturer, int? stock, List<int>? tags)
     {
-        try
-        {
-            var query = ConstructQuery(title,manufacture, description, price);
+        var query = ConstructQuery(title, description, price, manufacturer, stock, tags);
 
-            var response = await client.GetAsync("/Items" + query);
-            response.EnsureSuccessStatusCode(); // Throws if the response is not successful
+        var response = await client.GetAsync("/Items" + query);
+        var content = await response.Content.ReadAsStringAsync();
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception(content);
+        }
 
-            var content = await response.Content.ReadAsStringAsync();
-            var items = JsonSerializer.Deserialize<ICollection<Item>>(content, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+        var items = JsonSerializer.Deserialize<ICollection<Item>>(content, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
 
-            return items ?? new List<Item>(); // Return an empty list if items is null
-        }
-        catch (HttpRequestException ex)
-        {
-            // Handle HTTP request exception
-            throw new Exception("Error in HTTP request: " + ex.Message, ex);
-        }
-        catch (JsonException ex)
-        {
-            // Handle JSON deserialization exception
-            throw new Exception("Error deserializing JSON response: " + ex.Message, ex);
-        }
-        catch (Exception ex)
-        {
-            // Handle other exceptions
-            throw new Exception("An error occurred: " + ex.Message, ex);
-        }
+        return items;
     }
+    
 
     public async Task<Item> CreateAsync(ItemCreationDto dto)
     {
@@ -108,7 +91,7 @@ public class ItemHttpClient : IItemService
         return item;
     }
 
-    private string ConstructQuery(string? title,string? manufacture, string? description, double? price)
+    private string ConstructQuery(string? title, string? description, double? price, string? manufacturer, int? stock, List<int>? tags)
     {
         var query = "";
 
@@ -116,11 +99,6 @@ public class ItemHttpClient : IItemService
         {
             query += string.IsNullOrEmpty(query) ? "?" : "&";
             query += $"title={title}";
-        }
-        if (!string.IsNullOrEmpty(manufacture))
-        {
-            query += string.IsNullOrEmpty(query) ? "?" : "&";
-            query += $"manufacture={manufacture}";
         }
 
         if (!string.IsNullOrEmpty(description))
@@ -135,6 +113,26 @@ public class ItemHttpClient : IItemService
             query += $"price={price}";
         }
 
+        if (!string.IsNullOrEmpty(manufacturer))
+        {
+            query += string.IsNullOrEmpty(query) ? "?" : "&";
+            query += $"manufacturer={manufacturer}";
+        }
+
+        if (stock != null)
+        {
+            query += string.IsNullOrEmpty(query) ? "?" : "&";
+            query += $"stock={stock}";
+        }
+
+        if (tags != null && tags.Any())
+        {
+            foreach (var i in tags)
+            {
+                query += string.IsNullOrEmpty(query) ? "?" : "&";
+                query += $"tags={i}";
+            }    
+        }
         return query;
     }
 }

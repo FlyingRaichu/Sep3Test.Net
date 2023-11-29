@@ -5,6 +5,8 @@
 @inject IJSRuntime JsRuntime
 
 <h3>Back Office Items</h3>
+<input type="text" @bind="searchString" @oninput="LoadItemsDebounced" placeholder="Search..."/>
+@* <button @onclick="LoadItems" disabled="@(string.IsNullOrEmpty(searchString))" class="acceptbtn">Confirm</button> *@
 <table class="table">
     <thead>
     <tr>
@@ -75,17 +77,30 @@
     private ICollection<Item> items;
     private string msg = "";
     private int itemToDeleteId;
+    private string? searchString = "";
+    private Timer debounceTimer;
 
     protected override async Task OnInitializedAsync()
     {
         await LoadItems();
     }
 
+    private void LoadItemsDebounced(ChangeEventArgs args)
+    {
+        searchString = args?.Value?.ToString() ?? "";
+        debounceTimer?.Dispose();
+        debounceTimer = new Timer(cback => { cback = InvokeAsync(LoadItems); }, null, 500, Timeout.Infinite);
+    }
+
     private async Task LoadItems()
     {
+        Console.WriteLine($"SearchString: {searchString}");
         try
         {
             items = await ItemService.GetItemsAsync(null, null, null,null);
+            items = await ItemService.GetPostsAsync(searchString, null, null, null, null, null);
+            Console.WriteLine($"SearchString: {searchString}, Items Count: {items?.Count}");
+            StateHasChanged();
         }
         catch (Exception e)
         {

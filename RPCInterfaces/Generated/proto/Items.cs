@@ -23,20 +23,21 @@ public static partial class ItemsReflection {
     byte[] descriptorData = global::System.Convert.FromBase64String(
         string.Concat(
           "ChFwcm90by9pdGVtcy5wcm90bxobZ29vZ2xlL3Byb3RvYnVmL2VtcHR5LnBy",
-          "b3RvGh5nb29nbGUvcHJvdG9idWYvd3JhcHBlcnMucHJvdG8iaQoESXRlbRIK",
-          "CgJpZBgBIAEoBRINCgV0aXRsZRgCIAEoCRITCgttYW51ZmFjdHVyZRgDIAEo",
-          "CRITCgtkZXNjcmlwdGlvbhgEIAEoCRINCgVwcmljZRgFIAEoARINCgVzdG9j",
-          "axgGIAEoBTL6AQoLSXRlbVNlcnZpY2USLwoHZ2V0SXRlbRIbLmdvb2dsZS5w",
-          "cm90b2J1Zi5JbnQzMlZhbHVlGgUuSXRlbSIAEjAKC2dldEFsbEl0ZW1zEhYu",
-          "Z29vZ2xlLnByb3RvYnVmLkVtcHR5GgUuSXRlbSIAMAESKgoHYWRkSXRlbRIF",
-          "Lkl0ZW0aFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABItCgp1cGRhdGVJdGVt",
-          "EgUuSXRlbRoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAEi0KCmRlbGV0ZUl0",
-          "ZW0SBS5JdGVtGhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgBCIQoRdmlhLnNl",
-          "cDQucHJvdG9idWZCCkl0ZW1zUHJvdG9QAWIGcHJvdG8z"));
+          "b3RvGh5nb29nbGUvcHJvdG9idWYvd3JhcHBlcnMucHJvdG8ieAoESXRlbRIK",
+          "CgJpZBgBIAEoBRINCgV0aXRsZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEo",
+          "CRINCgVwcmljZRgEIAEoARIUCgxtYW51ZmFjdHVyZXIYBSABKAkSDQoFc3Rv",
+          "Y2sYBiABKAUSDAoEdGFncxgHIAMoBTL6AQoLSXRlbVNlcnZpY2USLwoHZ2V0",
+          "SXRlbRIbLmdvb2dsZS5wcm90b2J1Zi5JbnQzMlZhbHVlGgUuSXRlbSIAEjAK",
+          "C2dldEFsbEl0ZW1zEhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5GgUuSXRlbSIA",
+          "MAESKgoHYWRkSXRlbRIFLkl0ZW0aFi5nb29nbGUucHJvdG9idWYuRW1wdHki",
+          "ABItCgp1cGRhdGVJdGVtEgUuSXRlbRoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0",
+          "eSIAEi0KCmRlbGV0ZUl0ZW0SBS5JdGVtGhYuZ29vZ2xlLnByb3RvYnVmLkVt",
+          "cHR5IgBCIQoRdmlhLnNlcDQucHJvdG9idWZCCkl0ZW1zUHJvdG9QAWIGcHJv",
+          "dG8z"));
     descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
         new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
         new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-          new pbr::GeneratedClrTypeInfo(typeof(global::Item), global::Item.Parser, new[]{ "Id", "Title", "Manufacture", "Description", "Price", "Stock" }, null, null, null, null)
+          new pbr::GeneratedClrTypeInfo(typeof(global::Item), global::Item.Parser, new[]{ "Id", "Title", "Description", "Price", "Manufacturer", "Stock", "Tags" }, null, null, null, null)
         }));
   }
   #endregion
@@ -79,10 +80,11 @@ public sealed partial class Item : pb::IMessage<Item>
   public Item(Item other) : this() {
     id_ = other.id_;
     title_ = other.title_;
-    manufacture_ = other.manufacture_;
     description_ = other.description_;
     price_ = other.price_;
+    manufacturer_ = other.manufacturer_;
     stock_ = other.stock_;
+    tags_ = other.tags_.Clone();
     _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
   }
 
@@ -116,20 +118,8 @@ public sealed partial class Item : pb::IMessage<Item>
     }
   }
 
-  /// <summary>Field number for the "manufacture" field.</summary>
-  public const int ManufactureFieldNumber = 3;
-  private string manufacture_ = "";
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public string Manufacture {
-    get { return manufacture_; }
-    set {
-      manufacture_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-    }
-  }
-
   /// <summary>Field number for the "description" field.</summary>
-  public const int DescriptionFieldNumber = 4;
+  public const int DescriptionFieldNumber = 3;
   private string description_ = "";
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -141,7 +131,7 @@ public sealed partial class Item : pb::IMessage<Item>
   }
 
   /// <summary>Field number for the "price" field.</summary>
-  public const int PriceFieldNumber = 5;
+  public const int PriceFieldNumber = 4;
   private double price_;
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -152,12 +142,21 @@ public sealed partial class Item : pb::IMessage<Item>
     }
   }
 
+  /// <summary>Field number for the "manufacturer" field.</summary>
+  public const int ManufacturerFieldNumber = 5;
+  private string manufacturer_ = "";
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public string Manufacturer {
+    get { return manufacturer_; }
+    set {
+      manufacturer_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+    }
+  }
+
   /// <summary>Field number for the "stock" field.</summary>
   public const int StockFieldNumber = 6;
   private int stock_;
-  /// <summary>
-  ///TODO Add the required fields in here
-  /// </summary>
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public int Stock {
@@ -165,6 +164,17 @@ public sealed partial class Item : pb::IMessage<Item>
     set {
       stock_ = value;
     }
+  }
+
+  /// <summary>Field number for the "tags" field.</summary>
+  public const int TagsFieldNumber = 7;
+  private static readonly pb::FieldCodec<int> _repeated_tags_codec
+      = pb::FieldCodec.ForInt32(58);
+  private readonly pbc::RepeatedField<int> tags_ = new pbc::RepeatedField<int>();
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public pbc::RepeatedField<int> Tags {
+    get { return tags_; }
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -184,10 +194,11 @@ public sealed partial class Item : pb::IMessage<Item>
     }
     if (Id != other.Id) return false;
     if (Title != other.Title) return false;
-    if (Manufacture != other.Manufacture) return false;
     if (Description != other.Description) return false;
     if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(Price, other.Price)) return false;
+    if (Manufacturer != other.Manufacturer) return false;
     if (Stock != other.Stock) return false;
+    if(!tags_.Equals(other.tags_)) return false;
     return Equals(_unknownFields, other._unknownFields);
   }
 
@@ -197,10 +208,11 @@ public sealed partial class Item : pb::IMessage<Item>
     int hash = 1;
     if (Id != 0) hash ^= Id.GetHashCode();
     if (Title.Length != 0) hash ^= Title.GetHashCode();
-    if (Manufacture.Length != 0) hash ^= Manufacture.GetHashCode();
     if (Description.Length != 0) hash ^= Description.GetHashCode();
     if (Price != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Price);
+    if (Manufacturer.Length != 0) hash ^= Manufacturer.GetHashCode();
     if (Stock != 0) hash ^= Stock.GetHashCode();
+    hash ^= tags_.GetHashCode();
     if (_unknownFields != null) {
       hash ^= _unknownFields.GetHashCode();
     }
@@ -227,22 +239,23 @@ public sealed partial class Item : pb::IMessage<Item>
       output.WriteRawTag(18);
       output.WriteString(Title);
     }
-    if (Manufacture.Length != 0) {
-      output.WriteRawTag(26);
-      output.WriteString(Manufacture);
-    }
     if (Description.Length != 0) {
-      output.WriteRawTag(34);
+      output.WriteRawTag(26);
       output.WriteString(Description);
     }
     if (Price != 0D) {
-      output.WriteRawTag(41);
+      output.WriteRawTag(33);
       output.WriteDouble(Price);
+    }
+    if (Manufacturer.Length != 0) {
+      output.WriteRawTag(42);
+      output.WriteString(Manufacturer);
     }
     if (Stock != 0) {
       output.WriteRawTag(48);
       output.WriteInt32(Stock);
     }
+    tags_.WriteTo(output, _repeated_tags_codec);
     if (_unknownFields != null) {
       _unknownFields.WriteTo(output);
     }
@@ -261,22 +274,23 @@ public sealed partial class Item : pb::IMessage<Item>
       output.WriteRawTag(18);
       output.WriteString(Title);
     }
-    if (Manufacture.Length != 0) {
-      output.WriteRawTag(26);
-      output.WriteString(Manufacture);
-    }
     if (Description.Length != 0) {
-      output.WriteRawTag(34);
+      output.WriteRawTag(26);
       output.WriteString(Description);
     }
     if (Price != 0D) {
-      output.WriteRawTag(41);
+      output.WriteRawTag(33);
       output.WriteDouble(Price);
+    }
+    if (Manufacturer.Length != 0) {
+      output.WriteRawTag(42);
+      output.WriteString(Manufacturer);
     }
     if (Stock != 0) {
       output.WriteRawTag(48);
       output.WriteInt32(Stock);
     }
+    tags_.WriteTo(ref output, _repeated_tags_codec);
     if (_unknownFields != null) {
       _unknownFields.WriteTo(ref output);
     }
@@ -293,18 +307,19 @@ public sealed partial class Item : pb::IMessage<Item>
     if (Title.Length != 0) {
       size += 1 + pb::CodedOutputStream.ComputeStringSize(Title);
     }
-    if (Manufacture.Length != 0) {
-      size += 1 + pb::CodedOutputStream.ComputeStringSize(Manufacture);
-    }
     if (Description.Length != 0) {
       size += 1 + pb::CodedOutputStream.ComputeStringSize(Description);
     }
     if (Price != 0D) {
       size += 1 + 8;
     }
+    if (Manufacturer.Length != 0) {
+      size += 1 + pb::CodedOutputStream.ComputeStringSize(Manufacturer);
+    }
     if (Stock != 0) {
       size += 1 + pb::CodedOutputStream.ComputeInt32Size(Stock);
     }
+    size += tags_.CalculateSize(_repeated_tags_codec);
     if (_unknownFields != null) {
       size += _unknownFields.CalculateSize();
     }
@@ -323,18 +338,19 @@ public sealed partial class Item : pb::IMessage<Item>
     if (other.Title.Length != 0) {
       Title = other.Title;
     }
-    if (other.Manufacture.Length != 0) {
-      Manufacture = other.Manufacture;
-    }
     if (other.Description.Length != 0) {
       Description = other.Description;
     }
     if (other.Price != 0D) {
       Price = other.Price;
     }
+    if (other.Manufacturer.Length != 0) {
+      Manufacturer = other.Manufacturer;
+    }
     if (other.Stock != 0) {
       Stock = other.Stock;
     }
+    tags_.Add(other.tags_);
     _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
   }
 
@@ -359,19 +375,24 @@ public sealed partial class Item : pb::IMessage<Item>
           break;
         }
         case 26: {
-          Manufacture = input.ReadString();
-          break;
-        }
-        case 34: {
           Description = input.ReadString();
           break;
         }
-        case 41: {
+        case 33: {
           Price = input.ReadDouble();
+          break;
+        }
+        case 42: {
+          Manufacturer = input.ReadString();
           break;
         }
         case 48: {
           Stock = input.ReadInt32();
+          break;
+        }
+        case 58:
+        case 56: {
+          tags_.AddEntriesFrom(input, _repeated_tags_codec);
           break;
         }
       }
@@ -398,19 +419,24 @@ public sealed partial class Item : pb::IMessage<Item>
           break;
         }
         case 26: {
-          Manufacture = input.ReadString();
-          break;
-        }
-        case 34: {
           Description = input.ReadString();
           break;
         }
-        case 41: {
+        case 33: {
           Price = input.ReadDouble();
+          break;
+        }
+        case 42: {
+          Manufacturer = input.ReadString();
           break;
         }
         case 48: {
           Stock = input.ReadInt32();
+          break;
+        }
+        case 58:
+        case 56: {
+          tags_.AddEntriesFrom(ref input, _repeated_tags_codec);
           break;
         }
       }

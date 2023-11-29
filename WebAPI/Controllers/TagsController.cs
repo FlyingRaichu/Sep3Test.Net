@@ -1,32 +1,28 @@
 ﻿using Application.LogicInterfaces;
-using Domain.DTOs;
-using Domain.DTOs.Item;
-using Grpc.Core;
+using Domain.DTOs.Tag;
 using Microsoft.AspNetCore.Mvc;
-using Via.Sep4.Protobuf;
 
 namespace WebAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ItemsController : ControllerBase
+public class TagsController : ControllerBase
 {
-    private readonly IItemLogic logic;
+    private readonly ITagLogic logic;
 
-    public ItemsController(IItemLogic logic)
+    public TagsController(ITagLogic logic)
     {
         this.logic = logic;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Item>>> GetAsync([FromQuery] string? title,
-        [FromQuery] string? description, [FromQuery] double? price, [FromQuery] string? manufacturer, [FromQuery] int? stock, [FromQuery] List<int> tags)
+    public async Task<ActionResult<IEnumerable<Tag>>> GetAsync([FromQuery] string? tagName)
     {
         try
         {
-            SearchItemParametersDto parameters = new(title, description, price, manufacturer, stock, tags);
-            var items = await logic.GetAsync(parameters);
-            return Ok(items);
+            SearchTagParametersDto parameters = new(tagName);
+            var tags = await logic.GetAsync(parameters);
+            return Ok(tags);
         }
         catch (Exception e)
         {
@@ -36,12 +32,12 @@ public class ItemsController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<Item>> GetByIdAsync([FromRoute] int id)
+    public async Task<ActionResult<Tag>> GetByIdAsync([FromRoute] int id)
     {
         try
         {
-            var item = await logic.GetByIdAsync(id);
-            return Ok(item);
+            var tag = await logic.GetByIdAsync(id);
+            return Ok(tag);
         }
         catch (Exception e)
         {
@@ -51,12 +47,14 @@ public class ItemsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Item>> CreateAsync([FromBody] ItemCreationDto dto)
+    public async Task<ActionResult<Tag>> CreateAsync([FromBody] TagCreationDto dto)
     {
         try
         {
-            Item created = await logic.CreateAsync(dto);
-            return Created($"/items/{created.Id}", created);
+            Console.WriteLine($"Name: {dto.Name}");
+            Tag created = await logic.CreateAsync(dto);
+            
+            return Created($"/tags/{created.Id}", created);
         }
         catch (Exception e)
         {
@@ -64,9 +62,9 @@ public class ItemsController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
-
+    
     [HttpPatch]
-    public async Task<ActionResult<Item>> UpdateAsync(ItemUpdateDto dto)
+    public async Task<ActionResult<Tag>> UpdateAsync(TagUpdateDto dto)
     {
         try
         {
@@ -81,7 +79,7 @@ public class ItemsController : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<Item>> DeleteASync([FromRoute]int id)
+    public async Task<ActionResult<Tag>> DeleteASync([FromRoute]int id)
     {
         try
         {

@@ -33,8 +33,11 @@ public class ItemRpc : IRpcBase<Item>
         var client = new ItemService.ItemServiceClient(channel);
         try
         {
+            Console.WriteLine($"In RPC: {item.Manufacturer}");
             var response = client.addItem(item);
+            Console.WriteLine($"In RPC: {item.Manufacturer}");
             Elements.Add(item);
+            
         }
         catch (Exception e)
         {

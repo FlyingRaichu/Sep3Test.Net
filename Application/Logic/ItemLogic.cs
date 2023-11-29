@@ -2,94 +2,92 @@
 using Application.LogicInterfaces;
 using Domain.DTOs;
 using Domain.DTOs.Item;
+using Google.Protobuf.Collections;
 using Via.Sep4.Protobuf;
 
-namespace Application.Logic
+namespace Application.Logic;
+
+public class ItemLogic : IItemLogic
 {
-    public class ItemLogic : IItemLogic
+    private readonly IItemDao itemDao;
+
+    public ItemLogic(IItemDao itemDao)
     {
-        private readonly IItemDao itemDao;
+        this.itemDao = itemDao;
+    }
+    
+    public Task<IEnumerable<Item>> GetAsync(SearchItemParametersDto searchParameters)
+    {
+        return itemDao.GetAsync(searchParameters);
+    }
 
-        public ItemLogic(IItemDao itemDao)
+    public async Task<Item> CreateAsync(ItemCreationDto dto)
+    {
+        ValidateItem(dto);
+        var item = new Item
         {
-            this.itemDao = itemDao;
+            Title = dto.Title,
+            Description = dto.Description,
+            Price = dto.Price,
+            Manufacturer = dto.Manufacturer,
+            Stock = dto.Stock,
+        };
+        item.Tags.AddRange(dto.Tags);
+        var created = await itemDao.CreateAsync(item);
+        return created;
+    }
+
+    public async Task UpdateAsync(ItemUpdateDto dto)
+    {
+        var existing = await GetByIdAsync(dto.Id);
+
+        string titleToUse = dto.Title ?? existing.Title;
+        string descriptionToUse = dto.Description ?? existing.Description;
+        double priceToUse = dto.Price ?? existing.Price;
+
+        Item updated = new()
+        {
+            Id = existing.Id,
+            Title = titleToUse,
+            Description = descriptionToUse,
+            Price = priceToUse
+        };
+        
+        ValidateItem(updated);
+        await itemDao.UpdateAsync(updated);
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+
+        await itemDao.DeleteAsync(id);
+    }
+
+    public async Task<Item> GetByIdAsync(int id)
+    {
+        var item = await itemDao.GetByIdAsync(id);
+
+        if (item == null)
+        {
+            throw new Exception($"Item with Id {id} does not exist.");
         }
 
-        public Task<IEnumerable<Item>> GetAsync(SearchItemParametersDto searchParameters)
-        {
-            return itemDao.GetAsync(searchParameters);
-        }
+        return item;
+    }
+    
+    private static void ValidateItem(ItemCreationDto dto)
+    {
+        if (string.IsNullOrEmpty(dto.Title) || string.IsNullOrEmpty(dto.Description))
+            throw new Exception("Title and description may not be empty.");
+        
+        if (double.IsNegative(dto.Price) || double.IsInfinity(dto.Price)) throw new Exception("Invalid price.");
+    }
 
-        public async Task<Item> CreateAsync(ItemCreationDto dto)
-        {
-            ValidateItem(dto);
-            var item = new Item
-            {
-                Title = dto.Title,
-                Description = dto.Description,
-                Price = dto.Price,
-                Manufacture = dto.Manufacture,
-                Stock = dto.Stock
-            };
-            var created = await itemDao.CreateAsync(item);
-            return created;
-        }
-
-        public async Task UpdateAsync(ItemUpdateDto dto)
-        {
-            var existing = await GetByIdAsync(dto.Id);
-
-            string titleToUse = dto.Title ?? existing.Title;
-            string descriptionToUse = dto.Description ?? existing.Description;
-            double priceToUse = dto.Price ?? existing.Price;
-            string manufactureToUse = dto.Manufacture ?? existing.Manufacture;
-            int stockToUse = dto.Stock ?? existing.Stock;
-
-            Item updated = new()
-            {
-                Id = existing.Id,
-                Title = titleToUse,
-                Description = descriptionToUse,
-                Price = priceToUse,
-                Manufacture = manufactureToUse,
-                Stock = stockToUse
-            };
-
-            ValidateItem(updated);
-            await itemDao.UpdateAsync(updated);
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            await itemDao.DeleteAsync(id);
-        }
-
-        public async Task<Item> GetByIdAsync(int id)
-        {
-            Item? item = await itemDao.GetByIdAsync(id);
-
-            if (item == null)
-            {
-                throw new Exception($"Item with Id {id} does not exist.");
-            }
-
-            return item;
-        }
-
-        private static void ValidateItem(ItemCreationDto dto)
-        {
-            if (string.IsNullOrEmpty(dto.Title) || string.IsNullOrEmpty(dto.Description))
-                throw new Exception("Title and description may not be empty.");
-
-            if (double.IsNegative(dto.Price) || double.IsInfinity(dto.Price)) throw new Exception("Invalid price.");
-        }
-
-        private static void ValidateItem(Item item)
-        {
-            if (string.IsNullOrEmpty(item.Title) || string.IsNullOrEmpty(item.Description))
-                throw new Exception("Title and description may not be empty.");
-
-            if (double.IsNegative(item.Price) || double.IsInfinity(item.Price)) throw new Exception("Invalid price.");
-        }
+    private static void ValidateItem(Item item)
+    {
+        if (string.IsNullOrEmpty(item.Title) || string.IsNullOrEmpty(item.Description))
+            throw new Exception("Title and description may not be empty.");
+        
+        if (double.IsNegative(item.Price) || double.IsInfinity(item.Price)) throw new Exception("Invalid price.");
     }
 }

@@ -19,8 +19,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRpcBase<Item>, ItemRpc>();
 builder.Services.AddScoped<IRpcBase<User>, UserRpc>();
+builder.Services.AddScoped<IRpcBase<Tag>, TagRpc>();
 builder.Services.AddScoped<IItemDao, ItemDao>();
 builder.Services.AddScoped<IItemLogic, ItemLogic>();
+builder.Services.AddScoped<ITagDao, TagDao>();
+builder.Services.AddScoped<ITagLogic, TagLogic>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;

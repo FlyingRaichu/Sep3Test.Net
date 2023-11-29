@@ -3,81 +3,87 @@ using Domain.DTOs;
 using RPCInterface.RPCImplementations;
 using Via.Sep4.Protobuf;
 
-namespace DataHandling.DAOs
+namespace DataHandling.DAOs;
+
+public class ItemDao : IItemDao
 {
-    public class ItemDao : IItemDao
+    private readonly IRpcBase<Item> context;
+
+    public ItemDao(IRpcBase<Item> context)
     {
-        private readonly IRpcBase<Item> context;
+        this.context = context;
+    }
 
-        public ItemDao(IRpcBase<Item> context)
+    public Task<IEnumerable<Item>> GetAsync(SearchItemParametersDto searchParameters)
+    {
+        IEnumerable<Item> items = context.Elements.AsEnumerable();
+
+        if (!string.IsNullOrEmpty(searchParameters.TitleContains))
         {
-            this.context = context;
+            items = context.Elements.Where(item =>
+                item.Title.Contains(searchParameters.TitleContains, StringComparison.OrdinalIgnoreCase));
         }
 
-        public async Task<IEnumerable<Item>> GetAsync(SearchItemParametersDto searchParameters)
+        if (!string.IsNullOrEmpty(searchParameters.DescriptionContains))
         {
-            IEnumerable<Item> items = context.Elements.AsEnumerable();
-
-            if (!string.IsNullOrEmpty(searchParameters.TitleContains))
-            {
-                items = items.Where(item =>
-                    item.Title.Contains(searchParameters.TitleContains, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (!string.IsNullOrEmpty(searchParameters.ManufactureContains))
-            {
-                items = items.Where(item =>
-                    item.Manufacture.Contains(searchParameters.ManufactureContains, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (!string.IsNullOrEmpty(searchParameters.DescriptionContains))
-            {
-                items = items.Where(item =>
-                    item.Description.Contains(searchParameters.DescriptionContains, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (searchParameters.Price != null)
-            {
-                items = items.Where(item => item.Price.Equals(searchParameters.Price.Value));
-            }
-
-            if (searchParameters.Stock != null)
-            {
-                items = items.Where(item => item.Stock.Equals(searchParameters.Stock.Value));
-            }
-
-            return items.ToList(); // Execute the query and return the result
+            items = context.Elements.Where(item =>
+                item.Description.Contains(searchParameters.DescriptionContains, StringComparison.OrdinalIgnoreCase));
         }
 
-        public async Task<Item> CreateAsync(Item item)
+        if (searchParameters.Price != null)
         {
-            int id = 1;
-            if (context.Elements.Any())
-            {
-                id = context.Elements.Max(i => i.Id);
-                id++;
-            }
-
-            item.Id = id;
-
-            context.Add(item);
-            return item;
+            items = items.Where(item => item.Price.Equals(searchParameters.Price));
         }
 
-        public async Task UpdateAsync(Item item)
+        if (!string.IsNullOrEmpty(searchParameters.ManufacturerContains))
         {
-            context.Update(item);
+            items = context.Elements.Where(item =>
+                item.Manufacturer.Contains(searchParameters.ManufacturerContains, StringComparison.OrdinalIgnoreCase));
         }
 
-        public async Task DeleteAsync(int id)
+        if (searchParameters.Stock != null)
         {
-            context.Delete(id);
+            items = items.Where(item => item.Stock == searchParameters.Stock);
         }
 
-        public async Task<Item?> GetByIdAsync(int id)
+        if (searchParameters.ContainsTags != null && searchParameters.ContainsTags.Any())
         {
-            var item = context.Elements.FirstOrDefault(i => i.Id == id);
-            return item;
+            items = items.Where(item => item.Tags.Any(tag => searchParameters.ContainsTags.Contains(tag)));
         }
+        
+        return Task.FromResult(items);
+    }
+
+    public Task<Item> CreateAsync(Item item)
+    {
+        int id = 1;
+        if (context.Elements.Any())
+        {
+            id = context.Elements.Max(i => i.Id);
+            id++;
+        }
+
+        item.Id = id;
+
+        context.Add(item);
+        return Task.FromResult(item);
+    }
+
+    public Task UpdateAsync(Item item)
+    {
+        context.Update(item);
+        return Task.CompletedTask;
+    }
+
+    public Task DeleteAsync(int id)
+    {
+        context.Delete(id);
+        return Task.CompletedTask;
+    }
+
+    public Task<Item?> GetByIdAsync(int id)
+    {
+        var item = context.Elements.FirstOrDefault(i => i.Id == id);
+        return Task.FromResult<Item>(item);
     }
 }
