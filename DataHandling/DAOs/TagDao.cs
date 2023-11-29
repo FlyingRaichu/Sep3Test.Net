@@ -1,6 +1,6 @@
 ﻿using Application.DaoInterfaces;
 using Domain.DTOs.Tag;
-using RPCInterface.RPCImplementations;
+using RPCInterface.RPCInterfaces;
 
 namespace DataHandling.DAOs;
 

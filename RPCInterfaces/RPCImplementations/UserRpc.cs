@@ -5,6 +5,7 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using RPCInterface.RPCInterfaces;
 
+
 namespace RPCInterface.RPCImplementations;
 
 public class UserRpc : IRpcBase<User>

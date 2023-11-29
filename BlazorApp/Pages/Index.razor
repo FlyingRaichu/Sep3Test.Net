@@ -1,9 +1,7 @@
 ﻿@page "/"
-@using HttpClients.Implementations;
+@using HttpClients.Interfaces
 @inject IItemService ItemService;
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager;
-@inject IItemService ItemService
-@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 
 <MudLayout>
     <MudAppBar Elevation="1">

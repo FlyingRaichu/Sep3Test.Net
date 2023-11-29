@@ -32,8 +32,7 @@ public static partial class ItemsReflection {
           "MAESKgoHYWRkSXRlbRIFLkl0ZW0aFi5nb29nbGUucHJvdG9idWYuRW1wdHki",
           "ABItCgp1cGRhdGVJdGVtEgUuSXRlbRoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0",
           "eSIAEi0KCmRlbGV0ZUl0ZW0SBS5JdGVtGhYuZ29vZ2xlLnByb3RvYnVmLkVt",
-          "cHR5IgBCIQoRdmlhLnNlcDQucHJvdG9idWZCCkl0ZW1zUHJvdG9QAWIGcHJv",
-          "dG8z"));
+          "cHR5IgBiBnByb3RvMw=="));
     descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
         new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
         new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
