@@ -1,3 +1,5 @@
+using RPCInterface.RPCInterfaces;
+
 namespace RPCInterface.RPCImplementations;
 
 public interface IRpcFavorite<T> : IRpcBase<Favorite>

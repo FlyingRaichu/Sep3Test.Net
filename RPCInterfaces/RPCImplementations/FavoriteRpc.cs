@@ -47,6 +47,16 @@ public class FavoriteRpc : IRpcFavorite<Favorite>
         return Task.CompletedTask;
     }
 
+    public Task Update(Favorite element)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task Delete(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task Get(Favorite favorite)
     {
         var client = new FavoriteService.FavoriteServiceClient(channel);
