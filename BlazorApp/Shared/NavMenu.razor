@@ -1,7 +1,18 @@
-﻿<MudNavMenu>
+﻿@attribute [Authorize("MustBeAdmin")]
+<MudNavMenu>
     <MudToolBar>
         <MudNavLink Href="/" Match="NavLinkMatch.All" Color="">Home</MudNavLink>
         <MudNavLink Href="/Checkout" Match="NavLinkMatch.All">Checkout</MudNavLink>
-        <MudNavLink Href="/BackOfficeItems" Match="NavLinkMatch.All">Back office</MudNavLink>
+        <AuthorizeView Policy="MustBeAdmin">
+            <Authorized>
+                <MudNavLink Href="/BackOfficeItems" Match="NavLinkMatch.All">Back office</MudNavLink>
+            </Authorized>
+            <NotAuthorized>
+                <h6>not admin</h6>
+            </NotAuthorized>
+        </AuthorizeView>
+        <MudNavLink Href="/RegisterUser" Match="NavLinkMatch.All">Register user</MudNavLink>
+        @* <MudNavLink Href="/Login" Match="NavLinkMatch.All">Login</MudNavLink> *@
+        <LoginButton/>
     </MudToolBar>
 </MudNavMenu>

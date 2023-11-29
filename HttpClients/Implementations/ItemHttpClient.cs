@@ -3,9 +3,9 @@ using System.Text;
 using System.Text.Json;
 using Domain.DTOs;
 using Domain.DTOs.Item;
-using HttpClients.Implementations;
+using HttpClients.Interfaces;
 
-namespace HttpClients.Interfaces;
+namespace HttpClients.Implementations;
 
 public class ItemHttpClient : IItemService
 {

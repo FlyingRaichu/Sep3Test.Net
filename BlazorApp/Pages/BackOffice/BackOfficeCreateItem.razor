@@ -1,8 +1,10 @@
 ﻿@page "/BackOfficeCreateItem"
 @using HttpClients.Implementations
 @using Domain.DTOs.Item
+@using HttpClients.Interfaces
 @inject NavigationManager NavigationManager
 @inject IItemService ItemService
+
 <h3>Create new item</h3>
 <span>
     <input type="text" @bind="title" @bind:event="oninput" placeholder="Enter title..."/>

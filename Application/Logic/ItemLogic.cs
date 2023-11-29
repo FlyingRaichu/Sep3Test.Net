@@ -2,7 +2,6 @@
 using Application.LogicInterfaces;
 using Domain.DTOs;
 using Domain.DTOs.Item;
-using Via.Sep4.Protobuf;
 
 namespace Application.Logic;
 

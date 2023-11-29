@@ -1,4 +1,4 @@
-﻿namespace RPCInterface.RPCImplementations;
+﻿namespace RPCInterface.RPCInterfaces;
 
 public interface IRpcBase<T>
 {

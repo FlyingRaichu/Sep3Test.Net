@@ -1,8 +1,10 @@
 ﻿@page "/BackOfficeEditItem/{itemId:int}"
 @using HttpClients.Implementations
 @using Domain.DTOs.Item
+@using HttpClients.Interfaces
 @inject NavigationManager NavigationManager
 @inject IItemService ItemService
+
 @if (item != null)
 {
     <h3>Edit @item.Title</h3>

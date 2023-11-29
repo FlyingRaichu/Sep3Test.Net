@@ -2,7 +2,7 @@
 using Grpc.Core;
 using Grpc.Net.Client;
 using RPCInterface.RPCImplementations;
-using Via.Sep4.Protobuf;
+using RPCInterface.RPCInterfaces;
 
 namespace RPCInterface.RPCImplementations;
 

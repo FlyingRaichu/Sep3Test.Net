@@ -7,7 +7,7 @@ using Domain.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using RPCInterface.RPCImplementations;
-using Via.Sep4.Protobuf;
+using RPCInterface.RPCInterfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +19,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRpcBase<Item>, ItemRpc>();
 builder.Services.AddScoped<IRpcBase<User>, UserRpc>();
+
 builder.Services.AddScoped<IItemDao, ItemDao>();
 builder.Services.AddScoped<IItemLogic, ItemLogic>();
+
+builder.Services.AddScoped<IUserDao, UserDao>();
+builder.Services.AddScoped<IUserLogic, UserLogic>();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;

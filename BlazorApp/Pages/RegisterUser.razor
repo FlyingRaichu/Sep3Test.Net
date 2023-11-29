@@ -1,0 +1,75 @@
+﻿@page "/RegisterUser"
+@using HttpClients.Interfaces
+@using Domain.DTOs.User
+@inject IUserService userService;
+@inject NavigationManager NavigationManager;
+
+<h3>Register User</h3>
+
+<div class="card">
+    <div class="form-group field">
+        <label>User name:</label>
+        <input type="text" @bind="username" @bind:event="oninput"/>
+        <br>
+        <br>
+        <label>Password:</label>
+        <input type="text" @bind="password" @bind:event="oninput"/>
+        <br>
+        <br>
+        <label>Email:</label>
+        <input type="text" @bind="email" @bind:event="oninput"/>
+        @if (!string.IsNullOrEmpty(resultMsg))
+        {
+            <label>@resultMsg</label>
+        }
+    </div>
+    <div class="button-row">
+        <button @onclick="Create" disabled="@(string.IsNullOrEmpty(username))" class="acceptbtn">Create</button>
+    </div>
+</div>
+
+
+@code {
+    private string username = "";
+    private string password = "";
+    private string email = "";
+    private string role = "user";
+
+    private string resultMsg = "";
+
+    private async Task Create()
+    {
+        resultMsg = "";
+
+        try
+        {
+            UserCreationDto dto = new(username, password, email, role);
+            await userService.RegisterAsync(dto);
+            await LoginAsync();
+            username = "";
+            password = "";
+            email = "";
+            resultMsg = "User successfully created";
+
+            NavigationManager.NavigateTo("./");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            resultMsg = e.Message;
+        }
+    }
+
+    private async Task LoginAsync()
+    {
+        try
+        {
+            await userService.LoginAsync(username, password);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            resultMsg = $"Error: {e.Message}";
+        }
+    }
+}

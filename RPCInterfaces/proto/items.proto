@@ -3,9 +3,9 @@ syntax = "proto3";
 import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
 
-option java_multiple_files = true;
-option java_package = "via.sep4.protobuf";
-option java_outer_classname = "ItemsProto";
+//option java_multiple_files = true;
+//option java_package = "via.sep4.protobuf";
+//option java_outer_classname = "ItemsProto";
 
 service ItemService {
   rpc getItem(google.protobuf.Int32Value) returns (Item) {};
