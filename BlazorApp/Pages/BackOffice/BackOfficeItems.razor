@@ -97,8 +97,7 @@
         Console.WriteLine($"SearchString: {searchString}");
         try
         {
-            items = await ItemService.GetItemsAsync(null, null, null,null);
-            items = await ItemService.GetPostsAsync(searchString, null, null, null, null, null);
+            items = await ItemService.GetItemsAsync(searchString, null, null, null, null, null, null);
             Console.WriteLine($"SearchString: {searchString}, Items Count: {items?.Count}");
             StateHasChanged();
         }

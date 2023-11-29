@@ -7,13 +7,15 @@ namespace HttpClients.Implementations;
 public class ItemHttpClient : IItemService
 {
     private readonly HttpClient client;
-    
+
     public ItemHttpClient(HttpClient client)
     {
         this.client = client;
     }
-    
-    public async Task<ICollection<Item>> GetPostsAsync(string? title, string? description, double? price, string? manufacturer, int? stock, List<int>? tags)
+
+    public async Task<ICollection<Item>> GetItemsAsync(string? title, string? manufacture, string? description,
+        double? price, string? manufacturer,
+        int? stock, List<int>? tags)
     {
         var query = ConstructQuery(title, description, price, manufacturer, stock, tags);
 
@@ -31,7 +33,6 @@ public class ItemHttpClient : IItemService
 
         return items;
     }
-    
 
     public async Task<Item> CreateAsync(ItemCreationDto dto)
     {
@@ -64,7 +65,7 @@ public class ItemHttpClient : IItemService
 
     public async Task DeleteAsync(int id)
     {
-        var response = await client.DeleteAsync($"/items/{id}" );
+        var response = await client.DeleteAsync($"/items/{id}");
 
         if (!response.IsSuccessStatusCode)
         {
@@ -87,11 +88,12 @@ public class ItemHttpClient : IItemService
         {
             PropertyNameCaseInsensitive = true
         })!;
-        
+
         return item;
     }
 
-    private string ConstructQuery(string? title, string? description, double? price, string? manufacturer, int? stock, List<int>? tags)
+    private string ConstructQuery(string? title, string? description, double? price, string? manufacturer, int? stock,
+        List<int>? tags)
     {
         var query = "";
 
@@ -131,8 +133,9 @@ public class ItemHttpClient : IItemService
             {
                 query += string.IsNullOrEmpty(query) ? "?" : "&";
                 query += $"tags={i}";
-            }    
+            }
         }
+
         return query;
     }
 }

@@ -40,7 +40,7 @@
             // Apply manufacturer filter
             if (_manufacturerFilter != null)
             {
-                filteredItems = filteredItems.Where(item => item.Manufacture == _manufacturerFilter).ToList();
+                filteredItems = filteredItems.Where(item => item.Manufacturer == _manufacturerFilter).ToList();
             }
 
             // Apply price range filters
@@ -106,7 +106,7 @@
             {
                 Console.WriteLine($"Filter: {_manufacturerFilter}, Min Price: {minPrice}, Max Price: {maxPrice}");
 
-                items = await ItemService.GetItemsAsync(null, _manufacturerFilter, null, null);
+                items = await ItemService.GetItemsAsync(null, _manufacturerFilter, null, null, null, null, null);
 
                 if (_manufacturerFilter != null)
                 {
@@ -115,7 +115,7 @@
 
                 if (!_allManufacturers.Any())
                 {
-                    _allManufacturers = items?.Select(item => item.Manufacture)?.Distinct() ?? Enumerable.Empty<string>();
+                    _allManufacturers = items?.Select(item => item.Manufacturer)?.Distinct() ?? Enumerable.Empty<string>();
                 }
 
                 _manufacturers = _allManufacturers;
