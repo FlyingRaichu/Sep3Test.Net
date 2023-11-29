@@ -1,7 +1,6 @@
 ﻿using Application.DaoInterfaces;
 using Domain.DTOs;
-using RPCInterface.RPCImplementations;
-using Via.Sep4.Protobuf;
+using RPCInterface.RPCInterfaces;
 
 namespace DataHandling.DAOs;
 
@@ -35,6 +34,22 @@ public class ItemDao : IItemDao
             items = items.Where(item => item.Price.Equals(searchParameters.Price));
         }
 
+        if (!string.IsNullOrEmpty(searchParameters.ManufacturerContains))
+        {
+            items = context.Elements.Where(item =>
+                item.Manufacturer.Contains(searchParameters.ManufacturerContains, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (searchParameters.Stock != null)
+        {
+            items = items.Where(item => item.Stock == searchParameters.Stock);
+        }
+
+        if (searchParameters.ContainsTags != null && searchParameters.ContainsTags.Any())
+        {
+            items = items.Where(item => item.Tags.Any(tag => searchParameters.ContainsTags.Contains(tag)));
+        }
+        
         return Task.FromResult(items);
     }
 
@@ -51,5 +66,23 @@ public class ItemDao : IItemDao
 
         context.Add(item);
         return Task.FromResult(item);
+    }
+
+    public Task UpdateAsync(Item item)
+    {
+        context.Update(item);
+        return Task.CompletedTask;
+    }
+
+    public Task DeleteAsync(int id)
+    {
+        context.Delete(id);
+        return Task.CompletedTask;
+    }
+
+    public Task<Item?> GetByIdAsync(int id)
+    {
+        var item = context.Elements.FirstOrDefault(i => i.Id == id);
+        return Task.FromResult<Item>(item);
     }
 }

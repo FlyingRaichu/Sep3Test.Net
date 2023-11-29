@@ -10,9 +10,34 @@
       <ProjectReference Include="..\HttpClients\HttpClients.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MudBlazor" Version="6.11.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Pages\BackOffice\wool.jpg" />
+      <None Include="wwwroot\images\s.jpg" />
+    </ItemGroup>
+
+
+
+<<<<<<< HEAD
 
     <ItemGroup>
       <PackageReference Include="MudBlazor" Version="6.11.1" />
     </ItemGroup>
 
+=======
+    <ItemGroup>
+      <PackageReference Include="MudBlazor" Version="6.11.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Pages\BackOffice\wool.jpg" />
+      <None Include="wwwroot\images\s.jpg" />
+    </ItemGroup>
+
+
+
+>>>>>>> d59d6f8d3659c79260b1c739d2117983e940d62e
 </Project>

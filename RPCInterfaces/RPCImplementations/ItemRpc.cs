@@ -1,8 +1,7 @@
 ﻿using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Grpc.Net.Client;
-using RPCInterface.RPCImplementations;
-using Via.Sep4.Protobuf;
+using RPCInterface.RPCInterfaces;
 
 namespace RPCInterface.RPCImplementations;
 
@@ -33,8 +32,46 @@ public class ItemRpc : IRpcBase<Item>
         var client = new ItemService.ItemServiceClient(channel);
         try
         {
+            Console.WriteLine($"In RPC: {item.Manufacturer}");
             var response = client.addItem(item);
+            Console.WriteLine($"In RPC: {item.Manufacturer}");
             Elements.Add(item);
+            
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public Task Update(Item item)
+    {
+        var client = new ItemService.ItemServiceClient(channel);
+        try
+        {
+            var response = client.updateItem(item);
+            Elements.Remove(Elements.FirstOrDefault(i => i.Id == item.Id)!);
+            Elements.Add(item);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public Task Delete(int id)
+    {
+        var client = new ItemService.ItemServiceClient(channel);
+
+        try
+        {
+            Item? item = Elements.FirstOrDefault(i => i.Id == id);
+            var response = client.deleteItem(item);
+            Elements.Remove(item);
         }
         catch (Exception e)
         {

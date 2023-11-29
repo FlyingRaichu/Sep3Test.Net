@@ -1,55 +1,143 @@
 ﻿@page "/"
-@using HttpClients.Implementations
+@using HttpClients.Interfaces
 @inject IItemService ItemService;
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager;
 
-<PageTitle>Index</PageTitle>
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <SearchBar/>
+        <MudSpacer/>
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End"/>
+    </MudAppBar>
+    <MudDrawer Open="true" Elevation="2">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h5" Class="mt-1">Filter Items</MudText>
+        </MudDrawerHeader>
+        <MudContainer MaxWidth="MaxWidth.Medium">
+            <!-- MudSelect for Manufacturer -->
+            <MudText Typo="Typo.h6" Class="mud-width-full">@(_manufacturerFilter == null ? "All manufacturers." : $"Manufacturer: {_manufacturerFilter}")</MudText>
+            <MudSelect T="string" Label="Select Manufacturer" Value="@_manufacturerFilter" Clearable="true" ValueChanged="HandleManufacturerFilterChange" AnchorOrigin="Origin.BottomCenter">
+                @foreach (var manufacturer in _allManufacturers)
+                {
+                    <MudSelectItem Value="@manufacturer" @key="manufacturer" />
+                }
+            </MudSelect>
+            <MudSlider @bind-Value="minPrice" Min="0" Max="200" Step="10" Color="Color.Info">Min Price: @minPrice.ToString() dollars</MudSlider>
+            <MudSlider @bind-Value="maxPrice" Min="0" Max="200" Step="10" Color="Color.Error">Max Price: @maxPrice.ToString() yen</MudSlider>
+            
+            @if (maxPrice.HasValue && maxPrice <= 10)
+                        {
+                            <MudText Typo="Typo.body2" Class="mt-2">You poor bastard, lol</MudText>
+                        }
 
-<h1>Items</h1>
+        </MudContainer>
+    </MudDrawer>
 
-@if (items == null)
-{
-    
-}
-else if (!items.Any())
-{
-    <p>No items to display.</p>
-}
-else
-{
-    <ul class="items">
-        @foreach (var item in items)
+    <MudMainContent>
+        @if (items != null)
         {
-            <li>
-                <strong><h3>@item.Title</h3></strong>
-                <strong><p>@item.Description</p></strong>
-                <strong><p>Price: @item.Price</p></strong>
-            </li>
+            var filteredItems = items;
+
+            // Apply manufacturer filter
+            if (_manufacturerFilter != null)
+            {
+                filteredItems = filteredItems.Where(item => item.Manufacturer == _manufacturerFilter).ToList();
+            }
+
+            // Apply price range filters
+            if (minPrice.HasValue)
+            {
+                filteredItems = filteredItems.Where(item => item.Price >= minPrice).ToList();
+            }
+
+            if (maxPrice.HasValue)
+            {
+                filteredItems = filteredItems.Where(item => item.Price <= maxPrice).ToList();
+            }
+
+            @if (!filteredItems.Any())
+            {
+                <p>No items to display.</p>
+            }
+            else
+            {
+                <MudContainer>
+                    <MudPaper Elevation="2" Class="m-2 p-2">
+                        <MudGrid>
+                            @foreach (var item in filteredItems)
+                            {
+                                <MudItem xs="12" md="6" lg="4">
+                                    <MudCard>
+                                        <MudCardMedia Image="images/s.jpg" Height="200" />
+                                        <MudCardContent>
+                                            <MudText Typo="Typo.h5">@item.Title</MudText>
+                                            <MudText Typo="Typo.body2">Price: @item.Price</MudText>
+                                        </MudCardContent>
+                                        <MudCardActions>
+                                            <MudButton Variant="Variant.Text" Color="Color.Primary">Details</MudButton>
+                                        </MudCardActions>
+                                    </MudCard>
+                                </MudItem>
+                            }
+                        </MudGrid>
+                    </MudPaper>
+                </MudContainer>
+            }
         }
-    </ul>
-}
+    </MudMainContent>
 
+    @code {
+        private double? minPrice;
+        private double? maxPrice;
+        private string _manufacturerFilter;
+        private IEnumerable<Item> items;
+        private IEnumerable<string> _allManufacturers = Enumerable.Empty<string>();
+        private IEnumerable<string> _manufacturers = Enumerable.Empty<string>();
 
-@code
-{
-    private IEnumerable<Item>? items;
-    private string statusMessage = "";
+        private string statusMessage = "";
 
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadPosts();
+        protected override async Task OnInitializedAsync()
+        {
+            await LoadItems();
+        }
+
+        private async Task LoadItems()
+        {
+            try
+            {
+                Console.WriteLine($"Filter: {_manufacturerFilter}, Min Price: {minPrice}, Max Price: {maxPrice}");
+
+                items = await ItemService.GetItemsAsync(null, null, null, _manufacturerFilter, null, null);
+
+                if (_manufacturerFilter != null)
+                {
+                    Console.WriteLine($"Items after manufacturer filter: {items.Count()}");
+                }
+
+                if (!_allManufacturers.Any())
+                {
+                    _allManufacturers = items?.Select(item => item.Manufacturer)?.Distinct() ?? Enumerable.Empty<string>();
+                }
+
+                _manufacturers = _allManufacturers;
+                StateHasChanged();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                statusMessage = e.Message;
+            }
+        }
+
+        private void HandleManufacturerFilterChange(string value)
+        {
+            _manufacturerFilter = value;
+            LoadItems();
+        }
+
+        private void GoToCheckoutPage()
+        {
+            NavigationManager.NavigateTo("/Checkout");
+        }
     }
-
-    private async Task LoadPosts()
-    {
-        try
-        {
-            items = await ItemService.GetPostsAsync(null, null, null);
-        }
-        
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            statusMessage = e.Message;
-        }
-    }
-}
+</MudLayout>

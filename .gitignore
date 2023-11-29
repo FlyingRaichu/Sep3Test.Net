@@ -6,8 +6,6 @@ Application/bin/
 Application/obj/
 WebAPI/bin/
 WebAPI/obj/
-BlazorApp/bin/
-BlazorApp/obj/
 
 # Common node modules locations
 /node_modules

@@ -1,0 +1,11 @@
+﻿@page "/BackOfficeIndex"
+@using HttpClients.Implementations
+@using HttpClients.Interfaces
+@inject IItemService ItemService
+@attribute [Authorize("MustBeAdmin")]
+
+<h3>Back Office Index</h3>
+
+@code {
+    
+}

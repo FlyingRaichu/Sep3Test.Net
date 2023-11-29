@@ -1,9 +1,13 @@
+using BlazorApp.Auth;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using BlazorApp.Data;
+using BlazorApp.Pages.Services;
+using Domain.Auth;
 using BlazorApp.Service;
 using HttpClients.Implementations;
 using HttpClients.Interfaces;
+using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,16 +15,19 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddMudServices();
 builder.Services.AddSingleton<NavService>();
 builder.Services.AddSingleton<HttpClient>(new HttpClient
 {
     BaseAddress = new Uri("https://localhost:7248/swagger/index.html")
 });
 builder.Services.AddScoped<IItemService, ItemHttpClient>();
+builder.Services.AddScoped<IUserService, UserHttpClient>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthProvider>();
+builder.Services.AddSingleton<NavigationService>();
 
-
-
-builder.Services.AddMudServices();
+AuthorizationPolicies.AddPolicies(builder.Services);
+builder.Services.AddSingleton<NavService>();
 
 var app = builder.Build();
 

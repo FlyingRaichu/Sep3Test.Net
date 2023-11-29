@@ -1,13 +1,20 @@
 ﻿using Domain.DTOs;
+using Domain.DTOs.Item;
 
-namespace HttpClients.Implementations;
+namespace HttpClients.Interfaces;
 
 public interface IItemService
 {
-    Task<ICollection<Item>> GetPostsAsync(
+    Task<ICollection<Item>> GetItemsAsync(
         string? title,
         string? description,
-        double? price);
+        double? price,
+        string? manufacturer,
+        int? stock, 
+        List<int>? tags);
 
     Task<Item> CreateAsync(ItemCreationDto dto);
+    Task UpdateAsync(ItemUpdateDto dto);
+    Task DeleteAsync(int id);
+    Task<Item> GetByIdAsync(int id);
 }

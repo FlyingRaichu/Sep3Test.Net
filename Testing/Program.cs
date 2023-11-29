@@ -2,7 +2,6 @@
 
 using RPCInterface;
 using RPCInterface.RPCImplementations;
-using Via.Sep4.Protobuf;
 
 Console.WriteLine("Hello, World!");
 

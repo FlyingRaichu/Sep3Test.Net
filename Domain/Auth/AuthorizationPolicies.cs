@@ -10,7 +10,9 @@ public static class AuthorizationPolicies
         {
             options.AddPolicy("LoggedIn", a => a.RequireAuthenticatedUser());
             
-            options.AddPolicy("MustBeAdmin", a => a.RequireAuthenticatedUser().RequireClaim("Role", "Administrator"));
+            options.AddPolicy("MustBeAdmin", a => a.RequireAuthenticatedUser().RequireClaim("Role", "admin"));
+
+            options.AddPolicy("User", a => a.RequireAuthenticatedUser().RequireClaim("Role", "user"));
         });
     }
 }

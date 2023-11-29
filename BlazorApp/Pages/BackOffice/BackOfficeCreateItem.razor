@@ -1,0 +1,40 @@
+﻿@page "/BackOfficeCreateItem"
+@using HttpClients.Implementations
+@using Domain.DTOs.Item
+@using HttpClients.Interfaces
+@inject NavigationManager NavigationManager
+@inject IItemService ItemService
+@attribute [Authorize("MustBeAdmin")]
+
+<h3>Create new item</h3>
+<span>
+    <input type="text" @bind="title" @bind:event="oninput" placeholder="Enter title..."/>
+    <input type="text" @bind="description" @bind:event="oninput" placeholder="Enter description..."/>
+    <input type="text" @bind="priceString" @bind:event="oninput" placeholder="Enter price..."/>
+    <input type="text" @bind="manufacturer" @bind:event="oninput" placeholder="Enter manufacturer..."/>
+    <input type="text" @bind="stockString" @bind:event="oninput" placeholder="Enter stock..."/>
+    <button @onclick="Create" disabled="@(string.IsNullOrEmpty(title) || string.IsNullOrEmpty(description) || string.IsNullOrEmpty(priceString))" class="acceptbtn">Create</button>
+</span>
+<br/>
+<br/>
+<label style="color: red">@msg</label>
+
+@code {
+    string title, description, priceString, manufacturer, stockString;
+    string msg = "";
+
+    private async Task Create()
+    {
+        msg = "";
+        if (double.TryParse(priceString, out var price) && int.TryParse(stockString, out var stock))
+        {
+            var itemDto = new ItemCreationDto(title, description, price, manufacturer, stock, null);
+            var item = await ItemService.CreateAsync(itemDto);
+            NavigationManager.NavigateTo("/BackOfficeItems");
+        }
+        else
+        {
+            msg = "Please insert correct formatting for price and stock.";
+        }
+    }
+}

@@ -14,21 +14,11 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="MudBlazor" Version="6.11.0" />
     </ItemGroup>
-    
+
     <ItemGroup>
-      <Protobuf Include="proto\users.proto">
-        <GrpcServices>Client</GrpcServices>
-        <Access>Public</Access>
-        <ProtoCompile>True</ProtoCompile>
-        <CompileOutputs>True</CompileOutputs>
-        <OutputDir>Generated\</OutputDir>
-        <Generator>MSBuild:Compile</Generator>
-      </Protobuf>
-    </ItemGroup>
-    
-    <ItemGroup>
-        <Protobuf Include="proto\items.proto">
+        <Protobuf Include="proto\**\*.proto">
             <GrpcServices>Client</GrpcServices>
             <Access>Public</Access>
             <ProtoCompile>True</ProtoCompile>
@@ -38,6 +28,7 @@
         </Protobuf>
     </ItemGroup>
 
+<<<<<<< HEAD
     <ItemGroup>
         <Protobuf Include="proto\favorites.proto">
             <GrpcServices>Client</GrpcServices>
@@ -49,7 +40,30 @@
         </Protobuf>
     </ItemGroup>
     
+=======
+
+>>>>>>> d59d6f8d3659c79260b1c739d2117983e940d62e
     <ItemGroup>
       <ProjectReference Include="..\Domain\Domain.csproj" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Folder Include="Generated\proto\" />
+
+        <Protobuf Include="proto\**\*.proto">
+            <GrpcServices>Client</GrpcServices>
+            <Access>Public</Access>
+            <ProtoCompile>True</ProtoCompile>
+            <CompileOutputs>True</CompileOutputs>
+            <OutputDir>Generated\</OutputDir>
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+
+
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+
+
+      <Folder Include="Generated\proto\" />
     </ItemGroup>
 </Project>
