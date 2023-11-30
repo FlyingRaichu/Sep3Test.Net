@@ -24,14 +24,7 @@ public class FavoritesController : ControllerBase
         try
         {
             var result = await favLogic.CreateAsync(dto);
-            if (result != null)
-            {
-                return Ok(result);
-            }
-            else
-            {
-                return NotFound(new { message = "Favorite not found" });
-            }
+            return Ok(result);
         }
         catch (Exception ex)
         {
@@ -47,15 +40,7 @@ public class FavoritesController : ControllerBase
         try
         {
             var result = await favLogic.DeleteAsync(dto);
-
-            if (result != null)
-            {
-                return Ok(result);
-            }
-            else
-            {
-                return NotFound(new { message = "Favorite not found" });
-            }
+            return Ok(result);
         }
         catch (Exception ex)
         {
@@ -73,14 +58,11 @@ public class FavoritesController : ControllerBase
             FavoriteDto dto = new FavoriteDto(userId, itemId);
             var result = await favLogic.GetAsync(dto);
             
-            if (result != null)
-            {
+            //not finding a favorite returns a favorite proto w/ ids = 0
+            if (result.UserId != 0 || result.ItemId != 0)
                 return Ok(result);
-            }
-            else
-            {
-                return NotFound(new { message = "Favorite not found" });
-            }
+            
+            return NotFound("Favorite not found");
         }
         catch (Exception ex)
         {

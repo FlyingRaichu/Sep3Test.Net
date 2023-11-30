@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using Domain.DTOs;
+using HttpClients.Interfaces;
 
 namespace HttpClients.Implementations;
 
@@ -15,7 +16,7 @@ public class FavoriteHttpClient : IFavoriteService
         this.client = client;
     }
 
-    public async Task<Favorite> CreateAsync(FavoriteDto dto, string? token)
+    public async Task<Favorite> CreateAsync(FavoriteDto dto, string token)
     {
         //prep request
         var request = new HttpRequestMessage(HttpMethod.Post, "/Favorites/Create");
@@ -47,10 +48,10 @@ public class FavoriteHttpClient : IFavoriteService
         return fav;
     }
 
-    public async Task<Favorite?> GetAsync(FavoriteDto dto, string? token)
+    public async Task<Favorite?> GetAsync(FavoriteDto dto, string token)
     {
         //prep request
-        var requestUri = $"Favorites/Get?userId={dto.UserId}&itemId={dto.ItemId}";
+        var requestUri = $"/Favorites/Get?userId={dto.UserId}&itemId={dto.ItemId}";
         var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
         if (!string.IsNullOrEmpty(token))
         {
@@ -78,12 +79,7 @@ public class FavoriteHttpClient : IFavoriteService
         return favorite;
     }
 
-    public Task<Favorite?> GetAllAsync(int userId, string? token)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<Favorite> DeleteAsync(FavoriteDto dto, string? token)
+    public async Task<Favorite> DeleteAsync(FavoriteDto dto, string token)
     {
         //prep request
         var url = "/Favorites/Delete";

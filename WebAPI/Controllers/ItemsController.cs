@@ -3,6 +3,7 @@ using Application.LogicInterfaces;
 using Domain.DTOs;
 using Domain.DTOs.Item;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -52,20 +53,13 @@ public class ItemsController : ControllerBase
     
     [HttpGet]
     [Route("Favorites")]
+    [Authorize]
     public async Task<ActionResult> GetFavItemsByUserAsync([FromQuery] int userId)
     {
         try
         {
             var result = await logic.GetFavItemsByUserAsync(userId);
-            
-            if (result != null)
-            {
-                return Ok(result);
-            }
-            else
-            {
-                return NotFound(new { message = "Favorites not found" });
-            }
+            return Ok(result);
         }
         catch (Exception ex)
         {

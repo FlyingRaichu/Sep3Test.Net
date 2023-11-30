@@ -1,31 +1,42 @@
 @page "/Favorites"
+@using HttpClients.Interfaces
+@using BlazorApp.Service
+@using HttpClients.Implementations
+@inject IItemService ItemService
+@inject NavService NavService
 <h3>Favorites</h3>
-<!--can only view if logged in-->
-@foreach (var fav in favorites)
+<AuthorizeView>
+    <Authorized>
+        @if (items == null || !items.Any())
         {
-            <FavoriteCard Title="" Description="" Price=""></FavoriteCard>
+            <MudText>You currently do not have any favorites.</MudText>
         }
+        else
+        {
+            @foreach (var item in items)
+            {
+                <MudPaper>
+                    <FavoriteCard Title="@item.Title" Description="@item.Description" Price="@item.Price"></FavoriteCard>
+                </MudPaper>
+            }
+        }
+    </Authorized>
+    <NotAuthorized>
+        <MudText>Please <MudLink Href="/Login">log in</MudLink> to view favorites.</MudText>
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
-    private IEnumerable<Favorite>? favorites;
-    private string statusMessage = "";
+    private IEnumerable<Item>? items { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        await LoadFavs();
+        await LoadItems();
     }
 
-    private async Task LoadFavs()
+    private async Task LoadItems()
     {
-        try
-        {
-            favorites = await FavoriteService.GetAllAsync(userId);
-        }
-        
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            statusMessage = e.Message;
-        }
+        items = await ItemService.GetFavItemsByUserId(NavService.LoggedInUserId, UserHttpClient.Jwt);
+        StateHasChanged(); //re-render if there are any changes
     }
 }

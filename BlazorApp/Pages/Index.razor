@@ -101,6 +101,7 @@
         protected override async Task OnInitializedAsync()
         {
             await LoadItems();
+            NavService.CurrentPage = "Index";
         }
 
         private async Task LoadItems()
@@ -145,6 +146,7 @@
         private void ViewItem(Item selected)
         {//reroute to viewdetails page, saving info about the item in navservice
             NavService.Selected = selected;
+            NavService.CurrentPage = "ItemDetails";
             NavigationManager.NavigateTo("/ItemDetails");
         }
 

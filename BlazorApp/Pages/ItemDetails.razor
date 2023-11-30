@@ -2,9 +2,11 @@
 @using BlazorApp.Service
 @using Domain.DTOs
 @using HttpClients.Implementations
-@inject NavService Navigation;
-@inject AuthenticationStateProvider AuthStateProvider;
-@inject IFavoriteService FavService;
+@using HttpClients.Interfaces
+@inject NavService Navigation
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IFavoriteService FavService
+@inject NavigationManager NavManager
 
 <h3>Item Details</h3>
 <MudGrid Justify="Justify.Center">
@@ -23,7 +25,7 @@
                     <MudText Typo="Typo.h5">@Navigation.Selected.Title</MudText>
                 </MudItem>
                 <MudItem xs="6">
-                    <MudText>@Navigation.Selected.Price</MudText>
+                    <MudText>@Navigation.Selected.Price DKK</MudText>
                 </MudItem>
             </MudGrid>
             <MudGrid>
@@ -66,35 +68,40 @@
         </MudItem>
     </MudGrid>
 
+<MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Star"
+                                                OnClick="ViewFavorites" FullWidth="true" Class="ma-2" Color="Color.Warning">View Favorites</MudButton>
 
 @code {
     private int quantity { get; set; }
     private AuthenticationState authState;
     private bool isFavorite;
     
-     protected override async Task OnInitializedAsync()
-     {
-         authState = await AuthStateProvider.GetAuthenticationStateAsync();
+    protected override async Task OnParametersSetAsync()
+    {
+        await RefreshFavoriteStatus();
+    }
 
-         //if logged in, toggle isFavorite to change button display
-         if (authState.User.Identity?.IsAuthenticated ?? false)
-         {
-             FavoriteDto dto = new(Navigation.LoggedInUserId, Navigation.Selected.Id);
-             isFavorite = await FavService.GetAsync(dto, UserHttpClient.Jwt) != null;
-         }
-         
-         StateHasChanged(); //re-render if there are any changes
-     }
+    private async Task RefreshFavoriteStatus()
+    {
+        authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+        //if logged in, toggle isFavorite to change button display
+        if (authState.User.Identity?.IsAuthenticated ?? false)
+        {
+            FavoriteDto dto = new(Navigation.LoggedInUserId, Navigation.Selected.Id);
+            isFavorite = await FavService.GetAsync(dto, UserHttpClient.Jwt) != null;
+        }
+
+        StateHasChanged(); //re-render if there are any changes
+    }
 
     private async void AddFavorite()
      {
          FavoriteDto dto = new(Navigation.LoggedInUserId, Navigation.Selected.Id);
         try
         {
-            Favorite createdFavorite = await FavService.CreateAsync(dto, UserHttpClient.Jwt);
-
-            if (createdFavorite != null)
-                isFavorite = true;
+            var createdFavorite = await FavService.CreateAsync(dto, UserHttpClient.Jwt);
+            isFavorite = true;
         }
         catch (Exception ex)
         {
@@ -109,10 +116,8 @@
          FavoriteDto dto = new(Navigation.LoggedInUserId, Navigation.Selected.Id);
          try
          {
-             Favorite deletedFavorite = await FavService.DeleteAsync(dto, UserHttpClient.Jwt);
-
-             if (deletedFavorite != null)
-                 isFavorite = false;
+             var deletedFavorite = await FavService.DeleteAsync(dto, UserHttpClient.Jwt);
+             isFavorite = false;
          }
          catch (Exception ex)
          {
@@ -128,4 +133,12 @@
      }
 
      private void AddReview() {}
+
+    private void ViewFavorites()
+    {
+        Navigation.CurrentPage = "Favorites";
+        NavManager.NavigateTo("/Favorites");
+        
+    }
+
 }

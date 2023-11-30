@@ -58,21 +58,24 @@ public class FavoriteRpc : IRpcFavorite<Favorite>
         return Task.CompletedTask;
     }
 
-    public Task Get(Favorite favorite)
+    public async Task<Favorite> Get(Favorite favorite)
     {
         var client = new FavoriteService.FavoriteServiceClient(channel);
         try
         {
-            var response = client.getFavorite(favorite);
+            var response = await client.getFavoriteAsync(favorite);
             Elements.Clear();
-            Elements.Add(response);
+            Console.WriteLine(response.ItemId + " and " + response.UserId);
+            if (!(response.ItemId == 0 || response.UserId == 0))
+                Elements.Add(response);
+
+            return response;
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
+            throw; // Propagate the exception
         }
-
-        return Task.CompletedTask;
     }
     
     public Task Update(Favorite element)
