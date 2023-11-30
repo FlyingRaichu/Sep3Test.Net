@@ -6,9 +6,9 @@ namespace DataHandling.DAOs;
 
 public class TagDao : ITagDao
 {
-    private readonly IRpcBase<Tag> context;
+    private readonly ITagRpc context;
 
-    public TagDao(IRpcBase<Tag> context)
+    public TagDao(ITagRpc context)
     {
         this.context = context;
     }
@@ -56,6 +56,15 @@ public class TagDao : ITagDao
     public Task<Tag?> GetByIdAsync(int id)
     {
         var tag = context.Elements.FirstOrDefault(tag => tag.Id == id);
-        return Task.FromResult<Tag>(tag);
+        return Task.FromResult<Tag?>(tag);
+    }
+
+    public Task<IEnumerable<Tag>> GetAllWithIdAsync(List<int> ids)
+    {
+        var requestIntList = new IntListRequest();
+        requestIntList.Values.AddRange(ids);
+        IEnumerable<Tag> tags = context.GetAllWithId(requestIntList).Result;
+
+        return Task.FromResult(tags);
     }
 }

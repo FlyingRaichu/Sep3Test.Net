@@ -21,4 +21,11 @@
 
 
 
+    <ItemGroup>
+      <AdditionalFiles Include="Pages\BackOffice\Items\BackOfficeCreateItem.razor" />
+      <AdditionalFiles Include="Pages\BackOffice\Items\BackOfficeEditItem.razor" />
+      <AdditionalFiles Include="Pages\BackOffice\Items\BackOfficeIndex.razor" />
+      <AdditionalFiles Include="Pages\BackOffice\Items\BackOfficeItems.razor" />
+    </ItemGroup>
+
 </Project>

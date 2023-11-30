@@ -3,6 +3,7 @@
 @using HttpClients.Interfaces
 @inject NavigationManager NavigationManager
 @inject IItemService ItemService
+@inject ITagService TagService
 @inject IJSRuntime JsRuntime
 @attribute [Authorize("MustBeAdmin")]
 
@@ -16,6 +17,9 @@
         <th>Title</th>
         <th>Description</th>
         <th>Price</th>
+        <th>Manufacturer</th>
+        <th>Stock</th>
+        <th>Tags</th>
     </tr>
     </thead>
     <tbody>
@@ -36,6 +40,19 @@
                 <td>@item.Description</td>
                 <td>
                     @item.Price
+
+                </td>
+                <td>@item.Manufacturer</td>
+                <td>@item.Stock</td>
+                @if (tagsDictionary.ContainsKey(item.Id))
+                {
+                    <td>@tagsDictionary[item.Id]</td>
+                }
+                else
+                {
+                    <td>Item has no tags.</td>
+                }
+                <td>
                     <button style="margin-left: 50px" @onclick="@(() => NavigationManager.NavigateTo($"/BackOfficeEditItem/{@item.Id}"))">
                         <i style="padding: 0 12px" class="oi oi-pencil"></i>
                     </button>
@@ -77,6 +94,7 @@
 
 @code {
     private ICollection<Item> items;
+    private Dictionary<int, string> tagsDictionary = new Dictionary<int, string>();
     private string msg = "";
     private int itemToDeleteId;
     private string? searchString = "";
@@ -85,6 +103,7 @@
     protected override async Task OnInitializedAsync()
     {
         await LoadItems();
+        await LoadTags();
     }
 
     private void LoadItemsDebounced(ChangeEventArgs args)
@@ -96,17 +115,26 @@
 
     private async Task LoadItems()
     {
-        Console.WriteLine($"SearchString: {searchString}");
         try
         {
             items = await ItemService.GetItemsAsync(searchString, null, null, null, null, null);
-            Console.WriteLine($"SearchString: {searchString}, Items Count: {items?.Count}");
             StateHasChanged();
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             msg = e.Message;
+        }
+    }
+
+    private async Task LoadTags()
+    {
+        foreach (var item in items)
+        {
+            var tags = await GetTagsForItem(item);
+            var tagString = string.Join(", ", tags);
+            tagsDictionary.Add(item.Id, tagString);
+            Console.WriteLine($"tags: {tagsDictionary[item.Id]}");
         }
     }
 
@@ -140,4 +168,17 @@
         await JsRuntime.InvokeVoidAsync("eval", script);
     }
 
+    private async Task<IEnumerable<string>> GetTagsForItem(Item item)
+    {
+        var ids = new List<int>();
+        if (item.Tags != null)
+        {
+            ids.AddRange(item.Tags);
+        }
+        
+        var tags = await TagService.GetAllWithId(ids);
+        IEnumerable<string> tagsString = tags.Select(tag => tag.TagName).ToList();
+
+        return tagsString;
+    }
 }

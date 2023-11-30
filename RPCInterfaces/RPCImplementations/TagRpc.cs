@@ -5,7 +5,7 @@ using RPCInterface.RPCInterfaces;
 
 namespace RPCInterface.RPCImplementations;
 
-public class TagRpc : IRpcBase<Tag>
+public class TagRpc : ITagRpc
 {
     private GrpcChannel channel = GrpcChannel.ForAddress("http://localhost:8090");
     public ICollection<Tag> Elements => LoadData().Result;
@@ -76,5 +76,27 @@ public class TagRpc : IRpcBase<Tag>
         }
 
         return Task.CompletedTask;
+    }
+
+    public async Task<ICollection<Tag>> GetAllWithId(IntListRequest request)
+    {
+        var client = new TagService.TagServiceClient(channel);
+        var tags = new List<Tag>();
+
+        try
+        {
+            var response = client.getAllWithId(request);
+            
+            await foreach (var item in response.ResponseStream.ReadAllAsync())
+            {
+                tags.Add(item);
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return tags;
     }
 }

@@ -86,4 +86,41 @@ public class TagHttpClient : ITagService
         
         return tag;
     }
+
+    public async Task<ICollection<Tag>> GetAllWithId(List<int> ids)
+    {
+        if (ids == null || !ids.Any())
+        {
+            Console.WriteLine("Ids are empty at httpcall");
+        }
+        var query = BuildQuery(ids);
+        var response = await client.GetAsync($"/tags/getAllWithId{query}");
+        var content = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception(content);
+        }
+        
+        var tags = JsonSerializer.Deserialize<ICollection<Tag>>(content, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
+        return tags;
+    }
+
+    private static string BuildQuery(IReadOnlyCollection<int>? ids)
+    {
+        if (ids != null && ids.Any())
+        {
+            var query = $"?ids={ids.First()}";
+
+            query = ids.Skip(1).Aggregate(query, (current, id) => current + $"&ids={id}");
+            
+            Console.WriteLine(query);
+
+            return query;  
+        }
+        return "?ids=999999";
+    }
 }

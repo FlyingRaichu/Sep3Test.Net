@@ -48,6 +48,8 @@ public static partial class TagService
   static readonly grpc::Marshaller<global::Google.Protobuf.WellKnownTypes.Empty> __Marshaller_google_protobuf_Empty = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Google.Protobuf.WellKnownTypes.Empty.Parser));
   [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
   static readonly grpc::Marshaller<global::Tag> __Marshaller_Tag = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Tag.Parser));
+  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+  static readonly grpc::Marshaller<global::IntListRequest> __Marshaller_IntListRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::IntListRequest.Parser));
 
   [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
   static readonly grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::Tag> __Method_getAllTags = new grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::Tag>(
@@ -80,6 +82,14 @@ public static partial class TagService
       "deleteTag",
       __Marshaller_Tag,
       __Marshaller_google_protobuf_Empty);
+
+  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+  static readonly grpc::Method<global::IntListRequest, global::Tag> __Method_getAllWithId = new grpc::Method<global::IntListRequest, global::Tag>(
+      grpc::MethodType.ServerStreaming,
+      __ServiceName,
+      "getAllWithId",
+      __Marshaller_IntListRequest,
+      __Marshaller_Tag);
 
   /// <summary>Service descriptor</summary>
   public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
@@ -183,6 +193,16 @@ public static partial class TagService
     public virtual grpc::AsyncUnaryCall<global::Google.Protobuf.WellKnownTypes.Empty> deleteTagAsync(global::Tag request, grpc::CallOptions options)
     {
       return CallInvoker.AsyncUnaryCall(__Method_deleteTag, null, options, request);
+    }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual grpc::AsyncServerStreamingCall<global::Tag> getAllWithId(global::IntListRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+    {
+      return getAllWithId(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+    }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual grpc::AsyncServerStreamingCall<global::Tag> getAllWithId(global::IntListRequest request, grpc::CallOptions options)
+    {
+      return CallInvoker.AsyncServerStreamingCall(__Method_getAllWithId, null, options, request);
     }
     /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
