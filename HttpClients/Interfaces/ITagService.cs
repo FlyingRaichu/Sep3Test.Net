@@ -1,6 +1,6 @@
 ﻿using Domain.DTOs.Tag;
 
-namespace HttpClients.Implementations;
+namespace HttpClients.Interfaces;
 
 public interface ITagService
 {

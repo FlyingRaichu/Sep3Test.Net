@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Text.Json;
 using Domain.DTOs.Tag;
+using HttpClients.Interfaces;
 
 namespace HttpClients.Implementations;
 

@@ -18,7 +18,7 @@ service ReviewService {
 message Review{
     int32 id = 1;
     string content = 2;
-    int32 rating = 3; //the average rating will be calculated based on the list
+    int32 rating = 3; //the average rating will be calculated based on the list for an item
     string username = 4;
 }
 
