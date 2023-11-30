@@ -1,9 +1,11 @@
 ﻿@page "/Login"
 @using HttpClients.Interfaces
 @using BlazorApp.Pages.Services
-@inject IUserService userService;
+@using BlazorApp.Service
+@inject IUserService userService
 @inject NavigationManager NavigationManager
-@inject NavigationService NavigationService
+@inject NavService NavService;
+@inject AuthenticationStateProvider authState
 
 <h3>Login</h3>
 
@@ -40,6 +42,7 @@
             await userService.LoginAsync(userName, password);
             //NavigationManager.NavigateTo(NavigationService.ReturnUrl);
             NavigationManager.NavigateTo("/");
+            NavService.LoggedInUserId = authState.GetAuthenticationStateAsync().Id;
         }
         catch (Exception e)
         {
