@@ -4,6 +4,7 @@
 @inject NavigationManager NavigationManager
 @inject ITagService TagService
 @inject IJSRuntime JsRuntime
+@attribute [Authorize("MustBeAdmin")]
 
 <h3>Back Office Tags</h3>
 <input type="text" @bind="searchString" @oninput="LoadTagsDebounced" placeholder="Search..."/>
