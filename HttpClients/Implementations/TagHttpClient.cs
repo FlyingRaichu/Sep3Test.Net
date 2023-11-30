@@ -49,7 +49,7 @@ public class TagHttpClient : ITagService
 
     public async Task UpdateAsync(TagUpdateDto dto)
     {
-        var response = await client.PatchAsJsonAsync("items", dto);
+        var response = await client.PatchAsJsonAsync("/tags", dto);
         var content = await response.Content.ReadAsStringAsync();
 
         if (!response.IsSuccessStatusCode)
@@ -72,7 +72,7 @@ public class TagHttpClient : ITagService
     public async Task<Tag> GetByIdAsync(int id)
     {
         var response = await client.GetAsync($"/tags/{id}");
-        string content = await response.Content.ReadAsStringAsync();
+        var content = await response.Content.ReadAsStringAsync();
 
         if (!response.IsSuccessStatusCode)
         {
@@ -89,10 +89,6 @@ public class TagHttpClient : ITagService
 
     public async Task<ICollection<Tag>> GetAllWithId(List<int> ids)
     {
-        if (ids == null || !ids.Any())
-        {
-            Console.WriteLine("Ids are empty at httpcall");
-        }
         var query = BuildQuery(ids);
         var response = await client.GetAsync($"/tags/getAllWithId{query}");
         var content = await response.Content.ReadAsStringAsync();
