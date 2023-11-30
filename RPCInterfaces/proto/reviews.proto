@@ -1,0 +1,31 @@
+﻿
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_multiple_files = true;
+option java_package = "via.sep4.protobuf";
+option java_outer_classname = "ReviewsProto";
+
+service ReviewService {
+    rpc getReview(google.protobuf.Int32Value) returns (Review) {};
+    rpc getAllReviews(google.protobuf.Empty) returns (stream Review) {};
+    rpc addReview(Review) returns (google.protobuf.Empty) {};
+    rpc deleteReview(Review) returns (google.protobuf.Empty);
+    rpc getAllWithId(IntListRequest) returns (stream Review);
+}
+
+message Review{
+    int32 id = 1;
+    string content = 2;
+    int32 rating = 3; //the average rating will be calculated based on the list
+    string username = 4;
+}
+
+message IntListRequest{
+    repeated int32 values = 1;
+}
+
+//todo THE REVIEW CAN BE ADDED IN THE API, BUT IDK HOW TO SET THE FOREIGN KEY IN THE DB, other then that it should work, when blazor is implemented
+
+

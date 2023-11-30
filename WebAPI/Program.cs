@@ -20,14 +20,17 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRpcBase<Item>, ItemRpc>();
 builder.Services.AddScoped<IRpcBase<User>, UserRpc>();
 builder.Services.AddScoped<IRpcBase<Tag>, TagRpc>();
+builder.Services.AddScoped<IReviewRpc, ReviewRpc>();
 
 builder.Services.AddScoped<IItemDao, ItemDao>();
 builder.Services.AddScoped<IItemLogic, ItemLogic>();
 builder.Services.AddScoped<ITagDao, TagDao>();
 builder.Services.AddScoped<ITagLogic, TagLogic>();
+builder.Services.AddScoped<IReviewDao, ReviewDao>();
 
 builder.Services.AddScoped<IUserDao, UserDao>();
 builder.Services.AddScoped<IUserLogic, UserLogic>();
+builder.Services.AddScoped<IReviewLogic, ReviewLogic>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
