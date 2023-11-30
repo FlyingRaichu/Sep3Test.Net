@@ -24,7 +24,14 @@ public class FavoritesController : ControllerBase
         try
         {
             var result = await favLogic.CreateAsync(dto);
-            return Ok(result);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound(new { message = "Favorite not found" });
+            }
         }
         catch (Exception ex)
         {
@@ -33,15 +40,22 @@ public class FavoritesController : ControllerBase
         }
     }
     
-    [HttpDelete]
+    [HttpPost]
     [Route("Delete")]
     public async Task<ActionResult> DeleteFavoriteAsync([FromBody] FavoriteDto dto)
     {
         try
         {
             var result = await favLogic.DeleteAsync(dto);
-            
-            return Ok(result);
+
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound(new { message = "Favorite not found" });
+            }
         }
         catch (Exception ex)
         {
@@ -52,7 +66,7 @@ public class FavoritesController : ControllerBase
     
     [HttpGet]
     [Route("Get")]
-    public async Task<ActionResult> GetFavoriteAsync([FromQuery] int userId, [FromQuery] int itemId)
+    public async Task<ActionResult> GetAsync([FromQuery] int userId, [FromQuery] int itemId)
     {
         try
         {

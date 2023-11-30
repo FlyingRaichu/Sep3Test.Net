@@ -77,10 +77,10 @@
          authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
          //if logged in, toggle isFavorite to change button display
-         if (authState.User.Identity.IsAuthenticated)
+         if (authState.User.Identity?.IsAuthenticated ?? false)
          {
-             FavoriteDto dto = new(userId, Navigation.Selected.Id);
-             isFavorite = (await FavService.GetAsync(dto) == null);
+             FavoriteDto dto = new(Navigation.LoggedInUserId, Navigation.Selected.Id);
+             isFavorite = await FavService.GetAsync(dto, UserHttpClient.Jwt) != null;
          }
          
          StateHasChanged(); //re-render if there are any changes
@@ -88,15 +88,37 @@
 
     private async void AddFavorite()
      {
-         FavoriteDto dto = new(userId, Navigation.Selected.Id);
-         await FavService.CreateAsync(dto);
-         StateHasChanged();
+         FavoriteDto dto = new(Navigation.LoggedInUserId, Navigation.Selected.Id);
+        try
+        {
+            Favorite createdFavorite = await FavService.CreateAsync(dto, UserHttpClient.Jwt);
+
+            if (createdFavorite != null)
+                isFavorite = true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error creating favorite: {ex.Message}");
+        }
+
+        StateHasChanged();
      }
 
      private async void RemoveFavorite()
      {
-         FavoriteDto dto = new(userId, Navigation.Selected.Id);
-         await FavService.DeleteAsync(dto);
+         FavoriteDto dto = new(Navigation.LoggedInUserId, Navigation.Selected.Id);
+         try
+         {
+             Favorite deletedFavorite = await FavService.DeleteAsync(dto, UserHttpClient.Jwt);
+
+             if (deletedFavorite != null)
+                 isFavorite = false;
+         }
+         catch (Exception ex)
+         {
+             Console.WriteLine($"Error creating favorite: {ex.Message}");
+         }
+
          StateHasChanged();
      }
 
