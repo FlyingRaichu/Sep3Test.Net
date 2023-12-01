@@ -134,7 +134,6 @@
             var tags = await GetTagsForItem(item);
             var tagString = string.Join(", ", tags);
             tagsDictionary.Add(item.Id, tagString);
-            Console.WriteLine($"tags: {tagsDictionary[item.Id]}");
         }
     }
 

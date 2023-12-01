@@ -106,6 +106,13 @@ public class ItemHttpClient : IItemService
             PropertyNameCaseInsensitive = true
         })!;
         
+        var jsonDocument = JsonDocument.Parse(content);
+    
+        // Manually add tags to the item
+        var tagsJson = jsonDocument.RootElement.GetProperty("tags");
+
+        item.Tags.AddRange(tagsJson.EnumerateArray().Select(tag => tag.GetInt32()));
+        
         return item;
     }
 
