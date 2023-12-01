@@ -6,7 +6,7 @@
 @inject ITagService TagService
 @inject IJSRuntime JsRuntime
 @attribute [Authorize("MustBeAdmin")]
-
+<BackOfficeNavMenu/>
 <h3>Back Office Items</h3>
 <input type="text" @bind="searchString" @oninput="LoadItemsDebounced" placeholder="Search..."/>
 @* <button @onclick="LoadItems" disabled="@(string.IsNullOrEmpty(searchString))" class="acceptbtn">Confirm</button> *@
