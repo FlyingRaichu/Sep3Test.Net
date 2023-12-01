@@ -1,6 +1,8 @@
 ﻿@page "/"
 @using HttpClients.Interfaces
+@using HttpClients.Implementations
 @inject IItemService ItemService;
+@inject ITagService TagService
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager;
 
 <MudLayout>
@@ -19,16 +21,25 @@
             <MudSelect T="string" Label="Select Manufacturer" Value="@_manufacturerFilter" Clearable="true" ValueChanged="HandleManufacturerFilterChange" AnchorOrigin="Origin.BottomCenter">
                 @foreach (var manufacturer in _allManufacturers)
                 {
-                    <MudSelectItem Value="@manufacturer" @key="manufacturer" />
+                    <MudSelectItem Value="@manufacturer" @key="manufacturer"/>
                 }
             </MudSelect>
+            <!--MudSliders-->
             <MudSlider @bind-Value="minPrice" Min="0" Max="200" Step="10" Color="Color.Info">Min Price: @minPrice.ToString() dollars</MudSlider>
             <MudSlider @bind-Value="maxPrice" Min="0" Max="200" Step="10" Color="Color.Error">Max Price: @maxPrice.ToString() yen</MudSlider>
-            
+            <!--MudSelect for Tags -->
+          <MudPaper Width="300px">
+              <MudList Clickable="true">
+                  @foreach (var tag in tagsDictionary.SelectMany(entry => entry.Value.Split(',').Select(t => t.Trim()).Distinct()))
+                  {
+                      <MudListItem Text="@tag" @onclick="() => FilterItemsByTag(tag)" />
+                  }
+              </MudList>
+          </MudPaper>
             @if (maxPrice.HasValue && maxPrice <= 10)
-                        {
-                            <MudText Typo="Typo.body2" Class="mt-2">You poor bastard, lol</MudText>
-                        }
+            {
+                <MudText Typo="Typo.body2" Class="mt-2">You poor bastard, lol</MudText>
+            }
 
         </MudContainer>
     </MudDrawer>
@@ -68,7 +79,7 @@
                             {
                                 <MudItem xs="12" md="6" lg="4">
                                     <MudCard>
-                                        <MudCardMedia Image="images/s.jpg" Height="200" />
+                                        <MudCardMedia Image="images/s.jpg" Height="200"/>
                                         <MudCardContent>
                                             <MudText Typo="Typo.h5">@item.Title</MudText>
                                             <MudText Typo="Typo.body2">Price: @item.Price</MudText>
@@ -87,12 +98,15 @@
     </MudMainContent>
 
     @code {
+       
         private double? minPrice;
         private double? maxPrice;
         private string _manufacturerFilter;
         private IEnumerable<Item> items;
         private IEnumerable<string> _allManufacturers = Enumerable.Empty<string>();
         private IEnumerable<string> _manufacturers = Enumerable.Empty<string>();
+        private Dictionary<int, string> tagsDictionary = new Dictionary<int, string>();
+
 
         private string statusMessage = "";
 
@@ -105,15 +119,11 @@
         {
             try
             {
-                Console.WriteLine($"Filter: {_manufacturerFilter}, Min Price: {minPrice}, Max Price: {maxPrice}");
-
                 items = await ItemService.GetItemsAsync(null, null, null, _manufacturerFilter, null, null);
 
                 if (_manufacturerFilter != null)
                 {
-                    Console.WriteLine($"Items after manufacturer filter: {items.Count()}");
                 }
-
                 if (!_allManufacturers.Any())
                 {
                     _allManufacturers = items?.Select(item => item.Manufacturer)?.Distinct() ?? Enumerable.Empty<string>();
@@ -121,7 +131,9 @@
 
                 _manufacturers = _allManufacturers;
                 StateHasChanged();
+                await LoadTags();
             }
+
             catch (Exception e)
             {
                 Console.WriteLine(e);
@@ -135,9 +147,45 @@
             LoadItems();
         }
 
+        private async Task LoadTags()
+        {
+            foreach (var item in items)
+            {
+                var tags = await GetTagsForItem(item);
+                var tagString = string.Join(", ", tags);
+                tagsDictionary.Add(item.Id, tagString);
+                Console.WriteLine($"tags: {tagsDictionary[item.Id]}");
+            }
+        }
+
+        private async Task<IEnumerable<string>> GetTagsForItem(Item item)
+        {
+            var ids = new List<int>();
+            if (item.Tags != null)
+            {
+                ids.AddRange(item.Tags);
+            }
+
+            var tags = await TagService.GetAllWithId(ids);
+            IEnumerable<string> tagsString = tags.Select(tag => tag.TagName).ToList();
+
+            return tagsString;
+        }
+
+        private void FilterItemsByTag(string tag)
+        {
+        // Implement filtering logic based on the selected tag
+            var filteredItems = items.Where(item => tagsDictionary.ContainsKey(item.Id) && tagsDictionary[item.Id].Split(',').Select(t => t.Trim()).Contains(tag)).ToList();
+
+        // Update the displayed items
+            items = filteredItems;
+        }
+
         private void GoToCheckoutPage()
         {
             NavigationManager.NavigateTo("/Checkout");
         }
+
     }
+
 </MudLayout>
