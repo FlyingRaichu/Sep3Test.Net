@@ -27,7 +27,7 @@
     [Parameter]
     public Item Item { get; set; }
     [Parameter]
-    public EventCallback OnItemRemoved { get; set; }
+    public EventCallback<Item> OnItemRemoved { get; set; }
 
     private async void RemoveFavorite()
     {
@@ -35,7 +35,7 @@
         try
         {
             var deletedFavorite = await FavService.DeleteAsync(dto, UserHttpClient.Jwt);
-            await OnItemRemoved.InvokeAsync();
+            await OnItemRemoved.InvokeAsync(Item);
         }
         catch (Exception ex)
         {

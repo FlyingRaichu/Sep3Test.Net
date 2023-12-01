@@ -16,7 +16,7 @@
             @foreach (var item in items)
             {
                 <MudPaper Class="pa-16 ma-2" Elevation="0">
-                    <FavoriteCard Item="@item" OnItemRemoved="OnParametersSetAsync"></FavoriteCard>
+                    <FavoriteCard Item="@item" OnItemRemoved="OnItemRemoval"></FavoriteCard>
                 </MudPaper>
             }
         }
@@ -40,5 +40,11 @@
         StateHasChanged(); //re-render if there are any changes
     }
     
+    private void OnItemRemoval(Item removedItem)
+    {
+        if (items == null) return;
+        items = items.Where(item => item.Id != removedItem.Id).ToList();
+        StateHasChanged();
+    }
     
 }
