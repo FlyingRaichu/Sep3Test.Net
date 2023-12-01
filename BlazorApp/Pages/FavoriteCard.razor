@@ -6,7 +6,7 @@
 @inject IFavoriteService FavService
 
 <MudPaper Class="pa-16 ma-2">
-    <MudGrid>
+    <MudGrid Justify="Justify.Center" Class="d-flex align-items-center">
         <MudItem md="2">
             <MudImage Src="" Alt="@Item.Title"></MudImage>
         </MudItem>
@@ -18,7 +18,7 @@
         </MudItem>
         <MudItem md="1">
             <MudButton Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.StarOutline"
-                                                           OnClick="RemoveFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Unfavorite</MudButton>
+                OnClick="RemoveFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Unfavorite</MudButton>
         </MudItem>
     </MudGrid>
 </MudPaper>
@@ -26,6 +26,8 @@
     //also include image
     [Parameter]
     public Item Item { get; set; }
+    [Parameter]
+    public EventCallback OnItemRemoved { get; set; }
 
     private async void RemoveFavorite()
     {
@@ -33,6 +35,7 @@
         try
         {
             var deletedFavorite = await FavService.DeleteAsync(dto, UserHttpClient.Jwt);
+            await OnItemRemoved.InvokeAsync();
         }
         catch (Exception ex)
         {
