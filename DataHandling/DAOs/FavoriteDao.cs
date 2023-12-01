@@ -1,5 +1,5 @@
 using Application.DaoInterfaces;
-using RPCInterface.RPCImplementations;
+using RPCInterface.RPCInterfaces;
 
 namespace DataHandling.DAOs;
 
@@ -21,7 +21,7 @@ public class FavoriteDao : IFavoriteDao
     public Task<Favorite> GetAsync(Favorite fav)
     {
         var favorite = context.Get(fav);
-        return Task.FromResult(fav);
+        return favorite;
     }
 
     public Task<Favorite> DeleteAsync(Favorite fav)

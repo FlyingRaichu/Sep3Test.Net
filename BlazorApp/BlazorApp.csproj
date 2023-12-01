@@ -23,5 +23,9 @@
       <None Remove="Pages\BackOffice\wool.jpg" />
       <None Include="wwwroot\images\s.jpg" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Shared\FavoriteCard.razor" />
+    </ItemGroup>
     
 </Project>

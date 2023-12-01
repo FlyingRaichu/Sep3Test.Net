@@ -1,7 +1,9 @@
-﻿using Application.LogicInterfaces;
+﻿using Application.Logic;
+using Application.LogicInterfaces;
 using Domain.DTOs;
 using Domain.DTOs.Item;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -46,6 +48,23 @@ public class ItemsController : ControllerBase
         {
             Console.WriteLine(e);
             return StatusCode(500, e.Message);
+        }
+    }
+    
+    [HttpGet]
+    [Route("Favorites")]
+    [Authorize]
+    public async Task<ActionResult> GetFavItemsByUserAsync([FromQuery] int userId)
+    {
+        try
+        {
+            var result = await logic.GetFavItemsByUserAsync(userId);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return StatusCode(500, new { message = "Internal Server Error" });
         }
     }
 

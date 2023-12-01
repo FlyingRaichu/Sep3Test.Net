@@ -10,6 +10,7 @@ namespace Application.LogicInterfaces;
 public interface IItemLogic
 {
     Task<IEnumerable<Item>> GetAsync(SearchItemParametersDto searchParameters);
+    Task<IEnumerable<Item>> GetFavItemsByUserAsync(int userId);
     Task<Item> CreateAsync(ItemCreationDto dto);
     Task UpdateAsync(ItemUpdateDto dto);
     Task DeleteAsync(int id);
