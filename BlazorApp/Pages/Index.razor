@@ -17,25 +17,25 @@
         </MudDrawerHeader>
         <MudContainer MaxWidth="MaxWidth.Medium">
             <!-- MudSelect for Manufacturer -->
-            <MudText Typo="Typo.h6" Class="mud-width-full">@(_manufacturerFilter == null ? "All manufacturers." : $"Manufacturer: {_manufacturerFilter}")</MudText>
-            <MudSelect T="string" Label="Select Manufacturer" Value="@_manufacturerFilter" Clearable="true" ValueChanged="HandleManufacturerFilterChange" AnchorOrigin="Origin.BottomCenter">
-                @foreach (var manufacturer in _allManufacturers)
-                {
-                    <MudSelectItem Value="@manufacturer" @key="manufacturer"/>
-                }
-            </MudSelect>
+             <ManufacturerFilter _manufacturerFilter="@_manufacturerFilter" _allManufacturers="@_allManufacturers" ManufacturerFilterChanged="HandleManufacturerFilterChange" />
             <!--MudSliders-->
             <MudSlider @bind-Value="minPrice" Min="0" Max="200" Step="10" Color="Color.Info">Min Price: @minPrice.ToString() dollars</MudSlider>
             <MudSlider @bind-Value="maxPrice" Min="0" Max="200" Step="10" Color="Color.Error">Max Price: @maxPrice.ToString() yen</MudSlider>
-            <!--MudSelect for Tags -->
-          <MudPaper Width="300px">
-              <MudList Clickable="true">
-                  @foreach (var tag in tagsDictionary.SelectMany(entry => entry.Value.Split(',').Select(t => t.Trim()).Distinct()))
-                  {
-                      <MudListItem Text="@tag" @onclick="() => FilterItemsByTag(tag)" />
-                  }
-              </MudList>
-          </MudPaper>
+            
+              <MudSelect T="string" Label="Select Tags" Clearable="true" ValueChanged="ToggleTagSelection" OnClearButtonClick="ResetTagsSelection">
+                   @foreach (var tag in tagsDictionary.SelectMany(entry => entry.Value.Split(',').Select(t => t.Trim()).Distinct()))
+                   {
+                       <MudSelectItem T="string" Value="@tag"  />
+                   }
+               </MudSelect>
+            <div>
+                <MudTextField @bind-Value="_selectedTagsDisplay" Label="Selected Tags" Disabled="true" />
+         </div>
+         
+       
+        <MudPaper Width="300px">
+ 
+        </MudPaper>
             @if (maxPrice.HasValue && maxPrice <= 10)
             {
                 <MudText Typo="Typo.body2" Class="mt-2">You poor bastard, lol</MudText>
@@ -106,6 +106,8 @@
         private IEnumerable<string> _allManufacturers = Enumerable.Empty<string>();
         private IEnumerable<string> _manufacturers = Enumerable.Empty<string>();
         private Dictionary<int, string> tagsDictionary = new Dictionary<int, string>();
+        private HashSet<string> _selectedTags = new HashSet<string>();
+        private string _selectedTagsDisplay = "";
 
 
         private string statusMessage = "";
@@ -179,6 +181,83 @@
 
         // Update the displayed items
             items = filteredItems;
+        }
+       
+        private void ToggleTagSelection(string tag)
+        {
+            if (_selectedTags.Contains(tag))
+            {
+                _selectedTags.Remove(tag);
+            }
+            else
+            {
+                _selectedTags.Add(tag);
+            }
+
+            UpdateSelectedTagsDisplay();
+            ApplyFilters();
+        }
+
+        private void ApplyFilters()
+        {
+            var filteredItems = items;
+
+        // Apply manufacturer filter
+            if (_manufacturerFilter != null)
+            {
+                filteredItems = filteredItems.Where(item => item.Manufacturer == _manufacturerFilter).ToList();
+            }
+
+        // Apply price range filters
+            if (minPrice.HasValue)
+            {
+                filteredItems = filteredItems.Where(item => item.Price >= minPrice).ToList();
+            }
+
+            if (maxPrice.HasValue)
+            {
+                filteredItems = filteredItems.Where(item => item.Price <= maxPrice).ToList();
+            }
+
+        // Apply tag filters
+            if (_selectedTags.Any())
+            {
+                filteredItems = filteredItems.Where(item =>
+                    tagsDictionary.ContainsKey(item.Id) &&
+                    _selectedTags.All(selectedTag =>
+                        tagsDictionary[item.Id].Split(',').Select(t => t.Trim()).Contains(selectedTag)
+                        )
+                    ).ToList();
+            }
+
+        // Update the displayed items
+            items = filteredItems;
+        }
+
+        private void ResetTagsSelection()
+        {
+            _selectedTags.Clear();
+            UpdateSelectedTagsDisplay();
+            ApplyFilters();
+            LoadAllItems();
+            
+        }
+        private void UpdateSelectedTagsDisplay()
+        {
+            _selectedTagsDisplay = string.Join(", ", _selectedTags);
+        }
+        private async Task LoadAllItems()
+        {
+            try
+            {
+                items = await ItemService.GetItemsAsync(null, null, null, _manufacturerFilter, null, null);
+                StateHasChanged();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                statusMessage = e.Message;
+            }
         }
 
         private void GoToCheckoutPage()
