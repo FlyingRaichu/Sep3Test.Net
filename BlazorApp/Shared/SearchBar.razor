@@ -8,12 +8,8 @@
 
 <!--accessing theme variants cannot be done, for some reason. mud will only take enums,not color strings.
 so css has to be overridden manually :/-->
-<MudAppBar Style="background-color: #4DD0E1; box-shadow: none;" Fixed="true">
-    <MudSpacer />
-    <MudTextField Style=@($"background-color: {Colors.Cyan.Lighten3}") @bind-Value="searchContent" Variant="Variant.Outlined" Placeholder="Search Knithub"></MudTextField>
-    <MudButton Variant="Variant.Filled" Color="Color.Inherit" OnClick="@Search">Search</MudButton>
-    <MudSpacer />
-</MudAppBar>
+<MudTextField Style=@($"background-color: {Colors.Cyan.Lighten3}") @bind-Value="searchContent" Variant="Variant.Outlined" Placeholder="Search Knithub"></MudTextField>
+<MudButton Variant="Variant.Filled" Color="Color.Inherit" OnClick="@Search">Search</MudButton>
 
 @code {
     private string searchContent;

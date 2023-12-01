@@ -4,6 +4,7 @@
 @using HttpClients.Implementations
 @inject IItemService ItemService
 @inject NavService NavService
+@inject IFavoriteService FavService
 <h3>Favorites</h3>
 <AuthorizeView>
     <Authorized>
@@ -15,8 +16,8 @@
         {
             @foreach (var item in items)
             {
-                <MudPaper>
-                    <FavoriteCard Title="@item.Title" Description="@item.Description" Price="@item.Price"></FavoriteCard>
+                <MudPaper Class="pa-16 ma-2" Elevation="0">
+                    <FavoriteCard Item="@item"></FavoriteCard>
                 </MudPaper>
             }
         }
@@ -39,4 +40,6 @@
         items = await ItemService.GetFavItemsByUserId(NavService.LoggedInUserId, UserHttpClient.Jwt);
         StateHasChanged(); //re-render if there are any changes
     }
+    
+    
 }
