@@ -16,8 +16,11 @@
         </PackageReference>
         <PackageReference Include="MudBlazor" Version="6.11.0" />
     </ItemGroup>
-
     <ItemGroup>
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Generated\proto\" />
         <Protobuf Include="proto\**\*.proto">
             <GrpcServices>Client</GrpcServices>
             <Access>Public</Access>
@@ -26,15 +29,5 @@
             <OutputDir>Generated\</OutputDir>
             <Generator>MSBuild:Compile</Generator>
         </Protobuf>
-    </ItemGroup>
-
-
-    <ItemGroup>
-      <ProjectReference Include="..\Domain\Domain.csproj" />
-    </ItemGroup>
-
-
-    <ItemGroup>
-      <Folder Include="Generated\proto\" />
     </ItemGroup>
 </Project>

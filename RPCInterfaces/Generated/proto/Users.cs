@@ -140,9 +140,6 @@ public sealed partial class User : pb::IMessage<User>
   /// <summary>Field number for the "role" field.</summary>
   public const int RoleFieldNumber = 5;
   private string role_ = "";
-  /// <summary>
-  ///TODO Add the required fields in here
-  /// </summary>
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public string Role {

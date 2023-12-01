@@ -1,7 +1,4 @@
 using BlazorApp.Auth;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using BlazorApp.Data;
 using BlazorApp.Pages.Services;
 using Domain.Auth;
 using BlazorApp.Service;
@@ -16,12 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
+builder.Services.AddSingleton<NavService>();
 builder.Services.AddSingleton<HttpClient>(new HttpClient
 {
     BaseAddress = new Uri("https://localhost:7248/swagger/index.html")
 });
 builder.Services.AddScoped<IItemService, ItemHttpClient>();
 builder.Services.AddScoped<IUserService, UserHttpClient>();
+builder.Services.AddScoped<IFavoriteService, FavoriteHttpClient>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthProvider>();
 builder.Services.AddSingleton<NavigationService>();
 

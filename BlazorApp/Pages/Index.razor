@@ -1,7 +1,9 @@
 ﻿@page "/"
 @using HttpClients.Interfaces
+@using BlazorApp.Service
 @inject IItemService ItemService;
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager;
+@inject NavService NavService;
 
 <MudLayout>
     <MudAppBar Elevation="1">
@@ -74,7 +76,7 @@
                                             <MudText Typo="Typo.body2">Price: @item.Price</MudText>
                                         </MudCardContent>
                                         <MudCardActions>
-                                            <MudButton Variant="Variant.Text" Color="Color.Primary">Details</MudButton>
+                                            <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="(e) => ViewItem(item)">Details</MudButton>
                                         </MudCardActions>
                                     </MudCard>
                                 </MudItem>
@@ -139,5 +141,12 @@
         {
             NavigationManager.NavigateTo("/Checkout");
         }
+
+        private void ViewItem(Item selected)
+        {//reroute to viewdetails page, saving info about the item in navservice
+            NavService.Selected = selected;
+            NavigationManager.NavigateTo("/ItemDetails");
+        }
+
     }
 </MudLayout>
