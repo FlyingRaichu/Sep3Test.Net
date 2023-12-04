@@ -1,0 +1,24 @@
+<!-- ManufacturerFilter.razor -->
+
+<MudSelect T="string" Label="Select Manufacturer" Value="@_manufacturerFilter" Clearable="true" ValueChanged="OnManufacturerFilterChange" AnchorOrigin="Origin.BottomCenter">
+    @foreach (var manufacturer in _allManufacturers)
+    {
+        <MudSelectItem Value="@manufacturer" @key="manufacturer"/>
+    }
+</MudSelect>
+
+@code {
+    [Parameter]
+    public string _manufacturerFilter { get; set; }
+
+    [Parameter]
+    public IEnumerable<string> _allManufacturers { get; set; }
+
+    [Parameter]
+    public EventCallback<string> ManufacturerFilterChanged { get; set; }
+
+    private async Task OnManufacturerFilterChange(string value)
+    {
+        await ManufacturerFilterChanged.InvokeAsync(value);
+    }
+}
