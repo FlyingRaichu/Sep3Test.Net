@@ -4,7 +4,7 @@
 
 <PageTitle>Result</PageTitle>
 
-<h1>Items</h1>
+<h1>Results</h1>
 @if (items == null)
 {
     
@@ -15,16 +15,13 @@ else if (!items.Any())
 }
 else
 {
-    <ul class="items">
-        @foreach (var item in items)
+    <MudPaper Class="pa-16 ma-2">
+
+    @foreach (var item in items)
         {
-            <li>
-                <strong><h3>@item.Title</h3></strong>
-                <strong><p>@item.Description</p></strong>
-                <strong><p>Price: @item.Price</p></strong>
-            </li>
+            <ItemCard Item="@item"></ItemCard>
         }
-    </ul>
+    </MudPaper>
 }
 
 
