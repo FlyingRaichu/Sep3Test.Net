@@ -1,0 +1,144 @@
+@page "/ItemDetails"
+@using BlazorApp.Service
+@using Domain.DTOs
+@using HttpClients.Implementations
+@using HttpClients.Interfaces
+@inject NavService Navigation
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IFavoriteService FavService
+@inject NavigationManager NavManager
+
+<h3>Item Details</h3>
+<MudGrid Justify="Justify.Center">
+    <!--Image section-->
+    <MudItem md="6">
+        <MudPaper Class="pa-16 ma-2">
+            <MudImage Src="" Alt="@Navigation.Selected.Title">img</MudImage>
+        </MudPaper>
+    </MudItem>
+
+    <!--details section-->
+    <MudItem md="6">
+        <MudPaper Class="pa-16 ma-2">
+            <MudGrid>
+                <MudItem xs="6">
+                    <MudText Typo="Typo.h5">@Navigation.Selected.Title</MudText>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudText>@Navigation.Selected.Price DKK</MudText>
+                </MudItem>
+            </MudGrid>
+            <MudGrid>
+                <MudItem xs="6">
+                    <MudText>@Navigation.Selected.Description</MudText>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudItem>
+                        <MudNumericField @bind-Value="quantity" Label="Quantity" Variant="Variant.Text" Min="0"/>
+                    </MudItem>
+                    <MudItem>
+                        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.AddShoppingCart"
+                                   OnClick="AddToCart" FullWidth="true" Class="ma-2" Color="Color.Tertiary">Add to Cart</MudButton>
+                    </MudItem>
+                    <!--gotta check for authorization here, otherwise favoriting isn't permitted-->
+                    <AuthorizeView>
+                            <Authorized>
+                                @if (isFavorite)
+                                {
+                                    <MudButton Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.StarOutline"
+                                               OnClick="RemoveFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Unfavorite</MudButton>
+                                }
+                                else
+                                {
+                                    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Star"
+                                                OnClick="AddFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Favorite</MudButton>
+                                }
+                            </Authorized>
+                        </AuthorizeView>
+                </MudItem>
+            </MudGrid>
+            </MudPaper>
+        </MudItem>
+
+    <!--Ratings section-->
+        <MudItem xs="12">
+            <MudPaper Class="pa-16 ma-2">
+                <MudText>Ratings</MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+<MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Star"
+                                                OnClick="ViewFavorites" FullWidth="true" Class="ma-2" Color="Color.Warning">View Favorites</MudButton>
+
+@code {
+    private int quantity { get; set; }
+    private AuthenticationState authState;
+    private bool isFavorite;
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        await RefreshFavoriteStatus();
+    }
+
+    private async Task RefreshFavoriteStatus()
+    {
+        authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+        //if logged in, toggle isFavorite to change button display
+        if (authState.User.Identity?.IsAuthenticated ?? false)
+        {
+            FavoriteDto dto = new(Navigation.LoggedInUserId, Navigation.Selected.Id);
+            isFavorite = await FavService.GetAsync(dto, UserHttpClient.Jwt) != null;
+        }
+
+        StateHasChanged(); //re-render if there are any changes
+    }
+
+    private async void AddFavorite()
+     {
+         FavoriteDto dto = new(Navigation.LoggedInUserId, Navigation.Selected.Id);
+        try
+        {
+            var createdFavorite = await FavService.CreateAsync(dto, UserHttpClient.Jwt);
+            isFavorite = true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error creating favorite: {ex.Message}");
+        }
+
+        StateHasChanged();
+     }
+
+     private async void RemoveFavorite()
+     {
+         FavoriteDto dto = new(Navigation.LoggedInUserId, Navigation.Selected.Id);
+         try
+         {
+             var deletedFavorite = await FavService.DeleteAsync(dto, UserHttpClient.Jwt);
+             isFavorite = false;
+         }
+         catch (Exception ex)
+         {
+             Console.WriteLine($"Error deleting favorite: {ex.Message}");
+         }
+
+         StateHasChanged();
+     }
+
+     private void AddToCart()
+     {
+         
+     }
+
+     private void AddReview() {}
+
+    private void ViewFavorites()
+    {
+        Navigation.CurrentPage = "Favorites";
+        NavManager.NavigateTo("/Favorites");
+        
+    }
+
+}

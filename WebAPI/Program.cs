@@ -21,7 +21,9 @@ builder.Services.AddScoped<IRpcBase<Item>, ItemRpc>();
 builder.Services.AddScoped<IRpcBase<User>, UserRpc>();
 builder.Services.AddScoped<ITagRpc, TagRpc>();
 
+builder.Services.AddScoped<IRpcFavorite<Favorite>, FavoriteRpc>();
 builder.Services.AddScoped<IItemDao, ItemDao>();
+builder.Services.AddScoped<IFavoriteDao, FavoriteDao>();
 builder.Services.AddScoped<IItemLogic, ItemLogic>();
 builder.Services.AddScoped<ITagDao, TagDao>();
 builder.Services.AddScoped<ITagLogic, TagLogic>();
@@ -29,6 +31,7 @@ builder.Services.AddScoped<ITagLogic, TagLogic>();
 builder.Services.AddScoped<IUserDao, UserDao>();
 builder.Services.AddScoped<IUserLogic, UserLogic>();
 
+builder.Services.AddScoped<IFavoriteLogic, FavoriteLogic>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;

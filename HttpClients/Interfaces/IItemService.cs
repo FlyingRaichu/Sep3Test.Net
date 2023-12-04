@@ -13,6 +13,8 @@ public interface IItemService
         int? stock, 
         List<int>? tags);
 
+    Task<ICollection<Item>> GetFavItemsByUserId(int id, string token);
+
     Task<Item> CreateAsync(ItemCreationDto dto);
     Task UpdateAsync(ItemUpdateDto dto);
     Task DeleteAsync(int id);

@@ -19,7 +19,10 @@
       <None Include="wwwroot\images\s.jpg" />
     </ItemGroup>
 
-
+    <ItemGroup>
+      <None Remove="Pages\BackOffice\wool.jpg" />
+      <None Include="wwwroot\images\s.jpg" />
+    </ItemGroup>
 
     <ItemGroup>
       <AdditionalFiles Include="Pages\BackOffice\Items\BackOfficeCreateItem.razor" />
@@ -28,5 +31,9 @@
       <AdditionalFiles Include="Pages\BackOffice\Items\BackOfficeItems.razor" />
 
     </ItemGroup>
-
+    
+    <ItemGroup>
+      <Content Remove="Shared\FavoriteCard.razor" />
+    </ItemGroup>
+    
 </Project>

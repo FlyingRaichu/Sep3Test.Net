@@ -20,6 +20,11 @@ public class ItemLogic : IItemLogic
         return itemDao.GetAsync(searchParameters);
     }
 
+    public Task<IEnumerable<Item>> GetFavItemsByUserAsync(int userId)
+    {
+        return itemDao.GetFavItemsByUserAsync(userId);
+    }
+
     public async Task<Item> CreateAsync(ItemCreationDto dto)
     {
         ValidateItem(dto);

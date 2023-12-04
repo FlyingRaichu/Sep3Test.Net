@@ -1,7 +1,9 @@
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using Domain.DTOs.Item;
 using HttpClients.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HttpClients.Implementations;
 
@@ -47,6 +49,37 @@ public class ItemHttpClient : IItemService
                 item.Tags.AddRange(tagArray.EnumerateArray().Select(tag => tag.GetInt32()));
             }
         }
+
+        return items;
+    }
+
+    public async Task<ICollection<Item>> GetFavItemsByUserId(int id, string token)
+    {
+        //prep request
+        var requestUri = $"/Items/Favorites?userId={id}";
+        var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+        if (!string.IsNullOrEmpty(token))
+        {
+            request.Headers.Add("Authorization", "Bearer " + token);
+        }
+        
+        //send and receive
+        var response = await client.SendAsync(request);
+        string content = await response.Content.ReadAsStringAsync();
+
+        if (response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.Unauthorized)
+        {
+            return null;
+        }
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception(content);
+        }
+
+        var items = JsonSerializer.Deserialize<ICollection<Item>>(content, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
 
         return items;
     }

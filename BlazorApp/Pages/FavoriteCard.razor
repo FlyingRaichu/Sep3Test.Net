@@ -1,0 +1,47 @@
+@using HttpClients.Implementations
+@using HttpClients.Interfaces
+@using Domain.DTOs
+@using BlazorApp.Service
+@inject NavService NavService
+@inject IFavoriteService FavService
+
+<MudPaper Class="pa-16 ma-2">
+    <MudGrid Justify="Justify.Center" Class="d-flex align-items-center">
+        <MudItem md="2">
+            <MudImage Src="" Alt="@Item.Title"></MudImage>
+        </MudItem>
+        <MudItem md="9">
+            <MudText Typo="Typo.h5">@Item.Title</MudText>
+            <MudText>@Item.Description</MudText>
+            <MudText>Manufactured by @Item.Manufacturer</MudText>
+            <MudText>@Item.Price DKK</MudText>
+        </MudItem>
+        <MudItem md="1">
+            <MudButton Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.StarOutline"
+                OnClick="RemoveFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Unfavorite</MudButton>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+@code {
+    //also include image
+    [Parameter]
+    public Item Item { get; set; }
+    [Parameter]
+    public EventCallback<Item> OnItemRemoved { get; set; }
+
+    private async void RemoveFavorite()
+    {
+        FavoriteDto dto = new(NavService.LoggedInUserId, Item.Id);
+        try
+        {
+            var deletedFavorite = await FavService.DeleteAsync(dto, UserHttpClient.Jwt);
+            await OnItemRemoved.InvokeAsync(Item);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting favorite: {ex.Message}");
+        }
+
+        StateHasChanged();
+    }
+}

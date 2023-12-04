@@ -1,5 +1,6 @@
 ﻿using Application.DaoInterfaces;
 using Domain.DTOs;
+using RPCInterface.RPCImplementations;
 using RPCInterface.RPCInterfaces;
 
 namespace DataHandling.DAOs;
@@ -7,10 +8,12 @@ namespace DataHandling.DAOs;
 public class ItemDao : IItemDao
 {
     private readonly IRpcBase<Item> context;
+    private readonly IRpcFavorite<Favorite> favContext;
 
-    public ItemDao(IRpcBase<Item> context)
+    public ItemDao(IRpcBase<Item> context, IRpcFavorite<Favorite> favContext)
     {
         this.context = context;
+        this.favContext = favContext;
     }
 
     public Task<IEnumerable<Item>> GetAsync(SearchItemParametersDto searchParameters)
@@ -51,6 +54,16 @@ public class ItemDao : IItemDao
         }
         
         return Task.FromResult(items);
+    }
+
+    public Task<IEnumerable<Item>> GetFavItemsByUserAsync(int userId)
+    {
+        IEnumerable<Favorite> favList = favContext.Elements.Where(f => f.UserId == userId).ToList();
+        IEnumerable<int> itemIds = favList.Select(f => f.ItemId);
+        
+        IEnumerable<Item> favItems = context.Elements.Where(i => itemIds.Contains(i.Id)).ToList();
+        
+        return Task.FromResult(favItems);
     }
 
     public Task<Item> CreateAsync(Item item)

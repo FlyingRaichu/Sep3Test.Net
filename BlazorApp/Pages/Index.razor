@@ -1,9 +1,11 @@
 ﻿@page "/"
 @using HttpClients.Interfaces
+@using BlazorApp.Service
 @using HttpClients.Implementations
 @inject IItemService ItemService;
 @inject ITagService TagService
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager;
+@inject NavService NavService;
 
 <MudLayout>
     <MudAppBar Elevation="1">
@@ -37,9 +39,9 @@
  
         </MudPaper>
             @if (maxPrice.HasValue && maxPrice <= 10)
-            {
-                <MudText Typo="Typo.body2" Class="mt-2">You poor bastard, lol</MudText>
-            }
+                        {
+                            <MudText Typo="Typo.body2" Class="mt-2">You poor bastard, lol</MudText>
+                        }
 
         </MudContainer>
     </MudDrawer>
@@ -85,7 +87,7 @@
                                             <MudText Typo="Typo.body2">Price: @item.Price</MudText>
                                         </MudCardContent>
                                         <MudCardActions>
-                                            <MudButton Variant="Variant.Text" Color="Color.Primary">Details</MudButton>
+                                            <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="(e) => ViewItem(item)">Details</MudButton>
                                         </MudCardActions>
                                     </MudCard>
                                 </MudItem>
@@ -98,7 +100,6 @@
     </MudMainContent>
 
     @code {
-       
         private double? minPrice;
         private double? maxPrice;
         private string _manufacturerFilter;
@@ -115,6 +116,7 @@
         protected override async Task OnInitializedAsync()
         {
             await LoadItems();
+            NavService.CurrentPage = "Index";
         }
 
         private async Task LoadItems()
@@ -135,7 +137,6 @@
                 StateHasChanged();
                 await LoadTags();
             }
-
             catch (Exception e)
             {
                 Console.WriteLine(e);
@@ -265,6 +266,12 @@
             NavigationManager.NavigateTo("/Checkout");
         }
 
-    }
+        private void ViewItem(Item selected)
+        {//reroute to viewdetails page, saving info about the item in navservice
+            NavService.Selected = selected;
+            NavService.CurrentPage = "ItemDetails";
+            NavigationManager.NavigateTo("/ItemDetails");
+        }
 
+    }
 </MudLayout>
