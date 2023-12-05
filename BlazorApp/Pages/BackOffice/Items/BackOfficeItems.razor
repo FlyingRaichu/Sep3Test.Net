@@ -1,10 +1,12 @@
 ﻿@page "/BackOfficeItems"
 @using HttpClients.Implementations
 @using HttpClients.Interfaces
+@using Domain.DTOs.Item
 @inject NavigationManager NavigationManager
 @inject IItemService ItemService
 @inject ITagService TagService
 @inject IJSRuntime JsRuntime
+@inject DiscountBannerService DiscountBannerService
 @attribute [Authorize("MustBeAdmin")]
 <BackOfficeNavMenu/>
 <h3>Back Office Items</h3>
@@ -14,7 +16,15 @@
 <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" @onclick="@(() => NavigationManager.NavigateTo("/BackOfficeCreateItem"))">
 </MudFab>
 @* <button @onclick="LoadItems" disabled="@(string.IsNullOrEmpty(searchString))" class="acceptbtn">Confirm</button> *@
-
+<MudText Typo="Typo.h5">DISCOUNT ALL ITEMS!</MudText>
+<MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined" VerticalAlign="false">
+    <MudButton Color="Color.Primary" @onclick="(args) => ChangeDiscount(0)">No more discounts</MudButton>
+    <MudButton Color="Color.Primary" @onclick="(args) => ChangeDiscount(10)">10%</MudButton>
+    <MudButton Color="Color.Primary" @onclick="(args) => ChangeDiscount(20)">20%</MudButton>
+    <MudButton Color="Color.Primary" @onclick="(args) => ChangeDiscount(30)">30%</MudButton>
+    <MudButton Color="Color.Primary" @onclick="(args) => ChangeDiscount(50)">50%</MudButton>
+    <MudButton Color="Color.Primary" @onclick="(args) => ChangeDiscount(99)"> YOLO WE ARE GOING OUT OF BUSINESS 99%</MudButton>
+</MudButtonGroup>
 <MudTable Items="@items" Hover="true" Breakpoint="Breakpoint.Sm"  LoadingProgressColor="Color.Info">
     <HeaderContent>
         <MudTh>Id</MudTh>
@@ -51,8 +61,11 @@
             </MudFab>
 
             <MudFab Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large"  OnClick="(e) => ShowDeleteConfirmation(context.Id)" Data-toggle="modal" Data-target="#deleteConfirmationModal">
-             </MudFab>
+            </MudFab>
         </MudTd>
+        
+        
+
     </RowTemplate>
 </MudTable>
 
@@ -92,6 +105,7 @@
     private int itemToDeleteId;
     private string? searchString = "";
     private Timer debounceTimer;
+    List<int> tagIdsForSending;
 
     protected override async Task OnInitializedAsync()
     {
@@ -173,4 +187,48 @@
 
         return tagsString;
     }
+    private async Task ChangeDiscount(int discountValue)
+    {
+        try
+        {
+            var discountPercentage = (double)discountValue;
+
+    // Update the discount percentage for all items
+            foreach (var item in items)
+            {
+                tagIdsForSending = item.Tags.ToList();
+
+    // Create a new DTO for each item
+                var dto = new ItemUpdateDto(item.Id)
+                {
+                    Title = item.Title,
+                    Description = item.Description,
+                    Price = item.Price,
+                    Manufacturer = item.Manufacturer,
+                    Stock = item.Stock,
+                    Tags = tagIdsForSending,
+                    DiscountPercentage = discountPercentage
+                };
+
+    // Update the item with the new DTO
+                await ItemService.UpdateAsync(dto);
+            }
+
+    // Reload items to reflect the changes
+            await LoadItems();
+            
+            DiscountBannerService.ShowDiscountBanner = true;
+            if (discountValue == 0)
+            {
+                DiscountBannerService.ShowDiscountBanner = false;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
+    }
+
+
 }

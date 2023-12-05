@@ -6,6 +6,7 @@
 @inject ITagService TagService
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager;
 @inject NavService NavService;
+@inject DiscountBannerService DiscountBannerService
 
 <MudLayout>
     <MudAppBar Elevation="1">
@@ -18,30 +19,36 @@
             <MudText Typo="Typo.h5" Class="mt-1">Filter Items</MudText>
         </MudDrawerHeader>
         <MudContainer MaxWidth="MaxWidth.Medium">
+            @if (DiscountBannerService.ShowDiscountBanner)
+            {
+                <div style="background-color: yellow; padding: 10px; text-align: center;">
+                    All items are now discounted!
+                </div>
+            }
             <!-- MudSelect for Manufacturer -->
-             <ManufacturerFilter _manufacturerFilter="@_manufacturerFilter" _allManufacturers="@_allManufacturers" ManufacturerFilterChanged="HandleManufacturerFilterChange" />
+            <ManufacturerFilter _manufacturerFilter="@_manufacturerFilter" _allManufacturers="@_allManufacturers" ManufacturerFilterChanged="HandleManufacturerFilterChange"/>
             <!--MudSliders-->
             <MudSlider @bind-Value="minPrice" Min="0" Max="200" Step="10" Color="Color.Info">Min Price: @minPrice.ToString() dollars</MudSlider>
             <MudSlider @bind-Value="maxPrice" Min="0" Max="200" Step="10" Color="Color.Error">Max Price: @maxPrice.ToString() yen</MudSlider>
-            
-              <MudSelect T="string" Label="Select Tags" Clearable="true" ValueChanged="ToggleTagSelection" OnClearButtonClick="ResetTagsSelection">
-                   @foreach (var tag in tagsDictionary.SelectMany(entry => entry.Value.Split(',').Select(t => t.Trim()).Distinct()))
-                   {
-                       <MudSelectItem T="string" Value="@tag"  />
-                   }
-               </MudSelect>
+
+            <MudSelect T="string" Label="Select Tags" Clearable="true" ValueChanged="ToggleTagSelection" OnClearButtonClick="ResetTagsSelection">
+                @foreach (var tag in tagsDictionary.SelectMany(entry => entry.Value.Split(',').Select(t => t.Trim()).Distinct()))
+                {
+                    <MudSelectItem T="string" Value="@tag"/>
+                }
+            </MudSelect>
             <div>
-                <MudTextField @bind-Value="_selectedTagsDisplay" Label="Selected Tags" Disabled="true" />
-         </div>
-         
-       
-        <MudPaper Width="300px">
- 
-        </MudPaper>
+                <MudTextField @bind-Value="_selectedTagsDisplay" Label="Selected Tags" Disabled="true"/>
+            </div>
+
+
+            <MudPaper Width="300px">
+
+            </MudPaper>
             @if (maxPrice.HasValue && maxPrice <= 10)
-                        {
-                            <MudText Typo="Typo.body2" Class="mt-2">You poor bastard, lol</MudText>
-                        }
+            {
+                <MudText Typo="Typo.body2" Class="mt-2">You poor bastard, lol</MudText>
+            }
 
         </MudContainer>
     </MudDrawer>

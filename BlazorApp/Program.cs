@@ -24,6 +24,7 @@ builder.Services.AddScoped<ITagService, TagHttpClient>();
 builder.Services.AddScoped<IFavoriteService, FavoriteHttpClient>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthProvider>();
 builder.Services.AddSingleton<NavigationService>();
+builder.Services.AddSingleton<DiscountBannerService>();
 
 AuthorizationPolicies.AddPolicies(builder.Services);
 builder.Services.AddSingleton<NavService>();
