@@ -71,7 +71,6 @@ public class ItemLogic : IItemLogic
 
     public async Task DeleteAsync(int id)
     {
-
         await itemDao.DeleteAsync(id);
     }
 

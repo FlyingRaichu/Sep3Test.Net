@@ -9,13 +9,14 @@ public class OrderCreationDto
     public int PostCode { get; }
     public string Address { get; }
     public string City { get; }
-    public int PhoneNumber { get; }
+    public long PhoneNumber { get; }
     public string Status { get; }
     public string Date { get; }
     public List<OrderItemCreationDto> OrderItems { get; }
+    public int? UserId { get; }
 
     [JsonConstructor]
-    public OrderCreationDto(string orderFullName, int postCode, string address, string city, int phoneNumber,
+    public OrderCreationDto(string orderFullName, int postCode, string address, string city, long phoneNumber,
         string status, string date, List<OrderItemCreationDto> orderItems)
     {
         OrderFullName = orderFullName;

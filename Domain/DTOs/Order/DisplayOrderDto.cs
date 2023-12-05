@@ -9,12 +9,12 @@ public class DisplayOrderDto
     public int PostCode { get; }
     public string Address { get; }
     public string City { get; }
-    public int PhoneNumber { get; }
+    public long PhoneNumber { get; }
     public string Status { get; }
     public string Date { get; }
     public List<DisplayOrderItemDto> OrderItems { get; }
 
-    public DisplayOrderDto(string orderFullName, int postCode, string address, string city, int phoneNumber, string status, string date, List<DisplayOrderItemDto> orderItems)
+    public DisplayOrderDto(string orderFullName, int postCode, string address, string city, long phoneNumber, string status, string date, List<DisplayOrderItemDto> orderItems)
     {
         OrderFullName = orderFullName;
         PostCode = postCode;

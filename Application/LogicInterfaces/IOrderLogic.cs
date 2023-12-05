@@ -14,5 +14,5 @@ public interface IOrderLogic
 
     Task<OrderItem> AddItemToOrder(OrderItemCreationDto dto);
     Task UpdateItemInOrder(OrderItemUpdateDto dto);
-    Task DeleteItemFromOrder(int orderId);
+    Task DeleteItemFromOrder(OrderItem orderItem);
 }

@@ -14,5 +14,5 @@ public interface IOrderDao
 
     Task<OrderItem> AddItemToOrder(OrderItem orderItem);
     Task UpdateItemInOrder(OrderItem orderItem);
-    Task DeleteItemFromOrder(int orderId);
+    Task DeleteItemFromOrder(OrderItem orderItem);
 }

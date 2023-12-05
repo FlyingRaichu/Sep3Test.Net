@@ -6,11 +6,11 @@ public class SearchOrderParametersDto
     public int? PostCode { get; }
     public string? Address { get; }
     public string? City { get; }
-    public int? PhoneNumber { get; }
+    public long? PhoneNumber { get; }
     public string? Status { get; }
     public string? Date { get; }
 
-    public SearchOrderParametersDto(string? orderFullName, int? postCode, string? address, string? city, int? phoneNumber, string? status, string? date)
+    public SearchOrderParametersDto(string? orderFullName, int? postCode, string? address, string? city, long? phoneNumber, string? status, string? date)
     {
         OrderFullName = orderFullName;
         PostCode = postCode;
