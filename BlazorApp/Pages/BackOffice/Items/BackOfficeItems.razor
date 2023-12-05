@@ -9,9 +9,10 @@
 <BackOfficeNavMenu/>
 <h3>Back Office Items</h3>
 <input type="text" @bind="searchString" @oninput="LoadItemsDebounced" placeholder="Search..."/> 
-<MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(() => NavigationManager.NavigateTo("/BackOfficeCreateItem"))">
-    Add new Item
-</MudButton>
+
+
+<MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" @onclick="@(() => NavigationManager.NavigateTo("/BackOfficeCreateItem"))">
+</MudFab>
 @* <button @onclick="LoadItems" disabled="@(string.IsNullOrEmpty(searchString))" class="acceptbtn">Confirm</button> *@
 
 <MudTable Items="@items" Hover="true" Breakpoint="Breakpoint.Sm"  LoadingProgressColor="Color.Info">
@@ -45,12 +46,12 @@
             }
         </MudTd>
         <MudTd>
-            <MudButton Style="margin-left: 50px" Variant="Variant.Outlined" Color="Color.Primary" @onclick="@(() => NavigationManager.NavigateTo($"/BackOfficeEditItem/{@context.Id}"))">
-                <MudIcon Icon="oi oi-pencil" />
-            </MudButton>
+            <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit" @onclick="@(() => NavigationManager.NavigateTo($"/BackOfficeEditItem/{@context.Id}"))">
+                
+            </MudFab>
 
-            <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large"  OnClick="(e) => ShowDeleteConfirmation(context.Id)" Data-toggle="modal" Data-target="#deleteConfirmationModal">
-             </MudIconButton>
+            <MudFab Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large"  OnClick="(e) => ShowDeleteConfirmation(context.Id)" Data-toggle="modal" Data-target="#deleteConfirmationModal">
+             </MudFab>
         </MudTd>
     </RowTemplate>
 </MudTable>

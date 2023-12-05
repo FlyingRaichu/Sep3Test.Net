@@ -4,43 +4,43 @@
 @using BlazorApp.Service
 @inject IUserService userService
 @inject NavigationManager NavigationManager
-@inject NavService NavService;
+@inject NavService NavService
 @inject AuthenticationStateProvider authState
 
-<h3>Login</h3>
+<MudContainer>
+    <MudPaper Class="login-container">
+        <MudText  >
+            Login
+        </MudText>
 
-<div class="field">
-    <label>User name:</label>
-    <input type="text" @bind="userName"/>
-</div>
-<div class="field">
-    <label style="text-align: center">Password:</label>
-    <input type="password" @bind="password"/>
-</div>
-@if (!string.IsNullOrEmpty(msg))
-{
-    <div class="field">
-        <label style="color: red">
-            @msg
-        </label>
-    </div>
-}
-<div class="field">
-    <button class="loginbtn" @onclick="LoginAsync">Log in</button>
-</div>
+        <MudTextField @bind-Value="userName" Label="User name" Required="true" />
+
+        <MudTextField  @bind-Value="password" Label="Password" Type="InputType.Password" Required="true" />
+
+        @if (!string.IsNullOrEmpty(msg))
+        {
+            <MudAlert Class="mt-4">
+                @msg
+            </MudAlert>
+        }
+
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-4" @onclick="LoginAsync">
+            Log in
+        </MudButton>
+    </MudPaper>
+</MudContainer>
 
 @code {
     private string userName;
     private string password;
     private string msg;
-
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
     private async Task LoginAsync()
     {
         msg = "";
         try
         {
             await userService.LoginAsync(userName, password);
-            //NavigationManager.NavigateTo(NavigationService.ReturnUrl);
             NavigationManager.NavigateTo("/");
             NavService.LoggedInUserId = authState.GetAuthenticationStateAsync().Id;
         }
@@ -50,5 +50,4 @@
             msg = $"Error: {e.Message}";
         }
     }
-
 }
