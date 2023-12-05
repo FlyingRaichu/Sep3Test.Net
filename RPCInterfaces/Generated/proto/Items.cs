@@ -23,20 +23,20 @@ public static partial class ItemsReflection {
     byte[] descriptorData = global::System.Convert.FromBase64String(
         string.Concat(
           "ChFwcm90by9pdGVtcy5wcm90bxobZ29vZ2xlL3Byb3RvYnVmL2VtcHR5LnBy",
-          "b3RvGh5nb29nbGUvcHJvdG9idWYvd3JhcHBlcnMucHJvdG8ieAoESXRlbRIK",
-          "CgJpZBgBIAEoBRINCgV0aXRsZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEo",
-          "CRINCgVwcmljZRgEIAEoARIUCgxtYW51ZmFjdHVyZXIYBSABKAkSDQoFc3Rv",
-          "Y2sYBiABKAUSDAoEdGFncxgHIAMoBTL6AQoLSXRlbVNlcnZpY2USLwoHZ2V0",
-          "SXRlbRIbLmdvb2dsZS5wcm90b2J1Zi5JbnQzMlZhbHVlGgUuSXRlbSIAEjAK",
-          "C2dldEFsbEl0ZW1zEhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5GgUuSXRlbSIA",
-          "MAESKgoHYWRkSXRlbRIFLkl0ZW0aFi5nb29nbGUucHJvdG9idWYuRW1wdHki",
-          "ABItCgp1cGRhdGVJdGVtEgUuSXRlbRoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0",
-          "eSIAEi0KCmRlbGV0ZUl0ZW0SBS5JdGVtGhYuZ29vZ2xlLnByb3RvYnVmLkVt",
-          "cHR5IgBiBnByb3RvMw=="));
+          "b3RvGh5nb29nbGUvcHJvdG9idWYvd3JhcHBlcnMucHJvdG8ilAEKBEl0ZW0S",
+          "CgoCaWQYASABKAUSDQoFdGl0bGUYAiABKAkSEwoLZGVzY3JpcHRpb24YAyAB",
+          "KAkSDQoFcHJpY2UYBCABKAESFAoMbWFudWZhY3R1cmVyGAUgASgJEg0KBXN0",
+          "b2NrGAYgASgFEgwKBHRhZ3MYByADKAUSGgoSZGlzY291bnRQZXJjZW50YWdl",
+          "GAggASgBMvoBCgtJdGVtU2VydmljZRIvCgdnZXRJdGVtEhsuZ29vZ2xlLnBy",
+          "b3RvYnVmLkludDMyVmFsdWUaBS5JdGVtIgASMAoLZ2V0QWxsSXRlbXMSFi5n",
+          "b29nbGUucHJvdG9idWYuRW1wdHkaBS5JdGVtIgAwARIqCgdhZGRJdGVtEgUu",
+          "SXRlbRoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAEi0KCnVwZGF0ZUl0ZW0S",
+          "BS5JdGVtGhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgASLQoKZGVsZXRlSXRl",
+          "bRIFLkl0ZW0aFi5nb29nbGUucHJvdG9idWYuRW1wdHkiAGIGcHJvdG8z"));
     descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
         new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
         new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-          new pbr::GeneratedClrTypeInfo(typeof(global::Item), global::Item.Parser, new[]{ "Id", "Title", "Description", "Price", "Manufacturer", "Stock", "Tags" }, null, null, null, null)
+          new pbr::GeneratedClrTypeInfo(typeof(global::Item), global::Item.Parser, new[]{ "Id", "Title", "Description", "Price", "Manufacturer", "Stock", "Tags", "DiscountPercentage" }, null, null, null, null)
         }));
   }
   #endregion
@@ -84,6 +84,7 @@ public sealed partial class Item : pb::IMessage<Item>
     manufacturer_ = other.manufacturer_;
     stock_ = other.stock_;
     tags_ = other.tags_.Clone();
+    discountPercentage_ = other.discountPercentage_;
     _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
   }
 
@@ -176,6 +177,18 @@ public sealed partial class Item : pb::IMessage<Item>
     get { return tags_; }
   }
 
+  /// <summary>Field number for the "discountPercentage" field.</summary>
+  public const int DiscountPercentageFieldNumber = 8;
+  private double discountPercentage_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public double DiscountPercentage {
+    get { return discountPercentage_; }
+    set {
+      discountPercentage_ = value;
+    }
+  }
+
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public override bool Equals(object other) {
@@ -198,6 +211,7 @@ public sealed partial class Item : pb::IMessage<Item>
     if (Manufacturer != other.Manufacturer) return false;
     if (Stock != other.Stock) return false;
     if(!tags_.Equals(other.tags_)) return false;
+    if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(DiscountPercentage, other.DiscountPercentage)) return false;
     return Equals(_unknownFields, other._unknownFields);
   }
 
@@ -212,6 +226,7 @@ public sealed partial class Item : pb::IMessage<Item>
     if (Manufacturer.Length != 0) hash ^= Manufacturer.GetHashCode();
     if (Stock != 0) hash ^= Stock.GetHashCode();
     hash ^= tags_.GetHashCode();
+    if (DiscountPercentage != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(DiscountPercentage);
     if (_unknownFields != null) {
       hash ^= _unknownFields.GetHashCode();
     }
@@ -255,6 +270,10 @@ public sealed partial class Item : pb::IMessage<Item>
       output.WriteInt32(Stock);
     }
     tags_.WriteTo(output, _repeated_tags_codec);
+    if (DiscountPercentage != 0D) {
+      output.WriteRawTag(65);
+      output.WriteDouble(DiscountPercentage);
+    }
     if (_unknownFields != null) {
       _unknownFields.WriteTo(output);
     }
@@ -290,6 +309,10 @@ public sealed partial class Item : pb::IMessage<Item>
       output.WriteInt32(Stock);
     }
     tags_.WriteTo(ref output, _repeated_tags_codec);
+    if (DiscountPercentage != 0D) {
+      output.WriteRawTag(65);
+      output.WriteDouble(DiscountPercentage);
+    }
     if (_unknownFields != null) {
       _unknownFields.WriteTo(ref output);
     }
@@ -319,6 +342,9 @@ public sealed partial class Item : pb::IMessage<Item>
       size += 1 + pb::CodedOutputStream.ComputeInt32Size(Stock);
     }
     size += tags_.CalculateSize(_repeated_tags_codec);
+    if (DiscountPercentage != 0D) {
+      size += 1 + 8;
+    }
     if (_unknownFields != null) {
       size += _unknownFields.CalculateSize();
     }
@@ -350,6 +376,9 @@ public sealed partial class Item : pb::IMessage<Item>
       Stock = other.Stock;
     }
     tags_.Add(other.tags_);
+    if (other.DiscountPercentage != 0D) {
+      DiscountPercentage = other.DiscountPercentage;
+    }
     _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
   }
 
@@ -394,6 +423,10 @@ public sealed partial class Item : pb::IMessage<Item>
           tags_.AddEntriesFrom(input, _repeated_tags_codec);
           break;
         }
+        case 65: {
+          DiscountPercentage = input.ReadDouble();
+          break;
+        }
       }
     }
   #endif
@@ -436,6 +469,10 @@ public sealed partial class Item : pb::IMessage<Item>
         case 58:
         case 56: {
           tags_.AddEntriesFrom(ref input, _repeated_tags_codec);
+          break;
+        }
+        case 65: {
+          DiscountPercentage = input.ReadDouble();
           break;
         }
       }

@@ -8,66 +8,58 @@
 @attribute [Authorize("MustBeAdmin")]
 <BackOfficeNavMenu/>
 <h3>Back Office Items</h3>
-<input type="text" @bind="searchString" @oninput="LoadItemsDebounced" placeholder="Search..."/>
+<input type="text" @bind="searchString" @oninput="LoadItemsDebounced" placeholder="Search..."/> 
+<MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(() => NavigationManager.NavigateTo("/BackOfficeCreateItem"))">
+    Add new Item
+</MudButton>
 @* <button @onclick="LoadItems" disabled="@(string.IsNullOrEmpty(searchString))" class="acceptbtn">Confirm</button> *@
-<table class="table">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Manufacturer</th>
-        <th>Stock</th>
-        <th>Tags</th>
-    </tr>
-    </thead>
-    <tbody>
-    @if (items == null)
-    {
-    }
-    else if (!items.Any())
-    {
-        <p>No items to display.</p>
-    }
-    else
-    {
-        @foreach (Item item in items)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.Title</td>
-                <td>@item.Description</td>
-                <td>
-                    @item.Price
 
-                </td>
-                <td>@item.Manufacturer</td>
-                <td>@item.Stock</td>
-                @if (tagsDictionary.ContainsKey(item.Id))
-                {
-                    <td>@tagsDictionary[item.Id]</td>
-                }
-                else
-                {
-                    <td>Item has no tags.</td>
-                }
-                <td>
-                    <button style="margin-left: 50px" @onclick="@(() => NavigationManager.NavigateTo($"/BackOfficeEditItem/{@item.Id}"))">
-                        <i style="padding: 0 12px" class="oi oi-pencil"></i>
-                    </button>
+<MudTable Items="@items" Hover="true" Breakpoint="Breakpoint.Sm"  LoadingProgressColor="Color.Info">
+    <HeaderContent>
+        <MudTh>Id</MudTh>
+        <MudTh>Title</MudTh>
+        <MudTh>Description</MudTh>
+        <MudTh>Price</MudTh>
+          <MudTh>Discount Percentage</MudTh>
+        <MudTh>Manufacturer</MudTh>
+        <MudTh>Stock</MudTh>
+        <MudTh>Tags</MudTh>
+        <MudTh></MudTh> <!-- Empty header cell for actions -->
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Title">@context.Title</MudTd>
+        <MudTd DataLabel="Description">@context.Description</MudTd>
+        <MudTd DataLabel="Price">@context.Price</MudTd>
+        <MudTd DataLabel="Price">@context.DiscountPercentage</MudTd>
+        <MudTd DataLabel="Manufacturer">@context.Manufacturer</MudTd>
+        <MudTd DataLabel="Stock">@context.Stock</MudTd>
+        <MudTd DataLabel="Tags">
+            @if (tagsDictionary.ContainsKey(@context.Id))
+            {
+                @tagsDictionary[@context.Id]
+            }
+            else
+            {
+                <span>Item has no tags.</span>
+            }
+        </MudTd>
+        <MudTd>
+            <MudButton Style="margin-left: 50px" Variant="Variant.Outlined" Color="Color.Primary" @onclick="@(() => NavigationManager.NavigateTo($"/BackOfficeEditItem/{@context.Id}"))">
+                <MudIcon Icon="oi oi-pencil" />
+            </MudButton>
 
-                    <button style="margin-left: 5px" @onclick="(e) => ShowDeleteConfirmation(item.Id)" data-toggle="modal" data-target="#deleteConfirmationModal">
-                        <i style="padding: 0 12px" class="oi oi-trash"></i>
-                    </button>
-                </td>
-            </tr>
-        }
-    }
-    </tbody>
-</table>
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large"  OnClick="(e) => ShowDeleteConfirmation(context.Id)" Data-toggle="modal" Data-target="#deleteConfirmationModal">
+             </MudIconButton>
+        </MudTd>
+    </RowTemplate>
+</MudTable>
 
-<button class="oi oi-plus" @onclick="@(() => NavigationManager.NavigateTo("/BackOfficeCreateItem"))"></button>
+
+
+
+
+
 
 @* Pop-up code *@
 <div class="modal" id="deleteConfirmationModal" tabindex="-1" role="dialog">
@@ -117,7 +109,7 @@
     {
         try
         {
-            items = await ItemService.GetItemsAsync(searchString, null, null, null, null, null);
+            items = await ItemService.GetItemsAsync(searchString, null, null, null, null, null,null);
             StateHasChanged();
         }
         catch (Exception e)

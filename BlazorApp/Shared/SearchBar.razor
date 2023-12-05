@@ -20,7 +20,7 @@ so css has to be overridden manually :/-->
         try
         {
             Console.WriteLine("search");
-            searchResults = await ItemService.GetItemsAsync(searchContent, null, null, null, null, null);
+            searchResults = await ItemService.GetItemsAsync(searchContent, null, null, null, null, null, null);
             searchContent = string.Empty;
 
             navService.SearchItems = searchResults;

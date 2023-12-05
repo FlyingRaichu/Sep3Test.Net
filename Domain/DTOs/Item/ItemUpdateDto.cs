@@ -9,6 +9,7 @@ public class ItemUpdateDto
     public string? Manufacturer { get; set; }
     public int? Stock { get; set; }
     public List<int>? Tags { get; set; }
+    public double? DiscountPercentage { get; set; }
 
     public ItemUpdateDto(int id)
     {

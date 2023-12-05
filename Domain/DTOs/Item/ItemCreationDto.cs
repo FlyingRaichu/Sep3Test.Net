@@ -9,11 +9,13 @@ public class ItemCreationDto
     public double Price { get; }
     public string Manufacturer { get; }
     public int Stock { get; }
+    
+    public double DiscountPercentage { get; }
     public List<int>? Tags { get; }
 
     [JsonConstructor]
     public ItemCreationDto(string title, string description, double price, string manufacturer, int stock,
-        List<int>? tags)
+        List<int>? tags, double discountPercentage)
     {
         Title = title;
         Description = description;
@@ -21,5 +23,6 @@ public class ItemCreationDto
         Manufacturer = manufacturer;
         Stock = stock;
         Tags = tags ?? new List<int>();
+        DiscountPercentage = discountPercentage;
     }
 }

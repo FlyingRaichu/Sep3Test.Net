@@ -74,27 +74,19 @@
             }
             else
             {
+               
                 <MudContainer>
                     <MudPaper Elevation="2" Class="m-2 p-2">
                         <MudGrid>
                             @foreach (var item in filteredItems)
                             {
-                                <MudItem xs="12" md="6" lg="4">
-                                    <MudCard>
-                                        <MudCardMedia Image="images/s.jpg" Height="200"/>
-                                        <MudCardContent>
-                                            <MudText Typo="Typo.h5">@item.Title</MudText>
-                                            <MudText Typo="Typo.body2">Price: @item.Price</MudText>
-                                        </MudCardContent>
-                                        <MudCardActions>
-                                            <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="(e) => ViewItem(item)">Details</MudButton>
-                                        </MudCardActions>
-                                    </MudCard>
-                                </MudItem>
+                                <ItemCard Item="@item"></ItemCard>
                             }
                         </MudGrid>
                     </MudPaper>
                 </MudContainer>
+
+
             }
         }
     </MudMainContent>
@@ -123,7 +115,7 @@
         {
             try
             {
-                items = await ItemService.GetItemsAsync(null, null, null, _manufacturerFilter, null, null);
+                items = await ItemService.GetItemsAsync(null, null, null, _manufacturerFilter, null, null,null);
 
                 if (_manufacturerFilter != null)
                 {
@@ -251,7 +243,7 @@
         {
             try
             {
-                items = await ItemService.GetItemsAsync(null, null, null, _manufacturerFilter, null, null);
+                items = await ItemService.GetItemsAsync(null, null, null, _manufacturerFilter, null, null, null);
                 StateHasChanged();
             }
             catch (Exception e)
