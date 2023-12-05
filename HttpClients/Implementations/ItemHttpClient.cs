@@ -29,10 +29,26 @@ public class ItemHttpClient : IItemService
             throw new Exception(content);
         }
 
-        var items = JsonSerializer.Deserialize<ICollection<Item>>(content, new JsonSerializerOptions
+        var items = JsonSerializer.Deserialize<List<Item>>(content, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         })!;
+
+        var jsonDocument = JsonDocument.Parse(content);
+
+        foreach (var item in items)
+        {
+            // Manually add tags to each item
+            var tagsJson = jsonDocument.RootElement
+                .EnumerateArray()
+                .Where(j => j.GetProperty("id").GetInt32() == item.Id)
+                .Select(j => j.GetProperty("tags"));
+
+            foreach (var tagArray in tagsJson)
+            {
+                item.Tags.AddRange(tagArray.EnumerateArray().Select(tag => tag.GetInt32()));
+            }
+        }
 
         return items;
     }
@@ -78,7 +94,7 @@ public class ItemHttpClient : IItemService
             throw new Exception(content);
         }
 
-        Item item = JsonSerializer.Deserialize<Item>(content, new JsonSerializerOptions
+        var item = JsonSerializer.Deserialize<Item>(content, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         })!;
@@ -111,22 +127,29 @@ public class ItemHttpClient : IItemService
     public async Task<Item> GetByIdAsync(int id)
     {
         var response = await client.GetAsync($"/items/{id}");
-        string content = await response.Content.ReadAsStringAsync();
+        var content = await response.Content.ReadAsStringAsync();
 
         if (!response.IsSuccessStatusCode)
         {
             throw new Exception(content);
         }
 
-        Item item = JsonSerializer.Deserialize<Item>(content, new JsonSerializerOptions
+        var item = JsonSerializer.Deserialize<Item>(content, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         })!;
         
+        var jsonDocument = JsonDocument.Parse(content);
+    
+        // Manually add tags to the item
+        var tagsJson = jsonDocument.RootElement.GetProperty("tags");
+
+        item.Tags.AddRange(tagsJson.EnumerateArray().Select(tag => tag.GetInt32()));
+        
         return item;
     }
 
-    private string ConstructQuery(string? title, string? description, double? price, string? manufacturer, int? stock,
+    private static string ConstructQuery(string? title, string? description, double? price, string? manufacturer, int? stock,
         List<int>? tags)
     {
         var query = "";
@@ -161,15 +184,12 @@ public class ItemHttpClient : IItemService
             query += $"stock={stock}";
         }
 
-        if (tags != null && tags.Any())
+        if (tags == null || !tags.Any()) return query;
+        foreach (var i in tags)
         {
-            foreach (var i in tags)
-            {
-                query += string.IsNullOrEmpty(query) ? "?" : "&";
-                query += $"tags={i}";
-            }
+            query += string.IsNullOrEmpty(query) ? "?" : "&";
+            query += $"tags={i}";
         }
-
         return query;
     }
 }

@@ -1,0 +1,111 @@
+﻿@page "/BackOfficeCreateItem"
+@using HttpClients.Implementations
+@using Domain.DTOs.Item
+@using HttpClients.Interfaces
+@using System.Collections
+@inject NavigationManager NavigationManager
+@inject IItemService ItemService
+@inject ITagService TagService
+@attribute [Authorize("MustBeAdmin")]
+
+<h3>Create new item</h3>
+<span>
+    <input type="text" @bind="title" @bind:event="oninput" placeholder="Enter title..."/>
+    <input type="text" @bind="description" @bind:event="oninput" placeholder="Enter description..."/>
+    <input type="text" @bind="priceString" @bind:event="oninput" placeholder="Enter price..."/>
+    <input type="text" @bind="manufacturer" @bind:event="oninput" placeholder="Enter manufacturer..."/>
+    <input type="text" @bind="stockString" @bind:event="oninput" placeholder="Enter stock..."/>
+</span>
+
+<div>
+    <label>Select Tags:</label>
+    <select @bind="selectedTag" class="form-control">
+        @if (tags == null)
+        {
+        }
+        else if (!tags.Any())
+        {
+            <option>No items to display.</option>
+        }
+        else
+        {
+            @if (string.IsNullOrEmpty(selectedTag))
+            {
+                <option value="" disabled selected hidden>-----</option>
+            }
+            @foreach (var tag in tags)
+            {
+                <option value="@tag.Id">@tag.TagName</option>
+            }
+        }
+    </select>
+    <button class="oi oi-plus" @onclick="AddTag"></button>
+    <ul>
+        @if (tagIdsForSending != null)
+        {
+            <Label>Added tags:</Label>
+            @foreach (var selectedTagId in tagIdsForSending)
+            {
+                <li onclick="@(() => RemoveTag(selectedTagId))">@tags.FirstOrDefault(t => t.Id == selectedTagId)?.TagName</li>
+            }
+        }
+    </ul>
+</div>
+<br/>
+<br/>
+<button @onclick="CreateAsync" disabled="@(string.IsNullOrEmpty(title) || string.IsNullOrEmpty(description) || string.IsNullOrEmpty(priceString))" class="acceptbtn">Create</button>
+<label style="color: red">@msg</label>
+
+@code {
+    string title, description, priceString, manufacturer, stockString;
+    string msg = "";
+    ICollection<Tag> tags;
+    List<int> tagIdsForSending = new List<int>();
+    ICollection<Tag> displayTags;
+    string selectedTag;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await PopulateTags();
+    }
+
+    private async Task CreateAsync()
+    {
+        var areFieldsValid = !string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(description) &&
+                             !string.IsNullOrEmpty(priceString) && !string.IsNullOrEmpty(manufacturer) && !string.IsNullOrEmpty(stockString);
+        msg = "";
+        if (double.TryParse(priceString, out var price) && int.TryParse(stockString, out var stock) && areFieldsValid)
+        {
+            var itemDto = new ItemCreationDto(title, description, price, manufacturer, stock, tagIdsForSending);
+            await ItemService.CreateAsync(itemDto);
+            NavigationManager.NavigateTo("/BackOfficeItems");
+        }
+        else
+        {
+            msg = "Please insert correct formatting for fields.";
+        }
+    }
+
+    private void AddTag()
+    {
+        Console.WriteLine($"Selected tag: {selectedTag}");
+        if (!int.TryParse(selectedTag, out var selectedTagId)) return;
+        var tagToAdd = tags.FirstOrDefault(t => t.Id == selectedTagId);
+
+        if (tagToAdd == null) return;
+        tagIdsForSending.Add(tagToAdd.Id);
+        StateHasChanged();
+    }
+
+    private void RemoveTag(int id)
+    {
+        tagIdsForSending.Remove(id);
+        StateHasChanged();
+    }
+
+    private async Task PopulateTags()
+    {
+        tags = await TagService.GetTagsAsync(null);
+    }
+
+}

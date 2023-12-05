@@ -10,4 +10,5 @@ public interface ITagLogic
     Task UpdateAsync(TagUpdateDto dto);
     Task DeleteAsync(int id);
     Task<Tag> GetByIdAsync(int id);
+    Task<IEnumerable<Tag>> GetAllWithIdAsync(List<int> ids);
 }

@@ -46,6 +46,21 @@ public class TagsController : ControllerBase
         }
     }
 
+    [HttpGet("getAllWithId")]
+    public async Task<ActionResult<IEnumerable<Tag>>> GetAllWithId([FromQuery] List<int> ids)
+    {
+        try
+        {
+            var tags = await logic.GetAllWithIdAsync(ids);
+            return Ok(tags);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+
     [HttpPost]
     public async Task<ActionResult<Tag>> CreateAsync([FromBody] TagCreationDto dto)
     {

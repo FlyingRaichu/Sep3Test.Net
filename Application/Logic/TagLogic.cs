@@ -62,6 +62,11 @@ public class TagLogic : ITagLogic
         return tag;
     }
 
+    public Task<IEnumerable<Tag>> GetAllWithIdAsync(List<int> ids)
+    {
+        return tagDao.GetAllWithIdAsync(ids);
+    }
+
     private static void ValidateTag(TagCreationDto dto)
     {
         if (string.IsNullOrEmpty(dto.Name))

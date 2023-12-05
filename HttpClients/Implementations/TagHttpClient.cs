@@ -50,7 +50,7 @@ public class TagHttpClient : ITagService
 
     public async Task UpdateAsync(TagUpdateDto dto)
     {
-        var response = await client.PatchAsJsonAsync("items", dto);
+        var response = await client.PatchAsJsonAsync("/tags", dto);
         var content = await response.Content.ReadAsStringAsync();
 
         if (!response.IsSuccessStatusCode)
@@ -73,7 +73,7 @@ public class TagHttpClient : ITagService
     public async Task<Tag> GetByIdAsync(int id)
     {
         var response = await client.GetAsync($"/tags/{id}");
-        string content = await response.Content.ReadAsStringAsync();
+        var content = await response.Content.ReadAsStringAsync();
 
         if (!response.IsSuccessStatusCode)
         {
@@ -86,5 +86,38 @@ public class TagHttpClient : ITagService
         })!;
         
         return tag;
+    }
+
+    public async Task<ICollection<Tag>> GetAllWithId(List<int> ids)
+    {
+        var query = BuildQuery(ids);
+        var response = await client.GetAsync($"/tags/getAllWithId{query}");
+        var content = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception(content);
+        }
+        
+        var tags = JsonSerializer.Deserialize<ICollection<Tag>>(content, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
+        return tags;
+    }
+
+    private static string BuildQuery(IReadOnlyCollection<int>? ids)
+    {
+        if (ids != null && ids.Any())
+        {
+            var query = $"?ids={ids.First()}";
+
+            query = ids.Skip(1).Aggregate(query, (current, id) => current + $"&ids={id}");
+            
+            Console.WriteLine(query);
+
+            return query;  
+        }
+        return "?ids=999999";
     }
 }

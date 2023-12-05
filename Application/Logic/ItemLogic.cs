@@ -45,17 +45,25 @@ public class ItemLogic : IItemLogic
     {
         var existing = await GetByIdAsync(dto.Id);
 
-        string titleToUse = dto.Title ?? existing.Title;
-        string descriptionToUse = dto.Description ?? existing.Description;
-        double priceToUse = dto.Price ?? existing.Price;
+        var titleToUse = dto.Title ?? existing.Title;
+        var descriptionToUse = dto.Description ?? existing.Description;
+        var priceToUse = dto.Price ?? existing.Price;
+        var manufacturerToUse = dto.Manufacturer ?? existing.Manufacturer;
+        var stockToUse = dto.Stock ?? existing.Stock;
+        var tagsToUse = dto.Tags ?? existing.Tags.ToList();
+        
 
         Item updated = new()
         {
             Id = existing.Id,
             Title = titleToUse,
             Description = descriptionToUse,
-            Price = priceToUse
+            Price = priceToUse,
+            Manufacturer = manufacturerToUse,
+            Stock = stockToUse,
         };
+        
+        updated.Tags.AddRange(tagsToUse);
         
         ValidateItem(updated);
         await itemDao.UpdateAsync(updated);

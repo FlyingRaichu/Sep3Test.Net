@@ -1,7 +1,9 @@
 ﻿@page "/"
 @using HttpClients.Interfaces
 @using BlazorApp.Service
+@using HttpClients.Implementations
 @inject IItemService ItemService;
+@inject ITagService TagService
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager;
 @inject NavService NavService;
 
@@ -17,16 +19,25 @@
         </MudDrawerHeader>
         <MudContainer MaxWidth="MaxWidth.Medium">
             <!-- MudSelect for Manufacturer -->
-            <MudText Typo="Typo.h6" Class="mud-width-full">@(_manufacturerFilter == null ? "All manufacturers." : $"Manufacturer: {_manufacturerFilter}")</MudText>
-            <MudSelect T="string" Label="Select Manufacturer" Value="@_manufacturerFilter" Clearable="true" ValueChanged="HandleManufacturerFilterChange" AnchorOrigin="Origin.BottomCenter">
-                @foreach (var manufacturer in _allManufacturers)
-                {
-                    <MudSelectItem Value="@manufacturer" @key="manufacturer" />
-                }
-            </MudSelect>
+             <ManufacturerFilter _manufacturerFilter="@_manufacturerFilter" _allManufacturers="@_allManufacturers" ManufacturerFilterChanged="HandleManufacturerFilterChange" />
+            <!--MudSliders-->
             <MudSlider @bind-Value="minPrice" Min="0" Max="200" Step="10" Color="Color.Info">Min Price: @minPrice.ToString() dollars</MudSlider>
             <MudSlider @bind-Value="maxPrice" Min="0" Max="200" Step="10" Color="Color.Error">Max Price: @maxPrice.ToString() yen</MudSlider>
             
+              <MudSelect T="string" Label="Select Tags" Clearable="true" ValueChanged="ToggleTagSelection" OnClearButtonClick="ResetTagsSelection">
+                   @foreach (var tag in tagsDictionary.SelectMany(entry => entry.Value.Split(',').Select(t => t.Trim()).Distinct()))
+                   {
+                       <MudSelectItem T="string" Value="@tag"  />
+                   }
+               </MudSelect>
+            <div>
+                <MudTextField @bind-Value="_selectedTagsDisplay" Label="Selected Tags" Disabled="true" />
+         </div>
+         
+       
+        <MudPaper Width="300px">
+ 
+        </MudPaper>
             @if (maxPrice.HasValue && maxPrice <= 10)
                         {
                             <MudText Typo="Typo.body2" Class="mt-2">You poor bastard, lol</MudText>
@@ -70,7 +81,7 @@
                             {
                                 <MudItem xs="12" md="6" lg="4">
                                     <MudCard>
-                                        <MudCardMedia Image="images/s.jpg" Height="200" />
+                                        <MudCardMedia Image="images/s.jpg" Height="200"/>
                                         <MudCardContent>
                                             <MudText Typo="Typo.h5">@item.Title</MudText>
                                             <MudText Typo="Typo.body2">Price: @item.Price</MudText>
@@ -95,6 +106,10 @@
         private IEnumerable<Item> items;
         private IEnumerable<string> _allManufacturers = Enumerable.Empty<string>();
         private IEnumerable<string> _manufacturers = Enumerable.Empty<string>();
+        private Dictionary<int, string> tagsDictionary = new Dictionary<int, string>();
+        private HashSet<string> _selectedTags = new HashSet<string>();
+        private string _selectedTagsDisplay = "";
+
 
         private string statusMessage = "";
 
@@ -108,15 +123,11 @@
         {
             try
             {
-                Console.WriteLine($"Filter: {_manufacturerFilter}, Min Price: {minPrice}, Max Price: {maxPrice}");
-
                 items = await ItemService.GetItemsAsync(null, null, null, _manufacturerFilter, null, null);
 
                 if (_manufacturerFilter != null)
                 {
-                    Console.WriteLine($"Items after manufacturer filter: {items.Count()}");
                 }
-
                 if (!_allManufacturers.Any())
                 {
                     _allManufacturers = items?.Select(item => item.Manufacturer)?.Distinct() ?? Enumerable.Empty<string>();
@@ -124,6 +135,7 @@
 
                 _manufacturers = _allManufacturers;
                 StateHasChanged();
+                await LoadTags();
             }
             catch (Exception e)
             {
@@ -136,6 +148,117 @@
         {
             _manufacturerFilter = value;
             LoadItems();
+        }
+
+        private async Task LoadTags()
+        {
+            foreach (var item in items)
+            {
+                var tags = await GetTagsForItem(item);
+                var tagString = string.Join(", ", tags);
+                tagsDictionary.Add(item.Id, tagString);
+                Console.WriteLine($"tags: {tagsDictionary[item.Id]}");
+            }
+        }
+
+        private async Task<IEnumerable<string>> GetTagsForItem(Item item)
+        {
+            var ids = new List<int>();
+            if (item.Tags != null)
+            {
+                ids.AddRange(item.Tags);
+            }
+
+            var tags = await TagService.GetAllWithId(ids);
+            IEnumerable<string> tagsString = tags.Select(tag => tag.TagName).ToList();
+
+            return tagsString;
+        }
+
+        private void FilterItemsByTag(string tag)
+        {
+        // Implement filtering logic based on the selected tag
+            var filteredItems = items.Where(item => tagsDictionary.ContainsKey(item.Id) && tagsDictionary[item.Id].Split(',').Select(t => t.Trim()).Contains(tag)).ToList();
+
+        // Update the displayed items
+            items = filteredItems;
+        }
+       
+        private void ToggleTagSelection(string tag)
+        {
+            if (_selectedTags.Contains(tag))
+            {
+                _selectedTags.Remove(tag);
+            }
+            else
+            {
+                _selectedTags.Add(tag);
+            }
+
+            UpdateSelectedTagsDisplay();
+            ApplyFilters();
+        }
+
+        private void ApplyFilters()
+        {
+            var filteredItems = items;
+
+        // Apply manufacturer filter
+            if (_manufacturerFilter != null)
+            {
+                filteredItems = filteredItems.Where(item => item.Manufacturer == _manufacturerFilter).ToList();
+            }
+
+        // Apply price range filters
+            if (minPrice.HasValue)
+            {
+                filteredItems = filteredItems.Where(item => item.Price >= minPrice).ToList();
+            }
+
+            if (maxPrice.HasValue)
+            {
+                filteredItems = filteredItems.Where(item => item.Price <= maxPrice).ToList();
+            }
+
+        // Apply tag filters
+            if (_selectedTags.Any())
+            {
+                filteredItems = filteredItems.Where(item =>
+                    tagsDictionary.ContainsKey(item.Id) &&
+                    _selectedTags.All(selectedTag =>
+                        tagsDictionary[item.Id].Split(',').Select(t => t.Trim()).Contains(selectedTag)
+                        )
+                    ).ToList();
+            }
+
+        // Update the displayed items
+            items = filteredItems;
+        }
+
+        private void ResetTagsSelection()
+        {
+            _selectedTags.Clear();
+            UpdateSelectedTagsDisplay();
+            ApplyFilters();
+            LoadAllItems();
+            
+        }
+        private void UpdateSelectedTagsDisplay()
+        {
+            _selectedTagsDisplay = string.Join(", ", _selectedTags);
+        }
+        private async Task LoadAllItems()
+        {
+            try
+            {
+                items = await ItemService.GetItemsAsync(null, null, null, _manufacturerFilter, null, null);
+                StateHasChanged();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                statusMessage = e.Message;
+            }
         }
 
         private void GoToCheckoutPage()

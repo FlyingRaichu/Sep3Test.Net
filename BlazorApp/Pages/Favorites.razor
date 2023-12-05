@@ -4,26 +4,25 @@
 @using HttpClients.Implementations
 @inject IItemService ItemService
 @inject NavService NavService
-@inject IFavoriteService FavService
-<h3>Favorites</h3>
+
 <AuthorizeView>
     <Authorized>
         @if (items == null || !items.Any())
         {
-            <MudText>You currently do not have any favorites.</MudText>
+            <MudText Class="ma-4 pa-4">You currently do not have any favorites.</MudText>
         }
         else
         {
             @foreach (var item in items)
             {
                 <MudPaper Class="pa-16 ma-2" Elevation="0">
-                    <FavoriteCard Item="@item"></FavoriteCard>
+                    <FavoriteCard Item="@item" OnItemRemoved="OnItemRemoval"></FavoriteCard>
                 </MudPaper>
             }
         }
     </Authorized>
     <NotAuthorized>
-        <MudText>Please <MudLink Href="/Login">log in</MudLink> to view favorites.</MudText>
+        <MudText Class="ma-4 pa-4">Please <MudLink Href="/Login">log in</MudLink> to view favorites.</MudText>
     </NotAuthorized>
 </AuthorizeView>
 
@@ -41,5 +40,11 @@
         StateHasChanged(); //re-render if there are any changes
     }
     
+    private void OnItemRemoval(Item removedItem)
+    {
+        if (items == null) return;
+        items = items.Where(item => item.Id != removedItem.Id).ToList();
+        StateHasChanged();
+    }
     
 }

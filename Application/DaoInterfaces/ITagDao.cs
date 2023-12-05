@@ -9,4 +9,5 @@ public interface ITagDao
     Task UpdateAsync(Tag tag);
     Task DeleteAsync(int id);
     Task<Tag?> GetByIdAsync(int id);
+    Task<IEnumerable<Tag>> GetAllWithIdAsync(List<int> ids);
 }
