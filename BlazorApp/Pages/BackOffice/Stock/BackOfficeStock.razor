@@ -1,8 +1,11 @@
 @page "/BackOfficeStock"
 @using HttpClients.Interfaces
+@using Domain.DTOs.Item
 @attribute [Authorize("MustBeAdmin")]
+@inject IJSRuntime JsRuntime
 @inject IItemService ItemService
 <BackOfficeNavMenu/>
+<h3>Resupply Stock</h3>
 <table class="table">
     <thead>
     <tr>
@@ -20,7 +23,7 @@
     }
     else if (!items.Any())
     {
-        <p>No items to display.</p>
+        <p>No items to display. All items are currently in-stock.</p>
     }
     else
     {
@@ -34,7 +37,7 @@
         <td>@item.Manufacturer</td>
         <td>@item.Stock</td>
         <td>
-            <button style="margin-left: 5px" @onclick="@() => ShowSupplyConfirmation(item.Id)">
+            <button style="margin-left: 5px" @onclick="@(() => ShowSupplyConfirmation(@item))" data-toggle="modal" data-target="#stockConfirmationModal">
                 <i style="padding: 0 12px" class="oi oi-pencil"></i>
             </button>
         </td>
@@ -55,7 +58,7 @@
             </div>
             <div class="modal-body">
                 <p>How much of this item would you like to restock?</p>
-                <input type="text" placeholder="Amount"/>
+                <input type="text" placeholder="Amount" @bind="amtToResupply"/>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -64,10 +67,11 @@
         </div>
     </div>
 </div>
-
+<label style="color: red">@msg</label>
 @code {
     private ICollection<Item>? items;
-    private int itemToResupplyId;
+    private int amtToResupply;
+    private Item itemToResupply;
     private string msg = "";
     
     protected override async Task OnInitializedAsync()
@@ -90,13 +94,41 @@
         }
     }
 
-    private void ShowSupplyConfirmation(int id)
+    private void ShowSupplyConfirmation(Item item)
     {
-        itemToResupplyId = id;
+        itemToResupply = item;
     }
 
     private async Task OrderStock()
     {
-        Console.WriteLine("Stock ordered");
+        try
+        {
+            var dto = new ItemUpdateDto(itemToResupply.Id)
+            {
+                Title = null,
+                Description = null,
+                Price = null,
+                Manufacturer = null,
+                Stock = amtToResupply,
+                Tags = null
+            };
+
+            await ItemService.UpdateAsync(dto);
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
+        finally
+        {
+            await ExecuteJavascript("$('#stockConfirmationModal').modal('hide')");
+        }
+    }
+    
+    private async Task ExecuteJavascript(string script)
+    {
+        await JsRuntime.InvokeVoidAsync("eval", script);
     }
 }
