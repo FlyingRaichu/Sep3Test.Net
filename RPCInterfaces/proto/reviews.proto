@@ -13,7 +13,6 @@ service ReviewService {
     rpc getAllReviews(google.protobuf.Empty) returns (stream Review) {};
     rpc addReview(Review) returns (google.protobuf.Empty) {};
     rpc deleteReview(Review) returns (google.protobuf.Empty);
-    rpc getAllWithId(IntListRequest) returns (stream Review);
     rpc getAllReviewsByItemId(google.protobuf.Int32Value) returns (stream Review);
 }
 
@@ -25,15 +24,11 @@ message Review{
     Item itemId = 5;
 }
 
-message IntListRequest{
-    repeated int32 values = 1;
-}
 
 
 
 
 
 
-//todo THE REVIEW CAN BE ADDED IN THE API, BUT IDK HOW TO SET THE FOREIGN KEY IN THE DB, other then that it should work, when blazor is implemented
 
 

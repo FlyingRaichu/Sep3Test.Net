@@ -71,11 +71,6 @@ public class ReviewLogic : IReviewLogic
         return review;
     }
 
-    public async Task<ICollection<Review>> GetAllWithIdAsync(List<int> ids)
-    {
-        return await reviewDao.GetAllWithIdAsync(ids);
-    }
-
     public async Task<ICollection<Review>> GetAllReviewsByItemIdAsync(int itemId)
     {
         return await reviewDao.GetAllReviewsByItemIdAsync(itemId);

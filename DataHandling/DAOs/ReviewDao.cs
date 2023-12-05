@@ -39,18 +39,6 @@ public class ReviewDao : IReviewDao
         return Task.FromResult<Review>(review);
     }
 
-    public async Task<ICollection<Review>> GetAllWithIdAsync(List<int> ids)
-    {
-        IntListRequest idList = new IntListRequest();
-        foreach (var id in ids)
-        {
-            idList.Values.Add(id);
-        }
-
-        ICollection<Review> reviews = context.GetAllWithId(idList).Result;
-        return await Task.FromResult(reviews);
-    }
-
     public async Task<ICollection<Review>> GetAllReviewsByItemIdAsync(int itemId)
     {
         return await context.GetAllReviewsByItemIdAsync(itemId);

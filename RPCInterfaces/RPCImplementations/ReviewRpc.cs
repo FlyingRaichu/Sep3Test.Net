@@ -63,28 +63,7 @@ public class ReviewRpc : IReviewRpc
         }
         return Task.CompletedTask;
     }
-
-    public async Task<ICollection<Review>> GetAllWithId(IntListRequest request)
-    {
-        var client = new ReviewService.ReviewServiceClient(channel);
-        var reviews = new List<Review>();
-
-        try
-        {
-            var response = client.getAllWithId(request);
-            await foreach (var item in response.ResponseStream.ReadAllAsync())
-            {
-                reviews.Add(item);
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
-
-        return reviews;
-    }
-
+    
     public async Task<ICollection<Review>> GetAllReviewsByItemIdAsync(int itemId)
     {
         var client = new ReviewService.ReviewServiceClient(channel);

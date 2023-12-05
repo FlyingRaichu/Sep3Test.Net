@@ -63,21 +63,6 @@ public class ReviewsController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
-
-    [HttpGet("getAllWithId")]
-    public async Task<ActionResult<ICollection<Review>>> GetAllWithId([FromQuery] List<int> ids)
-    {
-        try
-        {
-            var reviews = await logic.GetAllWithIdAsync(ids);
-            return Ok(reviews);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return StatusCode(500, e.Message);
-        }
-    }
     
     [HttpGet]
     public async Task<ActionResult<ICollection<Review>>> GetAllReviewsByItemIdAsync([FromQuery] int itemId)
