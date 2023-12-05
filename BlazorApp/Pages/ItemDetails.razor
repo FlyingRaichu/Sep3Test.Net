@@ -42,19 +42,20 @@
                     </MudItem>
                     <!--gotta check for authorization here, otherwise favoriting isn't permitted-->
                     <AuthorizeView>
-                            <Authorized>
-                                @if (isFavorite)
-                                {
-                                    <MudButton Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.StarOutline"
-                                               OnClick="RemoveFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Unfavorite</MudButton>
-                                }
-                                else
-                                {
-                                    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Star"
-                                                OnClick="AddFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Favorite</MudButton>
-                                }
-                            </Authorized>
-                        </AuthorizeView>
+                        <Authorized>
+                            @if (isFavorite)
+                            {
+                                <MudButton Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.StarOutline"
+                                           OnClick="RemoveFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Unfavorite</MudButton>
+                            }
+                            else
+                            {
+                                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Star"
+                                           OnClick="AddFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Favorite</MudButton>
+                            }
+                        </Authorized>
+                    </AuthorizeView>
+                    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ShoppingCart" FullWidth="true" Class="ma-2" Color="Color.Info" OnClick="Checkout">Go to Checkout</MudButton>
                 </MudItem>
             </MudGrid>
             </MudPaper>
@@ -131,6 +132,12 @@
      {
          
      }
+
+    private void Checkout()
+    {
+        Navigation.CurrentPage = "Checkout";
+        NavManager.NavigateTo("/Checkout");
+    }
 
      private void AddReview() {}
 
