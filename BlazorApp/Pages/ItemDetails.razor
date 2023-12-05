@@ -1,12 +1,18 @@
 @page "/ItemDetails"
 @using BlazorApp.Service
 @using Domain.DTOs
+@using Domain.DTOs.Review
 @using HttpClients.Implementations
 @using HttpClients.Interfaces
+@using BlazorApp.Pages.Services
+@using System.Runtime.InteropServices.ComTypes
+@using System.ComponentModel
 @inject NavService Navigation
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IFavoriteService FavService
 @inject NavigationManager NavManager
+@inject IReviewService ReviewService
+@inject IUserService UserService
 
 <h3>Item Details</h3>
 <MudGrid Justify="Justify.Center">
@@ -38,54 +44,105 @@
                     </MudItem>
                     <MudItem>
                         <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.AddShoppingCart"
-                                   OnClick="AddToCart" FullWidth="true" Class="ma-2" Color="Color.Tertiary">Add to Cart</MudButton>
+                                   OnClick="AddToCart" FullWidth="true" Class="ma-2" Color="Color.Tertiary">
+                            Add to Cart
+                        </MudButton>
                     </MudItem>
                     <!--gotta check for authorization here, otherwise favoriting isn't permitted-->
                     <AuthorizeView>
-                            <Authorized>
-                                @if (isFavorite)
-                                {
-                                    <MudButton Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.StarOutline"
-                                               OnClick="RemoveFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Unfavorite</MudButton>
-                                }
-                                else
-                                {
-                                    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Star"
-                                                OnClick="AddFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Favorite</MudButton>
-                                }
-                            </Authorized>
-                        </AuthorizeView>
+                        <Authorized>
+                            @if (isFavorite)
+                            {
+                                <MudButton Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.StarOutline"
+                                           OnClick="RemoveFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">
+                                    Unfavorite
+                                </MudButton>
+                            }
+                            else
+                            {
+                                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Star"
+                                           OnClick="AddFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">
+                                    Favorite
+                                </MudButton>
+                            }
+                        </Authorized>
+                    </AuthorizeView>
                 </MudItem>
             </MudGrid>
-            </MudPaper>
-        </MudItem>
+        </MudPaper>
+    </MudItem>
 
-    <!--Ratings section-->
-        <MudItem xs="12">
-            <MudPaper Class="pa-16 ma-2">
-                <MudText>Ratings</MudText>
-            </MudPaper>
+    <MudGrid Justify="Justify.Center">
+        <MudItem>
+            <MudText Typo="Typo.h4">Reviews:</MudText>
         </MudItem>
     </MudGrid>
 
+    <MudGrid>
+        <MudItem style="width: 100%">
+            <MudPaper Class="pa-16 ma-2">
+                <AuthorizeView Policy="LoggedIn">
+                    <Authorized>
+                        @* Create Review *@
+                        <RatingStars/>
+                        <MudTextField @bind-Value="content"/>
+                        <MudButton Variant="Variant.Filled" Style="background: #4DD0E1; color: #ffffff; margin-top: 10px;" @onclick="@(() => AddReviewAsync(context.User.Claims.First(claim => claim.Type == "Username").Value))" class="acceptbtn">Post</MudButton>
+                    </Authorized>
+                    <NotAuthorized>
+                        <MudText>To add a review, create an account</MudText>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </MudPaper>
+        </MudItem>
+
+    </MudGrid>
+
+
+    @* <!--Ratings section--> *@
+
+    @if (reviews != null && reviews.Any())
+    {
+        @foreach (Review review in reviews)
+        {
+            <MudItem xs="12">
+                <MudPaper Class="pa-16 ma-2">
+                    <MudText Typo="Typo.h6">@review.Username</MudText>
+                    <MudRating ReadOnly="true" SelectedValue="@review.Rating"/>
+                    <MudText>@review.Content</MudText>
+                </MudPaper>
+            </MudItem>
+        }
+    }
+    else
+    {
+        <MudText>No review has been added.</MudText>
+    }
+</MudGrid>
+
 <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Star"
-                                                OnClick="ViewFavorites" FullWidth="true" Class="ma-2" Color="Color.Warning">View Favorites</MudButton>
+           OnClick="ViewFavorites" FullWidth="true" Class="ma-2" Color="Color.Warning">
+    View Favorites
+</MudButton>
 
 @code {
     private int quantity { get; set; }
     private AuthenticationState authState;
     private bool isFavorite;
-    
+
+    private ICollection<Review>? reviews;
+    private string content = "";
+
     protected override async Task OnParametersSetAsync()
     {
         await RefreshFavoriteStatus();
+        LoadReviewsAsync();
     }
 
     private async Task RefreshFavoriteStatus()
     {
         authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-        //if logged in, toggle isFavorite to change button display
+    //if logged in, toggle isFavorite to change button display
         if (authState.User.Identity?.IsAuthenticated ?? false)
         {
             FavoriteDto dto = new(Navigation.LoggedInUserId, Navigation.Selected.Id);
@@ -96,8 +153,8 @@
     }
 
     private async void AddFavorite()
-     {
-         FavoriteDto dto = new(Navigation.LoggedInUserId, Navigation.Selected.Id);
+    {
+        FavoriteDto dto = new(Navigation.LoggedInUserId, Navigation.Selected.Id);
         try
         {
             var createdFavorite = await FavService.CreateAsync(dto, UserHttpClient.Jwt);
@@ -109,36 +166,64 @@
         }
 
         StateHasChanged();
-     }
+    }
 
-     private async void RemoveFavorite()
-     {
-         FavoriteDto dto = new(Navigation.LoggedInUserId, Navigation.Selected.Id);
-         try
-         {
-             var deletedFavorite = await FavService.DeleteAsync(dto, UserHttpClient.Jwt);
-             isFavorite = false;
-         }
-         catch (Exception ex)
-         {
-             Console.WriteLine($"Error deleting favorite: {ex.Message}");
-         }
+    private async void RemoveFavorite()
+    {
+        FavoriteDto dto = new(Navigation.LoggedInUserId, Navigation.Selected.Id);
+        try
+        {
+            var deletedFavorite = await FavService.DeleteAsync(dto, UserHttpClient.Jwt);
+            isFavorite = false;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting favorite: {ex.Message}");
+        }
 
-         StateHasChanged();
-     }
+        StateHasChanged();
+    }
 
-     private void AddToCart()
-     {
-         
-     }
+    private void AddToCart()
+    {
+    }
 
-     private void AddReview() {}
+    //Review stuff;
+    private async void AddReviewAsync(string username)
+    {
+        try
+        {
+            ReviewCreationDto dto = new(content, RatingStars.selectedVal, username, @Navigation.Selected.Id);
+            await ReviewService.CreateAsync(dto, UserHttpClient.Jwt);
+            content = "";
+            RatingStars.selectedVal = 0;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    private async void LoadReviewsAsync()
+    {
+        try
+        {
+            reviews = await ReviewService.GetAllReviewsByItemIdAsync(@Navigation.Selected.Id);
+            Console.WriteLine(reviews.ToString());
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    //==========
 
     private void ViewFavorites()
     {
         Navigation.CurrentPage = "Favorites";
         NavManager.NavigateTo("/Favorites");
-        
     }
 
 }

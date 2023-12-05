@@ -4,8 +4,9 @@ namespace HttpClients.Interfaces;
 
 public interface IReviewService
 {
-    Task<Review> CreateAsync(ReviewCreationDto dto);
+    Task<Review> CreateAsync(ReviewCreationDto dto, string token);
     Task DeleteAsync(int id);
     Task<Review> GetByIdAsync(int id);
-    Task<IEnumerable<Review>> GetAllWithIdAsync(List<int> ids);
+    Task<ICollection<Review>> GetAllWithIdAsync(List<int> ids);
+    Task<ICollection<Review>> GetAllReviewsByItemIdAsync(int itemId);
 }

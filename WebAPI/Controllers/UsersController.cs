@@ -31,7 +31,8 @@ public class UsersController : ControllerBase
             new Claim(ClaimTypes.Name, user.Username),
             new Claim("Email", user.Email),
             new Claim("Id", user.Id.ToString()),
-            new Claim("Role", user.Role)
+            new Claim("Role", user.Role),
+            new Claim("Username", user.Username)
         };
         //Console.WriteLine($"### them claims: {claims.ToList()}");
         return claims.ToList();

@@ -23,6 +23,7 @@ public class ReviewRpc : IReviewRpc
             reviews.Add(item);
         }
 
+        //Console.WriteLine($"###{reviews.ToString() }");
         return reviews;
     }
 
@@ -71,6 +72,28 @@ public class ReviewRpc : IReviewRpc
         try
         {
             var response = client.getAllWithId(request);
+            await foreach (var item in response.ResponseStream.ReadAllAsync())
+            {
+                reviews.Add(item);
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return reviews;
+    }
+
+    public async Task<ICollection<Review>> GetAllReviewsByItemIdAsync(int itemId)
+    {
+        var client = new ReviewService.ReviewServiceClient(channel);
+        var reviews = new List<Review>();
+
+        try
+        {
+            var request32 = new Int32Value { Value = itemId };
+            var response = client.getAllReviewsByItemId(request32);
             await foreach (var item in response.ResponseStream.ReadAllAsync())
             {
                 reviews.Add(item);

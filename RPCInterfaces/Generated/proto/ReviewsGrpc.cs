@@ -93,6 +93,14 @@ public static partial class ReviewService
       __Marshaller_IntListRequest,
       __Marshaller_Review);
 
+  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+  static readonly grpc::Method<global::Google.Protobuf.WellKnownTypes.Int32Value, global::Review> __Method_getAllReviewsByItemId = new grpc::Method<global::Google.Protobuf.WellKnownTypes.Int32Value, global::Review>(
+      grpc::MethodType.ServerStreaming,
+      __ServiceName,
+      "getAllReviewsByItemId",
+      __Marshaller_google_protobuf_Int32Value,
+      __Marshaller_Review);
+
   /// <summary>Service descriptor</summary>
   public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
   {
@@ -205,6 +213,16 @@ public static partial class ReviewService
     public virtual grpc::AsyncServerStreamingCall<global::Review> getAllWithId(global::IntListRequest request, grpc::CallOptions options)
     {
       return CallInvoker.AsyncServerStreamingCall(__Method_getAllWithId, null, options, request);
+    }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual grpc::AsyncServerStreamingCall<global::Review> getAllReviewsByItemId(global::Google.Protobuf.WellKnownTypes.Int32Value request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+    {
+      return getAllReviewsByItemId(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+    }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual grpc::AsyncServerStreamingCall<global::Review> getAllReviewsByItemId(global::Google.Protobuf.WellKnownTypes.Int32Value request, grpc::CallOptions options)
+    {
+      return CallInvoker.AsyncServerStreamingCall(__Method_getAllReviewsByItemId, null, options, request);
     }
     /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]

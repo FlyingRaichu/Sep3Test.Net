@@ -1,4 +1,6 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net;
+using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using Domain.DTOs.Review;
 using HttpClients.Interfaces;
@@ -13,14 +15,29 @@ public class ReviewHttpClient : IReviewService
     {
         this.client = client;
     }
-
-    public async Task<Review> CreateAsync(ReviewCreationDto dto)
+    
+    public async Task<Review> CreateAsync(ReviewCreationDto dto, string token)
     {
-        var response = await client.PostAsJsonAsync("/reviews", dto);
-        var content = await response.Content.ReadAsStringAsync();
+        Console.WriteLine($"create async method: {dto.Rating}, {dto.Content}");
+        var request = new HttpRequestMessage(HttpMethod.Post, "/Reviews");
+        
+        if (!string.IsNullOrEmpty(token))
+        {
+            request.Headers.Add("Authorization", "Bearer " + token);
+        }
+        var jsonDto = JsonSerializer.Serialize(dto);
+        request.Content = new StringContent(jsonDto, Encoding.UTF8, "application/json");
 
+        var response = await client.SendAsync(request);
+        var content = await response.Content.ReadAsStringAsync();
+        
         if (!response.IsSuccessStatusCode)
         {
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+            Console.WriteLine(content);
             throw new Exception(content);
         }
 
@@ -60,8 +77,52 @@ public class ReviewHttpClient : IReviewService
         return review;
     }
 
-    public async Task<IEnumerable<Review>> GetAllWithIdAsync(List<int> ids)
+    public async Task<ICollection<Review>> GetAllWithIdAsync(List<int> ids)
     {
-        throw new NotImplementedException();
+        var query = BuildQuery(ids);
+        var response = await client.GetAsync($"/Reviews/getAllWithId{query}");
+        var content = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            throw new Exception(content);
+        }
+
+        var reviews = JsonSerializer.Deserialize<ICollection<Review>>(content, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
+        return reviews;
+    }
+
+    public async Task<ICollection<Review>> GetAllReviewsByItemIdAsync(int itemId)
+    {
+        var response = await client.GetAsync($"/reviews?itemId={itemId}");
+        var content = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception(content);
+        }
+        
+        var reviews = JsonSerializer.Deserialize<ICollection<Review>>(content, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
+        return reviews;
+    }
+
+    private string BuildQuery(List<int>? ids)
+    {
+        if (ids != null && ids.Any())
+        {
+            var query = $"?ids={ids.First()}";
+            query = ids.Skip(1).Aggregate(query, (current, id) => current + $"&ids={id}");
+            
+            Console.WriteLine(query);
+            return query;
+        }
+
+        return "?ids=999999"; 
     }
 }

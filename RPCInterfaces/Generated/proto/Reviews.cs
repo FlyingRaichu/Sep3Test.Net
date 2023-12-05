@@ -23,21 +23,23 @@ public static partial class ReviewsReflection {
     byte[] descriptorData = global::System.Convert.FromBase64String(
         string.Concat(
           "ChNwcm90by9yZXZpZXdzLnByb3RvGhtnb29nbGUvcHJvdG9idWYvZW1wdHku",
-          "cHJvdG8aHmdvb2dsZS9wcm90b2J1Zi93cmFwcGVycy5wcm90byJHCgZSZXZp",
-          "ZXcSCgoCaWQYASABKAUSDwoHY29udGVudBgCIAEoCRIOCgZyYXRpbmcYAyAB",
-          "KAUSEAoIdXNlcm5hbWUYBCABKAkiIAoOSW50TGlzdFJlcXVlc3QSDgoGdmFs",
-          "dWVzGAEgAygFMocCCg1SZXZpZXdTZXJ2aWNlEjMKCWdldFJldmlldxIbLmdv",
-          "b2dsZS5wcm90b2J1Zi5JbnQzMlZhbHVlGgcuUmV2aWV3IgASNAoNZ2V0QWxs",
-          "UmV2aWV3cxIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eRoHLlJldmlldyIAMAES",
-          "LgoJYWRkUmV2aWV3EgcuUmV2aWV3GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5",
-          "IgASLwoMZGVsZXRlUmV2aWV3EgcuUmV2aWV3GhYuZ29vZ2xlLnByb3RvYnVm",
-          "LkVtcHR5EioKDGdldEFsbFdpdGhJZBIPLkludExpc3RSZXF1ZXN0GgcuUmV2",
-          "aWV3MAFCIwoRdmlhLnNlcDQucHJvdG9idWZCDFJldmlld3NQcm90b1ABYgZw",
-          "cm90bzM="));
+          "cHJvdG8aHmdvb2dsZS9wcm90b2J1Zi93cmFwcGVycy5wcm90bxoRcHJvdG8v",
+          "aXRlbXMucHJvdG8iXgoGUmV2aWV3EgoKAmlkGAEgASgFEg8KB2NvbnRlbnQY",
+          "AiABKAkSDgoGcmF0aW5nGAMgASgFEhAKCHVzZXJuYW1lGAQgASgJEhUKBml0",
+          "ZW1JZBgFIAEoCzIFLkl0ZW0iIAoOSW50TGlzdFJlcXVlc3QSDgoGdmFsdWVz",
+          "GAEgAygFMsgCCg1SZXZpZXdTZXJ2aWNlEjMKCWdldFJldmlldxIbLmdvb2ds",
+          "ZS5wcm90b2J1Zi5JbnQzMlZhbHVlGgcuUmV2aWV3IgASNAoNZ2V0QWxsUmV2",
+          "aWV3cxIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eRoHLlJldmlldyIAMAESLgoJ",
+          "YWRkUmV2aWV3EgcuUmV2aWV3GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgAS",
+          "LwoMZGVsZXRlUmV2aWV3EgcuUmV2aWV3GhYuZ29vZ2xlLnByb3RvYnVmLkVt",
+          "cHR5EioKDGdldEFsbFdpdGhJZBIPLkludExpc3RSZXF1ZXN0GgcuUmV2aWV3",
+          "MAESPwoVZ2V0QWxsUmV2aWV3c0J5SXRlbUlkEhsuZ29vZ2xlLnByb3RvYnVm",
+          "LkludDMyVmFsdWUaBy5SZXZpZXcwAUIjChF2aWEuc2VwNC5wcm90b2J1ZkIM",
+          "UmV2aWV3c1Byb3RvUAFiBnByb3RvMw=="));
     descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-        new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
+        new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, global::ItemsReflection.Descriptor, },
         new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-          new pbr::GeneratedClrTypeInfo(typeof(global::Review), global::Review.Parser, new[]{ "Id", "Content", "Rating", "Username" }, null, null, null, null),
+          new pbr::GeneratedClrTypeInfo(typeof(global::Review), global::Review.Parser, new[]{ "Id", "Content", "Rating", "Username", "ItemId" }, null, null, null, null),
           new pbr::GeneratedClrTypeInfo(typeof(global::IntListRequest), global::IntListRequest.Parser, new[]{ "Values" }, null, null, null, null)
         }));
   }
@@ -83,6 +85,7 @@ public sealed partial class Review : pb::IMessage<Review>
     content_ = other.content_;
     rating_ = other.rating_;
     username_ = other.username_;
+    itemId_ = other.itemId_ != null ? other.itemId_.Clone() : null;
     _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
   }
 
@@ -143,6 +146,18 @@ public sealed partial class Review : pb::IMessage<Review>
     }
   }
 
+  /// <summary>Field number for the "itemId" field.</summary>
+  public const int ItemIdFieldNumber = 5;
+  private global::Item itemId_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public global::Item ItemId {
+    get { return itemId_; }
+    set {
+      itemId_ = value;
+    }
+  }
+
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public override bool Equals(object other) {
@@ -162,6 +177,7 @@ public sealed partial class Review : pb::IMessage<Review>
     if (Content != other.Content) return false;
     if (Rating != other.Rating) return false;
     if (Username != other.Username) return false;
+    if (!object.Equals(ItemId, other.ItemId)) return false;
     return Equals(_unknownFields, other._unknownFields);
   }
 
@@ -173,6 +189,7 @@ public sealed partial class Review : pb::IMessage<Review>
     if (Content.Length != 0) hash ^= Content.GetHashCode();
     if (Rating != 0) hash ^= Rating.GetHashCode();
     if (Username.Length != 0) hash ^= Username.GetHashCode();
+    if (itemId_ != null) hash ^= ItemId.GetHashCode();
     if (_unknownFields != null) {
       hash ^= _unknownFields.GetHashCode();
     }
@@ -207,6 +224,10 @@ public sealed partial class Review : pb::IMessage<Review>
       output.WriteRawTag(34);
       output.WriteString(Username);
     }
+    if (itemId_ != null) {
+      output.WriteRawTag(42);
+      output.WriteMessage(ItemId);
+    }
     if (_unknownFields != null) {
       _unknownFields.WriteTo(output);
     }
@@ -233,6 +254,10 @@ public sealed partial class Review : pb::IMessage<Review>
       output.WriteRawTag(34);
       output.WriteString(Username);
     }
+    if (itemId_ != null) {
+      output.WriteRawTag(42);
+      output.WriteMessage(ItemId);
+    }
     if (_unknownFields != null) {
       _unknownFields.WriteTo(ref output);
     }
@@ -254,6 +279,9 @@ public sealed partial class Review : pb::IMessage<Review>
     }
     if (Username.Length != 0) {
       size += 1 + pb::CodedOutputStream.ComputeStringSize(Username);
+    }
+    if (itemId_ != null) {
+      size += 1 + pb::CodedOutputStream.ComputeMessageSize(ItemId);
     }
     if (_unknownFields != null) {
       size += _unknownFields.CalculateSize();
@@ -278,6 +306,12 @@ public sealed partial class Review : pb::IMessage<Review>
     }
     if (other.Username.Length != 0) {
       Username = other.Username;
+    }
+    if (other.itemId_ != null) {
+      if (itemId_ == null) {
+        ItemId = new global::Item();
+      }
+      ItemId.MergeFrom(other.ItemId);
     }
     _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
   }
@@ -310,6 +344,13 @@ public sealed partial class Review : pb::IMessage<Review>
           Username = input.ReadString();
           break;
         }
+        case 42: {
+          if (itemId_ == null) {
+            ItemId = new global::Item();
+          }
+          input.ReadMessage(ItemId);
+          break;
+        }
       }
     }
   #endif
@@ -339,6 +380,13 @@ public sealed partial class Review : pb::IMessage<Review>
         }
         case 34: {
           Username = input.ReadString();
+          break;
+        }
+        case 42: {
+          if (itemId_ == null) {
+            ItemId = new global::Item();
+          }
+          input.ReadMessage(ItemId);
           break;
         }
       }

@@ -7,22 +7,32 @@ namespace Application.Logic;
 public class ReviewLogic : IReviewLogic
 {
     private readonly IReviewDao reviewDao;
+    private readonly IItemDao itemDao;
 
-    public ReviewLogic(IReviewDao reviewDao)
+    public ReviewLogic(IReviewDao reviewDao, IItemDao itemDao)
     {
         this.reviewDao = reviewDao;
+        this.itemDao = itemDao;
     }
 
     public async Task<Review> CreateAsync(ReviewCreationDto dto)
     {
+        Item? item = await itemDao.GetByIdAsync(dto.ItemId);
+        if (item == null)
+        {
+            throw new Exception("item not found");
+        }
+        //Console.WriteLine(item.ToString());
         ValidateReview(dto);
         var review = new Review
         {
             Content = dto.Content,
             Rating = dto.Rating,
-            Username = dto.Username
+            Username = dto.Username,
+            ItemId = item
         };
         var created = await reviewDao.CreateAsync(review);
+        Console.WriteLine(review.ToString());
         return created;
     }
 
@@ -61,8 +71,13 @@ public class ReviewLogic : IReviewLogic
         return review;
     }
 
-    public async Task<IEnumerable<Review>> GetAllWithIdAsync(List<int> ids)
+    public async Task<ICollection<Review>> GetAllWithIdAsync(List<int> ids)
     {
         return await reviewDao.GetAllWithIdAsync(ids);
+    }
+
+    public async Task<ICollection<Review>> GetAllReviewsByItemIdAsync(int itemId)
+    {
+        return await reviewDao.GetAllReviewsByItemIdAsync(itemId);
     }
 }

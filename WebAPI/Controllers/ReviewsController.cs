@@ -1,5 +1,6 @@
 ﻿using Application.LogicInterfaces;
 using Domain.DTOs.Review;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -31,6 +32,7 @@ public class ReviewsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<Review>> CreateAsync([FromBody] ReviewCreationDto dto)
     {
         try
@@ -41,11 +43,13 @@ public class ReviewsController : ControllerBase
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return StatusCode(500, e.Message);
+            return StatusCode(500, new { message = "Internal Server Error" });
+
         }
     }
     
     [HttpDelete("{id:int}")]
+    [Authorize]
     public async Task<ActionResult<Review>> DeleteASync([FromRoute]int id)
     {
         try
@@ -61,11 +65,26 @@ public class ReviewsController : ControllerBase
     }
 
     [HttpGet("getAllWithId")]
-    public async Task<ActionResult<IEnumerable<Review>>> GetAllWithId([FromQuery] List<int> ids)
+    public async Task<ActionResult<ICollection<Review>>> GetAllWithId([FromQuery] List<int> ids)
     {
         try
         {
             var reviews = await logic.GetAllWithIdAsync(ids);
+            return Ok(reviews);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+    
+    [HttpGet]
+    public async Task<ActionResult<ICollection<Review>>> GetAllReviewsByItemIdAsync([FromQuery] int itemId)
+    {
+        try
+        {
+            var reviews = await logic.GetAllReviewsByItemIdAsync(itemId);
             return Ok(reviews);
         }
         catch (Exception e)
