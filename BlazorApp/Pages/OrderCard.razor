@@ -1,0 +1,22 @@
+<h3>OrderCard</h3>
+
+<MudItem xs="12" md="6" lg="4">
+    <MudCard>
+        <MudCardContent>
+            <MudText Typo="Typo.h5">Order Id #@Order.Id — @Order.Date</MudText>
+            <MudText Typo="Typo.body1">Contains:</MudText>
+            <MudList>
+            @foreach (var item in Order.Items)
+            {
+                <MudListItem Text= "Item #"@item.Id.ToString() />
+                <MudDivider />
+            }
+            </MudList>
+        </MudCardContent>
+    </MudCard>
+</MudItem>
+
+@code {
+    [Parameter] 
+    public Order Order { get; set; }
+}
