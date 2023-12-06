@@ -3,10 +3,12 @@
 @using Domain.DTOs
 @using HttpClients.Implementations
 @using HttpClients.Interfaces
+@inject ShoppingCartService ShoppingCartService;
 @inject NavService Navigation
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IFavoriteService FavService
 @inject NavigationManager NavManager
+
 
 <h3>Item Details</h3>
 <MudGrid Justify="Justify.Center">
@@ -34,11 +36,11 @@
                 </MudItem>
                 <MudItem xs="6">
                     <MudItem>
-                        <MudNumericField @bind-Value="quantity" Label="Quantity" Variant="Variant.Text" Min="0"/>
+                        <MudNumericField @bind-Value="quantity" Label="Quantity" Variant="Variant.Text" Min="1"/>
                     </MudItem>
                     <MudItem>
                         <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.AddShoppingCart"
-                                   OnClick="AddToCart" FullWidth="true" Class="ma-2" Color="Color.Tertiary">Add to Cart</MudButton>
+                                   OnClick="@(() => AddToCart(Navigation.Selected.Id))" FullWidth="true" Class="ma-2" Color="Color.Tertiary">Add to Cart</MudButton>
                     </MudItem>
                     <!--gotta check for authorization here, otherwise favoriting isn't permitted-->
                     <AuthorizeView>
@@ -72,7 +74,7 @@
                                                 OnClick="ViewFavorites" FullWidth="true" Class="ma-2" Color="Color.Warning">View Favorites</MudButton>
 
 @code {
-    private int quantity { get; set; }
+    private int quantity { get; set; } = 1;
     private AuthenticationState authState;
     private bool isFavorite;
     
@@ -127,9 +129,10 @@
          StateHasChanged();
      }
 
-     private void AddToCart()
+     private async Task AddToCart(int itemId)
      {
-         
+       await ShoppingCartService.AddOrderItem(itemId, quantity);
+         NavManager.NavigateTo("/ShoppingCart");
      }
 
      private void AddReview() {}
