@@ -158,7 +158,7 @@ public class OrderLogic : IOrderLogic
         if (string.IsNullOrEmpty(dto.OrderFullName))
             throw new Exception("The name must be filled out");
 
-        if (dto.PostCode < 9999 && dto.PostCode > 1000)
+        if (!(dto.PostCode is < 9999 and > 1000))
             throw new Exception("The postal code is invalid.");
 
         if (string.IsNullOrEmpty(dto.Address))
@@ -167,7 +167,7 @@ public class OrderLogic : IOrderLogic
         if (string.IsNullOrEmpty(dto.City))
             throw new Exception("The city must be filled out.");
 
-        if (dto.PhoneNumber < 4599999999 && dto.PhoneNumber > 4500000000)
+        if (!(dto.PhoneNumber is < 4599999999 and > 4500000000))
             throw new Exception("invalid phone number.");
 
         if (string.IsNullOrEmpty(dto.Status))
