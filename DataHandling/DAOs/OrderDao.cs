@@ -81,12 +81,14 @@ public class OrderDao : IOrderDao
 
     public Task<OrderItem> AddItemToOrder(OrderItem orderItem)
     {
-        throw new NotImplementedException();
+        context.AddItemToOrder(orderItem);
+        return Task.FromResult(orderItem);
     }
 
     public Task UpdateItemInOrder(OrderItem orderItem)
     {
-        throw new NotImplementedException();
+        context.UpdateItemInOrder(orderItem);
+        return Task.CompletedTask;
     }
 
     public Task DeleteItemFromOrder(OrderItem orderItem)

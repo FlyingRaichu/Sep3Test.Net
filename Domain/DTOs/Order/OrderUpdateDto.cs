@@ -1,4 +1,5 @@
-﻿using Domain.DTOs.OrderItem;
+﻿using System.Text.Json.Serialization;
+using Domain.DTOs.OrderItem;
 
 namespace Domain.DTOs.Order;
 
@@ -14,6 +15,8 @@ public class OrderUpdateDto
     public string? Date { get; set; }
     public List<OrderItemCreationDto>? OrderItems { get; set; }
 
+    
+    [JsonConstructor]
     public OrderUpdateDto(int id)
     {
         Id = id;

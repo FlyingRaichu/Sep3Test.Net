@@ -72,6 +72,7 @@ public class OrderLogic : IOrderLogic
 
         Order order = new()
         {
+            Id = existing.Id,
             OrderFullName = orderFullName,
             PostCode = postalCode,
             Address = address,
@@ -105,12 +106,46 @@ public class OrderLogic : IOrderLogic
 
     public async Task<OrderItem> AddItemToOrder(OrderItemCreationDto dto)
     {
-        throw new NotImplementedException();
+        ValidateOrderItem(dto);
+        var orderItem = new OrderItem
+        {
+           ItemId = dto.ItemId,
+           OrderId = dto.OrderId,
+           Quantity = dto.Quantity
+        };
+        
+        ValidateOrderItem(orderItem);
+        var created = await orderDao.AddItemToOrder(orderItem);
+        return created;
     }
 
     public async Task UpdateItemInOrder(OrderItemUpdateDto dto)
     {
-        throw new NotImplementedException();
+        var existingOrder = orderDao.GetByIdAsync(dto.OrderId);
+        var existingOrderItem = existingOrder.Result.Items.FirstOrDefault(oi => oi.Id == dto.Id);
+
+        var id = 0;
+        var itemId = 0;
+        var orderId = 0;
+        var quantity = 0;
+        if (existingOrderItem != null)
+        {
+            id = existingOrderItem.Id;
+            itemId = existingOrderItem.ItemId;
+            orderId = existingOrderItem.OrderId;
+            quantity = dto.Quantity ?? existingOrderItem.Quantity;
+        }
+
+        OrderItem updated = new()
+        {
+            Id = id,
+            ItemId = itemId,
+            OrderId = orderId,
+            Quantity = quantity
+        };
+        
+        ValidateOrderItem(updated);
+        await orderDao.UpdateItemInOrder(updated);
     }
 
     public async Task DeleteItemFromOrder(OrderItem orderItem)
@@ -123,7 +158,7 @@ public class OrderLogic : IOrderLogic
         if (string.IsNullOrEmpty(dto.OrderFullName))
             throw new Exception("The name must be filled out");
 
-        if (dto.PostCode is < 9999 and > 1000)
+        if (dto.PostCode < 9999 && dto.PostCode > 1000)
             throw new Exception("The postal code is invalid.");
 
         if (string.IsNullOrEmpty(dto.Address))
@@ -132,11 +167,17 @@ public class OrderLogic : IOrderLogic
         if (string.IsNullOrEmpty(dto.City))
             throw new Exception("The city must be filled out.");
 
-        if (dto.PhoneNumber is < 4599999999 and > 4500000000)
+        if (dto.PhoneNumber < 4599999999 && dto.PhoneNumber > 4500000000)
             throw new Exception("invalid phone number.");
 
-        if (!dto.OrderItems.Any())
-            throw new Exception("The order needs to have items");
+        if (string.IsNullOrEmpty(dto.Status))
+            throw new Exception("Set the status of the order");
+        
+        if (string.IsNullOrEmpty(dto.Date))
+            throw new Exception("Set the date of when the order was made");
+        
+        // if (!dto.OrderItems.Any())
+        //     throw new Exception("The order needs to have items");
     }
     
     private static void ValidateOrder(Order order)
@@ -147,11 +188,24 @@ public class OrderLogic : IOrderLogic
 
     private static void ValidateOrderItem(OrderItemCreationDto dto)
     {
-        throw new NotImplementedException();
+        if (dto.ItemId == 0)
+            throw new Exception("There must be an item id to make an order item.");
+
+        if (dto.OrderId == 0)
+            throw new Exception("The Order Item must be part of an order");
+
+        if (dto.Quantity == 0)
+            throw new Exception("There must be at least one item selected.");
     }
 
     private static void ValidateOrderItem(OrderItem orderItem)
     {
-        throw new NotImplementedException();
+        if (orderItem == null)
+            throw new Exception("The Order Item must not be null");
+
+        if (orderItem.Quantity == 0)
+            throw new Exception("The quantity needs to be more then 0");
+        
+        
     }
 }

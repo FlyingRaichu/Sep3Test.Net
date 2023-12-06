@@ -5,19 +5,19 @@ namespace Domain.DTOs.Order;
 
 public class OrderCreationDto
 {
-    public string OrderFullName { get; }
-    public int PostCode { get; }
-    public string Address { get; }
-    public string City { get; }
-    public long PhoneNumber { get; }
-    public string Status { get; }
-    public string Date { get; }
-    public List<OrderItemCreationDto> OrderItems { get; }
-    public int? UserId { get; }
+    public string OrderFullName { get; set; }
+    public int PostCode { get; set; }
+    public string Address { get; set; }
+    public string City { get; set; }
+    public long PhoneNumber { get; set; }
+    public string Status { get; set; }
+    public string Date { get; set; }
+    public List<OrderItemCreationDto>? OrderItems { get; set; }
+    public int? UserId { get; set; }
 
     [JsonConstructor]
     public OrderCreationDto(string orderFullName, int postCode, string address, string city, long phoneNumber,
-        string status, string date, List<OrderItemCreationDto> orderItems)
+        string status, string date, List<OrderItemCreationDto>? orderItems, int? userId)
     {
         OrderFullName = orderFullName;
         PostCode = postCode;
@@ -26,6 +26,7 @@ public class OrderCreationDto
         PhoneNumber = phoneNumber;
         Status = status;
         Date = date;
-        OrderItems = orderItems;
+        OrderItems = orderItems ?? new List<OrderItemCreationDto>();
+        UserId = userId;
     }
 }

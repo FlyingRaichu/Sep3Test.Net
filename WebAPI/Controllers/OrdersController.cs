@@ -1,6 +1,7 @@
 ﻿using Application.LogicInterfaces;
 using Domain.DTOs;
 using Domain.DTOs.Order;
+using Domain.DTOs.OrderItem;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -94,14 +95,48 @@ public class OrdersController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
-    
-    //todo preaty sure this aint right
-    [HttpDelete("orderItem/{id:int}")]
-    public async Task<ActionResult<Order>> DeleteItemInOrderASync([FromRoute]int id)
+
+    [HttpPost]
+    [Route("/orderItems")]
+    public async Task<ActionResult<OrderItem>> AddItemToOrderAsync([FromBody] OrderItemCreationDto dto)
     {
         try
         {
-            await logic.DeleteAsync(id);
+            OrderItem created = await logic.AddItemToOrder(dto);
+            return Created($"orders/orderItems/{created.Id}", created);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+
+    [HttpPatch]
+    [Route("/orderItems")]
+    public async Task<ActionResult<OrderItem>> UpdateItemInOrderAsync(OrderItemUpdateDto dto)
+    {
+        try
+        {
+            await logic.UpdateItemInOrder(dto);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+    
+    
+    [HttpDelete("/orderItem/{orderItemId:int}")]
+    public async Task<ActionResult<Order>> DeleteItemInOrderASync([FromRoute]int orderItemId, int orderId)
+    {
+        try
+        {
+            var order = logic.GetByIdAsync(orderId);
+            var orderItem = order.Result.Items.FirstOrDefault(oi => oi.Id == orderItemId);
+            await logic.DeleteItemFromOrder(orderItem);
             return Ok();
         }
         catch (Exception e)
