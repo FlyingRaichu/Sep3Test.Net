@@ -94,6 +94,24 @@ public class OrderHttpClient : IOrderService
         return order;
     }
 
+    public async Task<IEnumerable<Order>> GetAllByUserIdAsync(int userId)
+    {
+        var response = await client.GetAsync($"/Orders/{userId}");
+        var content = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception(content);
+        }
+
+        var orders = JsonSerializer.Deserialize<List<Order>>(content, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
+        
+        return orders;
+    }
+
     public async Task<OrderItem> AddItemToOrderAsync(OrderItemCreationDto dto)
     {
         var response = await client.PostAsJsonAsync("/orderItems", dto);

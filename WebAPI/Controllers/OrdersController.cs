@@ -51,6 +51,21 @@ public class OrdersController : ControllerBase
         }
     }
     
+    [HttpGet("{userId:int}")]
+    public async Task<ActionResult<IEnumerable<Order>>> GetAllByUserIdAsync([FromRoute] int userId)
+    {
+        try
+        {
+            var orders = await logic.GetAllByUserIdAsync(userId);
+            return Ok(orders);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+    
     [HttpPost]
     public async Task<ActionResult<Order>> CreateAsync([FromBody] OrderCreationDto dto)
     {

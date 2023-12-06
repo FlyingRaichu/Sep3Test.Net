@@ -15,4 +15,5 @@ public interface IOrderDao
     Task<OrderItem> AddItemToOrder(OrderItem orderItem);
     Task UpdateItemInOrder(OrderItem orderItem);
     Task DeleteItemFromOrder(OrderItem orderItem);
+    Task<IEnumerable<Order>> GetAllByUserIdAsync(int userId);
 }

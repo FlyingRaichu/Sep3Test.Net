@@ -1,4 +1,9 @@
 @page "/OrderHistory"
+@using HttpClients.Interfaces
+@using HttpClients.Implementations
+@using BlazorApp.Service
+@inject IOrderService OrderService
+@inject NavService NavService
 <h3>OrderHistory</h3>
 
 <AuthorizeView>
@@ -24,7 +29,6 @@
 
 @code {
     private IEnumerable<Order>? orders { get; set; }
-    private IEnumerable<Item>? itemsPerOrder { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -33,7 +37,7 @@
 
     private async Task LoadOrders()
     {
-        orders = await OrderService.
+        orders = await OrderService.GetAllByUserIdAsync(NavService.LoggedInUserId);
         StateHasChanged(); //re-render if there are any changes
     }
 }
