@@ -1,0 +1,59 @@
+@using BlazorApp.Pages.Services
+@using HttpClients.Interfaces
+@inject NavigationService NavigationService
+@inject NavigationManager NavigationManager
+@inject IUserService UserService;
+
+<MudMenu>
+    <ActivatorContent>
+        <MudIconButton Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Inherit" Size="Size.Large"/>
+    </ActivatorContent>
+    <ChildContent>
+        <MudMenuItem OnClick="@(() => Navigate("cart"))">View Shopping Cart</MudMenuItem>
+        <AuthorizeView>
+            <NotAuthorized>
+                <MudMenuItem OnClick="@Login">Log in</MudMenuItem>
+            </NotAuthorized>
+            <Authorized>
+                <MudMenuItem OnClick="@(() => Navigate("favorites"))">View Favorites</MudMenuItem>
+                <MudMenuItem OnClick="@(() => Navigate("history"))">View Order History</MudMenuItem>
+                <MudMenuItem OnClick="@Logout">Log out</MudMenuItem>
+            </Authorized>
+        </AuthorizeView>
+    </ChildContent>
+</MudMenu>
+
+@code {
+    private void Login()
+    {
+        NavigationService.ReturnUrl = NavigationManager.Uri;
+        NavigationManager.NavigateTo("/Login");
+    }
+    
+    private async Task Logout()
+    {
+        await UserService.LogoutAsync();
+        Console.WriteLine("logged out");
+        NavigationManager.NavigateTo(NavigationManager.Uri);
+    }
+
+    private void Navigate(string path)
+    {
+        switch (path)
+        {
+            case "cart":
+                NavigationService.ReturnUrl = NavigationManager.Uri;
+                NavigationManager.NavigateTo("/");
+                break;
+            case "favorites":
+                NavigationService.ReturnUrl = NavigationManager.Uri;
+                NavigationManager.NavigateTo("/Favorites");
+                break;
+            case "history":
+                NavigationService.ReturnUrl = NavigationManager.Uri;
+                NavigationManager.NavigateTo("/");
+                break;
+        }
+    }
+
+}

@@ -5,28 +5,47 @@
 @inject NavigationManager NavigationManager;
 
 <h3>Register User</h3>
+<MudGrid Justify="Justify.Center" Class="d-flex align-items-center">
+    <MudItem xs="12" md="5" lg="3" Class="text-center">
+        <MudCard Outlined="true">
+            <MudCardContent>
+                <MudGrid Justify="Justify.Center" Class="text-center">
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.h4">Welcome to Knithub!</MudText>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.body1">Register here:</MudText>
+                    </MudItem>
+                    <MudItem xs="12">
+                        @* tried putting ValueChanged="@StateHasChanged" for this to refresh in real time,
+                        but apparently ValueChanged is baked into bind-value, and won't let me do it 2x*@
+                        <MudTextField @bind-Value="@email" Label="Email" Variant="Variant.Outlined"></MudTextField>
+                        <MudTextField @bind-Value="@username" Label="Username" Variant="Variant.Outlined"></MudTextField>
+                        <MudTextField @bind-Value="@password" Label="Password" InputType="InputType.Password" Variant="Variant.Outlined"></MudTextField>
+                    </MudItem>
+                    <MudItem xs="12">
+                        @if (username == "" || password == "" || email == "")
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Tertiary" Disabled="true" FullWidth="true">Register</MudButton>
+                        }
+                        else
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="Create" FullWidth="true">Register</MudButton>
+                        }
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.body2">Have an account? Log in <MudLink Href="/Login" Typo="Typo.body2">here.</MudLink></MudText>
+                    </MudItem>
+                </MudGrid>
+            </MudCardContent>
+        </MudCard>
+        @if (!string.IsNullOrEmpty(resultMsg)) 
+         {
+             <MudText Color="Color.Error" Class="text-center">@resultMsg</MudText>
+         }
+    </MudItem>
+</MudGrid>
 
-<div class="card">
-    <div class="form-group field">
-        <label>User name:</label>
-        <input type="text" @bind="username" @bind:event="oninput"/>
-        <br>
-        <br>
-        <label>Password:</label>
-        <input type="text" @bind="password" @bind:event="oninput"/>
-        <br>
-        <br>
-        <label>Email:</label>
-        <input type="text" @bind="email" @bind:event="oninput"/>
-        @if (!string.IsNullOrEmpty(resultMsg))
-        {
-            <label>@resultMsg</label>
-        }
-    </div>
-    <div class="button-row">
-        <button @onclick="Create" disabled="@(string.IsNullOrEmpty(username))" class="acceptbtn">Create</button>
-    </div>
-</div>
 
 
 @code {

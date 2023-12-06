@@ -1,0 +1,36 @@
+@using BlazorApp.Service
+@inject NavService NavService
+@inject NavigationManager NavManager
+<MudItem xs="12" md="6" lg="4">
+    <MudCard>
+        <MudCardMedia Image="images/s.jpg" Height="200"/>
+        <MudCardContent>
+            <MudText Typo="Typo.h5">@Item.Title</MudText>
+            <MudText Typo="Typo.body2">@Item.Description</MudText>
+            <MudText Typo="Typo.body2">Manufactured by @Item.Manufacturer</MudText>
+        </MudCardContent>
+        <MudCardActions>
+            <MudGrid Justify="Justify.SpaceBetween" Class="d-flex align-items-center">
+                <MudItem>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="ViewItem">Details</MudButton>
+                </MudItem>
+                <MudItem>
+                    <MudText Typo="Typo.body1">@Item.Price DKK</MudText>
+                </MudItem>
+            </MudGrid>
+            
+        </MudCardActions>
+    </MudCard>
+</MudItem>
+
+@code {
+    [Parameter]
+    public Item Item { get; set; }
+    
+    private void ViewItem()
+    {//reroute to viewdetails page, saving info about the item in navservice
+        NavService.Selected = Item;
+        NavService.CurrentPage = "ItemDetails";
+        NavManager.NavigateTo("/ItemDetails");
+    }
+}
