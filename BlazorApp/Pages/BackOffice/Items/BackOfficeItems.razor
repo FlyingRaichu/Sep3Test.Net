@@ -10,11 +10,9 @@
 @attribute [Authorize("MustBeAdmin")]
 <BackOfficeNavMenu/>
 <h3>Back Office Items</h3>
-<input type="text" @bind="searchString" @oninput="LoadItemsDebounced" placeholder="Search..."/> 
-
-
 <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" @onclick="@(() => NavigationManager.NavigateTo("/BackOfficeCreateItem"))">
 </MudFab>
+<input type="text" @bind="searchString" @oninput="LoadItemsDebounced" placeholder="Search..."/>
 @* <button @onclick="LoadItems" disabled="@(string.IsNullOrEmpty(searchString))" class="acceptbtn">Confirm</button> *@
 <MudText Typo="Typo.h5">DISCOUNT ALL ITEMS!</MudText>
 <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined" VerticalAlign="false">

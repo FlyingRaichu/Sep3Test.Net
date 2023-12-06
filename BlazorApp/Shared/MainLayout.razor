@@ -1,17 +1,18 @@
 ﻿@inherits LayoutComponentBase
-<MudThemeProvider/>
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
-<PageTitle>BlazorApp</PageTitle>
+<PageTitle>KnitHub</PageTitle>
 
 
 <MudLayout>
     <MudAppBar Style="background-color: #4DD0E1;" Elevation="1">
-        <MudLink Href="/" Color="Color.Inherit"><MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit"/></MudLink>
-        <MudText Typo="Typo.h5">Knithub</MudText>
+        <MudLink Href="/" Color="Color.Inherit"><MudIconButton Icon="@Icons.Custom.Brands.Pinterest" Color="Color.Inherit"/></MudLink>
+        <MudText Typo="Typo.h5">KnitHub</MudText>
         <MudSpacer/>
         <SearchBar/>
+        <MudSwitch @bind-Checked="@_isDarkMode" Color="Color.Primary" Class="ma-4" T="bool" Label="Toggle Light/Dark Mode"/>
         <MudSpacer/>
     </MudAppBar>
     <MudMainContent>
@@ -20,5 +21,6 @@
     </MudMainContent>
 </MudLayout>
 @code {
-    
+    private MudTheme _theme = new();
+    private bool _isDarkMode;
 }

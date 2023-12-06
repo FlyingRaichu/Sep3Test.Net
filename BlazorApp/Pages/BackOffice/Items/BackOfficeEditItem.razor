@@ -57,7 +57,7 @@
     </ul>
 </div>
 
-<MudButton Variant="Variant.Filled" Disabled="@(string.IsNullOrEmpty(title) || string.IsNullOrEmpty(description) || string.IsNullOrEmpty(priceString))" @onclick="EditItemAsync">Confirm</MudButton>
+<MudButton Variant="Variant.Filled" Disabled="@(string.IsNullOrEmpty(title) || string.IsNullOrEmpty(description) || string.IsNullOrEmpty(priceString) || !IsDiscountPercentageValid())" @onclick="EditItemAsync">Confirm</MudButton>
 
 <label style="color: red">@msg</label>
 @code {
@@ -130,4 +130,14 @@
     {
         tags = await TagService.GetTagsAsync(null);
     }
+    private bool IsDiscountPercentageValid()
+    {
+        if (double.TryParse(discountPercentageString, out var discountPercentage))
+        {
+            return discountPercentage >= 0 && discountPercentage <= 100;
+        }
+
+        return false;
+    }
+
 }

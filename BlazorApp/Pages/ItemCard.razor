@@ -19,8 +19,9 @@
                     @if (Item.DiscountPercentage != 0)
                     {
                         var discountedPrice = Item.Price - (Item.Price * (Item.DiscountPercentage / 100));
-                        <MudText Typo="Typo.h4"  Class="discounted-price" Color="Color.Primary">@discountedPrice DKK</MudText>
-                        <MudText Typo="Typo.h6" Style="text-decoration:line-through"  Class="discount-percentage"  >@Item.Price DKK</MudText>
+                        <MudText Typo="Typo.h4" Class="discounted-price" Color="Color.Primary">@discountedPrice.ToString("F2") DKK</MudText>
+                        <MudText Typo="Typo.h6" Style="text-decoration:line-through" Class="discount-percentage">@Item.Price.ToString("F2") DKK</MudText>
+
                         <MudText Typo="Typo.h4"  Class="discount-percentage">@Item.DiscountPercentage% off!</MudText>
                     }
                     else
