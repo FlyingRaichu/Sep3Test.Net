@@ -8,7 +8,7 @@
 @inject NavService NavService;
 
 <MudLayout><!--REMOVE APPBAR HERE, WE GOT SEARCHBAR KEK-->
-    <MudDrawer Open="true" Elevation="2">
+    <MudDrawer Open="true" Elevation="2" DisableOverlay="true" Variant="@DrawerVariant.Persistent">
         <MudDrawerHeader>
             <MudText Typo="Typo.h5" Class="mt-1">Filter Items</MudText>
         </MudDrawerHeader>
