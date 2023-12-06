@@ -47,7 +47,7 @@
     </tbody>
 </table>
 
-<div class="modal" id="stockConfirmationModal" tabindex="-1" role="dialog">
+<div style="margin-top: 15%" class="modal" id="stockConfirmationModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -74,7 +74,7 @@
     private Item itemToResupply;
     private string msg = "";
     
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         await LoadLowStock();
     }
@@ -114,6 +114,7 @@
             };
 
             await ItemService.UpdateAsync(dto);
+            items.Remove(itemToResupply);
             StateHasChanged();
         }
         catch (Exception e)
