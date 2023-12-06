@@ -48,7 +48,7 @@ public class OrderDao : IOrderDao
 
     public Task<Order> CreateAsync(Order order)
     {
-        int id = 1;
+        var id = 1;
         if (context.Elements.Any())
         {
             id = context.Elements.Max(i => i.Id);
@@ -56,7 +56,7 @@ public class OrderDao : IOrderDao
         }
 
         order.Id = id;
-
+        
         context.Add(order);
         return Task.FromResult(order);
     }

@@ -65,9 +65,9 @@ public class ItemHttpClient : IItemService
         
         //send and receive
         var response = await client.SendAsync(request);
-        string content = await response.Content.ReadAsStringAsync();
+        var content = await response.Content.ReadAsStringAsync();
 
-        if (response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.Unauthorized)
+        if (response.StatusCode is HttpStatusCode.NotFound or HttpStatusCode.Unauthorized)
         {
             return null;
         }

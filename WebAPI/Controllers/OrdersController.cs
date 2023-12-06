@@ -56,7 +56,7 @@ public class OrdersController : ControllerBase
     {
         try
         {
-            Order created = await logic.CreateAsync(dto);
+            var created = await logic.CreateAsync(dto);
             return Created($"/orders/{created.Id}", created);
         }
         catch (Exception e)

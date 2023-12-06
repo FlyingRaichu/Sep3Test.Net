@@ -36,7 +36,6 @@ public class OrderRpc : IRpcOrder
         catch (Exception e)
         {
             Console.WriteLine(e);
-         
         }
 
         return Task.CompletedTask;

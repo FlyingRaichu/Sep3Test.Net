@@ -32,13 +32,15 @@ public class OrderLogic : IOrderLogic
             PhoneNumber = dto.PhoneNumber,
             Status = dto.Status,
             Date = dto.Date,
-            UserId = dto.UserId.Value,
+            UserId = dto.UserId.Value
         };
         
-        var orderItems = dto.OrderItems.Select(itemDto => new OrderItem
-            { Quantity = itemDto.Quantity, ItemId = itemDto.ItemId, OrderId = itemDto.OrderId }).ToList();
-        
-        order.Items.AddRange(orderItems);
+        if (dto.OrderItems != null || !dto.OrderItems.Any())
+        {
+            var orderItems = dto.OrderItems.Select(itemDto => new OrderItem
+                { Quantity = itemDto.Quantity, ItemId = itemDto.ItemId, OrderId = itemDto.OrderId }).ToList();
+            order.Items.AddRange(orderItems);
+        }
         var created = await orderDao.CreateAsync(order);
         return created;
     }
@@ -158,7 +160,7 @@ public class OrderLogic : IOrderLogic
         if (string.IsNullOrEmpty(dto.OrderFullName))
             throw new Exception("The name must be filled out");
 
-        if (!(dto.PostCode is < 9999 and > 1000))
+        if (dto.PostCode is >= 9999 or <= 1000)
             throw new Exception("The postal code is invalid.");
 
         if (string.IsNullOrEmpty(dto.Address))
@@ -167,17 +169,15 @@ public class OrderLogic : IOrderLogic
         if (string.IsNullOrEmpty(dto.City))
             throw new Exception("The city must be filled out.");
 
-        if (!(dto.PhoneNumber is < 4599999999 and > 4500000000))
+        if (dto.PhoneNumber is >= 4599999999 or <= 4500000000)
             throw new Exception("invalid phone number.");
 
         if (string.IsNullOrEmpty(dto.Status))
             throw new Exception("Set the status of the order");
         
-        if (string.IsNullOrEmpty(dto.Date))
+        if (string.IsNullOrEmpty(dto.Date) || !IsDateValid(dto.Date, "yyyy-MM-dd"))
             throw new Exception("Set the date of when the order was made");
         
-        // if (!dto.OrderItems.Any())
-        //     throw new Exception("The order needs to have items");
     }
     
     private static void ValidateOrder(Order order)
@@ -207,5 +207,15 @@ public class OrderLogic : IOrderLogic
             throw new Exception("The quantity needs to be more then 0");
         
         
+    }
+
+    private static bool IsDateValid(string input, string format)
+    {
+        if (DateTime.TryParseExact(input, format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var parsedDate))
+        {
+            return parsedDate.Date >= DateTime.Today;
+        }
+
+        return false;
     }
 }
