@@ -23,7 +23,7 @@ builder.Services.AddScoped<IUserService, UserHttpClient>();
 builder.Services.AddScoped<ITagService, TagHttpClient>();
 builder.Services.AddScoped<IOrderService, OrderHttpClient>();
 builder.Services.AddScoped<IFavoriteService, FavoriteHttpClient>();
-builder.Services.AddScoped<IOrderService, OrderHttpClient>();
+builder.Services.AddScoped<IReviewService, ReviewHttpClient>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthProvider>();
 builder.Services.AddScoped<NavigationService>();
 builder.Services.AddScoped<ShoppingCartService>();

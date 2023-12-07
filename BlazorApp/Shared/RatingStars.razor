@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Mvc
+@using MudBlazor
+<div class="d-flex flex-column align-flexStart">
+    <MudRating @bind-SelectedValue="selectedVal" HoveredValueChanged="HandleHoveredValueChanged" />
+    <MudText Typo="Typo.subtitle2" Class="deep-purple-text mt-2">@LabelText</MudText>
+</div>
+
+
+@code {
+    
+    //[Category(CategoryTypes.FormComponent.Data)]
+    public static int selectedVal = 0;
+
+    private int? activeVal;
+
+    private void HandleHoveredValueChanged(int? val) => activeVal = val;
+
+    private string LabelText => (activeVal ?? selectedVal) switch
+    {
+        1 => "Very bad",
+        2 => "Bad",
+        3 => "Sufficient",
+        4 => "Good",
+        5 => "Awesome!",
+        _ => "Rate our product!"
+        };
+    
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+}
