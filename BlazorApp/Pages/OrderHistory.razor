@@ -1,0 +1,43 @@
+@page "/OrderHistory"
+@using HttpClients.Interfaces
+@using HttpClients.Implementations
+@using BlazorApp.Service
+@inject IOrderService OrderService
+@inject NavService NavService
+<h3>Order History</h3>
+
+<AuthorizeView>
+    <Authorized>
+        @if (orders == null || !orders.Any())
+        {
+            <MudText Class="ma-4 pa-4">You currently do not have any past orders.</MudText>
+        }
+        else
+        {
+            @foreach (var order in orders)
+            {
+                <MudPaper Elevation="0">
+                    <OrderCard Order="@order"></OrderCard>
+                </MudPaper>
+            }
+        }
+    </Authorized>
+    <NotAuthorized>
+        <MudText Class="ma-4 pa-4">Please <MudLink Href="/Login">log in</MudLink> to view past orders.</MudText>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private IEnumerable<Order>? orders { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadOrders();
+    }
+
+    private async Task LoadOrders()
+    {
+        orders = await OrderService.GetAllByUserIdAsync(NavService.LoggedInUserId);
+        StateHasChanged(); //re-render if there are any changes
+    }
+}

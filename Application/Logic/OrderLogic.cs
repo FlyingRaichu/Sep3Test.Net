@@ -105,6 +105,18 @@ public class OrderLogic : IOrderLogic
 
         return order;
     }
+    
+    public async Task<IEnumerable<Order>> GetAllByUserIdAsync(int userId)
+    {
+        var orders = await orderDao.GetAllByUserIdAsync(userId);
+
+        if (orders == null)
+        {
+            throw new Exception($"User does not have any past orders.");
+        }
+
+        return orders;
+    }
 
     public async Task<OrderItem> AddItemToOrder(OrderItemCreationDto dto)
     {

@@ -36,4 +36,5 @@
       <Content Remove="Shared\FavoriteCard.razor" />
     </ItemGroup>
     
+    
 </Project>

@@ -14,8 +14,8 @@
 <MudGrid Justify="Justify.Center">
     <!--Image section-->
     <MudItem md="6">
-        <MudPaper Class="pa-16 ma-2">
-            <MudImage Src="" Alt="@Navigation.Selected.Title">img</MudImage>
+        <MudPaper Class="pa-16 ma-2 d-flex justify-content-center">
+            <MudImage Src="images/s.jpg" Alt="@Navigation.Selected.Title">img</MudImage>
         </MudPaper>
     </MudItem>
 
@@ -44,19 +44,20 @@
                     </MudItem>
                     <!--gotta check for authorization here, otherwise favoriting isn't permitted-->
                     <AuthorizeView>
-                            <Authorized>
-                                @if (isFavorite)
-                                {
-                                    <MudButton Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.StarOutline"
-                                               OnClick="RemoveFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Unfavorite</MudButton>
-                                }
-                                else
-                                {
-                                    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Star"
-                                                OnClick="AddFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Favorite</MudButton>
-                                }
-                            </Authorized>
-                        </AuthorizeView>
+                        <Authorized>
+                            @if (isFavorite)
+                            {
+                                <MudButton Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.StarOutline"
+                                           OnClick="RemoveFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Unfavorite</MudButton>
+                            }
+                            else
+                            {
+                                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Star"
+                                           OnClick="AddFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Favorite</MudButton>
+                            }
+                        </Authorized>
+                    </AuthorizeView>
+                    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ShoppingCart" FullWidth="true" Class="ma-2" Color="Color.Info" OnClick="Checkout">Go to Checkout</MudButton>
                 </MudItem>
             </MudGrid>
             </MudPaper>
@@ -69,9 +70,6 @@
             </MudPaper>
         </MudItem>
     </MudGrid>
-
-<MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Star"
-                                                OnClick="ViewFavorites" FullWidth="true" Class="ma-2" Color="Color.Warning">View Favorites</MudButton>
 
 @code {
     private int quantity { get; set; } = 1;
@@ -135,13 +133,12 @@
          NavManager.NavigateTo("/ShoppingCart");
      }
 
-     private void AddReview() {}
-
-    private void ViewFavorites()
+    private void Checkout()
     {
-        Navigation.CurrentPage = "Favorites";
-        NavManager.NavigateTo("/Favorites");
-        
+        Navigation.CurrentPage = "Checkout";
+        NavManager.NavigateTo("/Checkout");
     }
+
+     private void AddReview() {}
 
 }

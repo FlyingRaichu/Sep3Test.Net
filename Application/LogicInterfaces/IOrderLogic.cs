@@ -15,4 +15,5 @@ public interface IOrderLogic
     Task<OrderItem> AddItemToOrder(OrderItemCreationDto dto);
     Task UpdateItemInOrder(OrderItemUpdateDto dto);
     Task DeleteItemFromOrder(OrderItem orderItem);
+    Task<IEnumerable<Order>> GetAllByUserIdAsync(int userId);
 }

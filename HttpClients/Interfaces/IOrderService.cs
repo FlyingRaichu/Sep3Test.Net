@@ -19,6 +19,7 @@ public interface IOrderService
     Task UpdateAsync(OrderUpdateDto dto);
     Task DeleteAsync(int id);
     Task<Order> GetByIdAsync(int id);
+    Task<IEnumerable<Order>> GetAllByUserIdAsync(int userId);
 
     Task<OrderItem> AddItemToOrderAsync(OrderItemCreationDto dto);
     Task UpdateItemInOrderAsync(OrderItemUpdateDto dto);

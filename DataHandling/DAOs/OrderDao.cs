@@ -78,6 +78,12 @@ public class OrderDao : IOrderDao
         var order = context.Elements.FirstOrDefault(i => i.Id == id);
         return Task.FromResult<Order>(order);
     }
+    
+    public Task<IEnumerable<Order>> GetAllByUserIdAsync(int userId)
+    {
+        var orders = context.Elements.Where(order => order.UserId == userId);
+        return Task.FromResult(orders);
+    }
 
     public Task<OrderItem> AddItemToOrder(OrderItem orderItem)
     {

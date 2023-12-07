@@ -7,13 +7,8 @@
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager;
 @inject NavService NavService;
 
-<MudLayout>
-    <MudAppBar Elevation="1">
-        <SearchBar/>
-        <MudSpacer/>
-        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End"/>
-    </MudAppBar>
-    <MudDrawer Open="true" Elevation="2">
+<MudLayout><!--REMOVE APPBAR HERE, WE GOT SEARCHBAR KEK-->
+    <MudDrawer Open="true" Elevation="2" DisableOverlay="true" Variant="@DrawerVariant.Persistent">
         <MudDrawerHeader>
             <MudText Typo="Typo.h5" Class="mt-1">Filter Items</MudText>
         </MudDrawerHeader>
@@ -75,22 +70,11 @@
             else
             {
                 <MudContainer>
-                    <MudPaper Elevation="2" Class="m-2 p-2">
+                    <MudPaper Elevation="0" Class="m-2 p-2">
                         <MudGrid>
                             @foreach (var item in filteredItems)
                             {
-                                <MudItem xs="12" md="6" lg="4">
-                                    <MudCard>
-                                        <MudCardMedia Image="images/s.jpg" Height="200"/>
-                                        <MudCardContent>
-                                            <MudText Typo="Typo.h5">@item.Title</MudText>
-                                            <MudText Typo="Typo.body2">Price: @item.Price</MudText>
-                                        </MudCardContent>
-                                        <MudCardActions>
-                                            <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="(e) => ViewItem(item)">Details</MudButton>
-                                        </MudCardActions>
-                                    </MudCard>
-                                </MudItem>
+                                <ItemCard Item="@item"></ItemCard>
                             }
                         </MudGrid>
                     </MudPaper>

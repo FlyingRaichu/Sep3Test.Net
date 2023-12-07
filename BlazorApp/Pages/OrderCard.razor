@@ -1,0 +1,44 @@
+@using HttpClients.Interfaces
+@using BlazorApp.Service
+@inject IItemService ItemService
+@inject NavigationManager NavManager
+@inject NavService NavService
+
+<MudPaper Class="pa-16 ma-2">
+    <MudGrid>
+        <MudItem md="12">
+            <MudText Typo="Typo.h5">Order Id #@Order.Id — Ordered on @Order.Date</MudText>
+            <MudText Typo="Typo.h6">Status: @Order.Status</MudText>
+        </MudItem>
+        <MudItem>
+            <MudText Typo="Typo.body1">Contains:</MudText>
+            <MudDivider/>
+            @foreach (var item in Order.Items)
+            {
+                <MudGrid Class="d-flex align-items-center" Justify="Justify.SpaceBetween">
+                    <MudItem xs="6">
+                        <MudText>Item #@item.ItemId</MudText>
+                    </MudItem>
+                    <MudItem xs="6">
+                        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@( () => ViewItem(item.ItemId))">Details</MudButton>
+                    </MudItem>
+                </MudGrid>
+                <MudDivider/>
+            }
+            <MudDivider/>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+@code {
+    [Parameter] 
+    public Order Order { get; set; }
+    
+    private async void ViewItem(int item)
+    {
+        NavService.Selected = await ItemService.GetByIdAsync(item);
+        NavService.CurrentPage = "ItemDetails";
+        NavManager.NavigateTo("/ItemDetails");
+    }
+
+}
