@@ -84,7 +84,7 @@
         try
         {
             //gets items by stock = 0
-            items = await ItemService.GetItemsAsync(null, null, null, null, 0, null);
+            items = await ItemService.GetItemsAsync(null, null, null, null, 0, null, null);
             StateHasChanged();
         }
         catch (Exception e)
