@@ -25,6 +25,7 @@ builder.Services.AddScoped<IOrderService, OrderHttpClient>();
 builder.Services.AddScoped<IFavoriteService, FavoriteHttpClient>();
 builder.Services.AddScoped<IReviewService, ReviewHttpClient>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthProvider>();
+builder.Services.AddSingleton<DiscountBannerService>();
 builder.Services.AddScoped<NavigationService>();
 builder.Services.AddScoped<ShoppingCartService>();
 

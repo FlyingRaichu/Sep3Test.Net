@@ -11,7 +11,8 @@ public interface IItemService
         double? price,
         string? manufacturer,
         int? stock, 
-        List<int>? tags);
+        List<int>? tags,
+        double? discountPercentage);
 
     Task<ICollection<Item>> GetFavItemsByUserId(int id, string token);
 

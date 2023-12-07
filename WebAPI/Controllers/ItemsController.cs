@@ -21,11 +21,11 @@ public class ItemsController : ControllerBase
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Item>>> GetAsync([FromQuery] string? title,
-        [FromQuery] string? description, [FromQuery] double? price, [FromQuery] string? manufacturer, [FromQuery] int? stock, [FromQuery] List<int> tags)
+        [FromQuery] string? description, [FromQuery] double? price, [FromQuery] string? manufacturer, [FromQuery] int? stock,  [FromQuery] List<int> tags, [FromQuery] double? discountedPercentage)
     {
         try
         {
-            SearchItemParametersDto parameters = new(title, description, price, manufacturer, stock, tags);
+            SearchItemParametersDto parameters = new(title, description, price, manufacturer, stock,  tags, discountedPercentage);
             var items = await logic.GetAsync(parameters);
             return Ok(items);
         }
