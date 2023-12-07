@@ -14,32 +14,65 @@
         <MudGrid>
             <!-- Filtering options on the left -->
             <MudItem Style="background-color: rgba(255, 255, 255, 0.9)" xs="12" sm="3">
+                <!-- Category buttons -->
+             <MudButtonGroup Color="Color.Primary" Variant="Variant.Filled" VerticalAlign="true">
+                     <MudButton OnClick="@(() => FilterByCategory(null))">All</MudButton>
+                     <MudButton OnClick="@(() => FilterByCategory("Starter Kit"))">Starter Kit</MudButton>
+                     <MudButton OnClick="@(() => FilterByCategory("Yarn"))">Yarn</MudButton>
+                     <MudButton OnClick="@(() => FilterByCategory("Accessories"))">Accessories</MudButton>
+                     <!-- Add more category buttons as needed -->
+                 </MudButtonGroup>
+
                 <MudContainer Elevation="2" Class="p-3">
-                 <MudContainer MaxWidth="MaxWidth.Medium">
-                            @if (DiscountBannerService.ShowDiscountBanner)
-                            {
-                                <div style="background-color: yellow; padding: 10px; text-align: center;">
-                                    All items are now discounted!
-                                </div>
-                            }
-                
-                            <!-- Your existing filter controls -->
+                    <MudContainer MaxWidth="MaxWidth.Medium">
+                        @if (DiscountBannerService.ShowDiscountBanner)
+                        {
+                            <div style="background-color: yellow; padding: 10px; text-align: center;">
+                                All items are now discounted!!!
+                            </div>
+                        }
+                    </MudContainer>
+                    <!-- Buttons: Sort and Show Only Discounted -->
+                    <MudItem xs="12" sm="9">
+                        <MudContainer Class="mb-2">
+                            <MudButton ToggleOnClick="true" OnClick="ToggleSortOrder">
+                                Sort by Price: @GetSortOrderText()
+                            </MudButton>
+
                         </MudContainer>
+                        <MudContainer Class="mb-2">
+                            <MudButton OnClick="ToggleShowOnlyDiscountedItems">
+                                @if (showOnlyDiscountedItems)
+                                {
+                                    <span>Show All Items</span>
+                                }
+                                else
+                                {
+                                    <span>Show Only Discounted Items</span>
+                                }
+                            </MudButton>
+                        </MudContainer>
+
+                        @if (items != null)
+                        {
+                            <!-- ... existing code ... -->
+                        }
+                    </MudItem>
 
                     <MudText Typo="Typo.h5" Class="mt-1">Filter Items</MudText>
                     <!-- MudSelect for Manufacturer -->
-                    <ManufacturerFilter _manufacturerFilter="@_manufacturerFilter" _allManufacturers="@_allManufacturers" ManufacturerFilterChanged="HandleManufacturerFilterChange" />
+                    <ManufacturerFilter _manufacturerFilter="@_manufacturerFilter" _allManufacturers="@_allManufacturers" ManufacturerFilterChanged="HandleManufacturerFilterChange"/>
                     <!-- MudSliders -->
                     <MudSlider @bind-Value="minPrice" Min="0" Max="200" Step="10" Color="Color.Info">Min Price: @minPrice.ToString() dollars</MudSlider>
                     <MudSlider @bind-Value="maxPrice" Min="0" Max="200" Step="10" Color="Color.Error">Max Price: @maxPrice.ToString() yen</MudSlider>
                     <MudSelect T="string" Label="Select Tags" Clearable="true" ValueChanged="ToggleTagSelection" OnClearButtonClick="ResetTagsSelection">
                         @foreach (var tag in tagsDictionary.SelectMany(entry => entry.Value.Split(',').Select(t => t.Trim()).Distinct()))
                         {
-                            <MudSelectItem T="string" Value="@tag" />
+                            <MudSelectItem T="string" Value="@tag"/>
                         }
                     </MudSelect>
                     <div>
-                        <MudTextField @bind-Value="_selectedTagsDisplay" Label="Selected Tags" Disabled="true" />
+                        <MudTextField @bind-Value="_selectedTagsDisplay" Label="Selected Tags" Disabled="true"/>
                     </div>
                     <MudPaper Width="300px">
                         @if (maxPrice.HasValue && maxPrice <= 10)
@@ -49,7 +82,7 @@
                     </MudPaper>
                 </MudContainer>
             </MudItem>
-            
+
             <!-- Display filtered items on the right -->
             <MudItem xs="12" sm="9">
                 @if (items != null)
@@ -71,7 +104,12 @@
                     }
                     @if (!filteredItems.Any())
                     {
-                        <p>No items to display.</p>
+                        <MudPaper Elevation="2" Class="m-2 p-2">
+                            <MudContainer Align="Align.Center">
+                                <MudTypography Typo="Typo.h6" Class="mb-2">Sorry, we couldn't find any items matching your criteria.</MudTypography>
+                                <MudTypography Typo="Typo.body2" Class="mt-2">Please try adjusting your filters or explore our other products.</MudTypography>
+                            </MudContainer>
+                        </MudPaper>
                     }
                     else
                     {
@@ -100,6 +138,9 @@
     private Dictionary<int, string> tagsDictionary = new Dictionary<int, string>();
     private HashSet<string> _selectedTags = new HashSet<string>();
     private string _selectedTagsDisplay = "";
+    private bool sortByPriceHighToLow = false;
+    private bool showOnlyDiscountedItems = false;
+    private string selectedCategory = null;
 
 
     private string statusMessage = "";
@@ -193,7 +234,14 @@
     private void ApplyFilters()
     {
         var filteredItems = items;
-
+    // Apply category filter
+        if (!string.IsNullOrEmpty(selectedCategory))
+        {
+            filteredItems = filteredItems.Where(item =>
+                tagsDictionary.ContainsKey(item.Id) &&
+                tagsDictionary[item.Id].Split(',').Select(t => t.Trim()).Contains(selectedCategory)
+                ).ToList();
+        }
     // Apply manufacturer filter
         if (_manufacturerFilter != null)
         {
@@ -265,5 +313,54 @@
         NavService.CurrentPage = "ItemDetails";
         NavigationManager.NavigateTo("/ItemDetails");
     }
+
+    private void ToggleSortOrder()
+    {
+        sortByPriceHighToLow = !sortByPriceHighToLow;
+        ApplySorting();
+    }
+
+    private void ApplySorting()
+    {
+        if (sortByPriceHighToLow)
+        {
+            items = items.OrderByDescending(item => item.Price).ToList();
+        }
+        else
+        {
+            items = items.OrderBy(item => item.Price).ToList();
+        }
+    }
+
+    private string GetSortOrderText()
+    {
+        return sortByPriceHighToLow ? "High to Low" : "Low to High";
+    }
+
+    private void ToggleShowOnlyDiscountedItems()
+    {
+        showOnlyDiscountedItems = !showOnlyDiscountedItems;
+        ApplyDiscountFilter();
+    }
+
+    private void ApplyDiscountFilter()
+    {
+        if (showOnlyDiscountedItems)
+        {
+            items = items.Where(item => item.DiscountPercentage != 0).ToList();
+        }
+        else
+        {
+    // Load all items without discount filter
+            LoadAllItems();
+        }
+    }
+
+    private void FilterByCategory(string category)
+    {
+        selectedCategory = category;
+        ApplyFilters();
+    }
+
 
 }
