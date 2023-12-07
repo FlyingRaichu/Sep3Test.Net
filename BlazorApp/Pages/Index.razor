@@ -15,6 +15,17 @@
             <!-- Filtering options on the left -->
             <MudItem Style="background-color: rgba(255, 255, 255, 0.9)" xs="12" sm="3">
                 <MudContainer Elevation="2" Class="p-3">
+                 <MudContainer MaxWidth="MaxWidth.Medium">
+                            @if (DiscountBannerService.ShowDiscountBanner)
+                            {
+                                <div style="background-color: yellow; padding: 10px; text-align: center;">
+                                    All items are now discounted!
+                                </div>
+                            }
+                
+                            <!-- Your existing filter controls -->
+                        </MudContainer>
+
                     <MudText Typo="Typo.h5" Class="mt-1">Filter Items</MudText>
                     <!-- MudSelect for Manufacturer -->
                     <ManufacturerFilter _manufacturerFilter="@_manufacturerFilter" _allManufacturers="@_allManufacturers" ManufacturerFilterChanged="HandleManufacturerFilterChange" />
