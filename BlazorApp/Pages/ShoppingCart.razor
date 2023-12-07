@@ -1,0 +1,68 @@
+@page "/ShoppingCart"
+@using HttpClients.Interfaces
+@using BlazorApp.Service
+@inject IItemService ItemService;
+@inject ShoppingCartService ShoppingCartService;
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Your shopping Cart</MudText>
+    <MudGrid Spacing="6" Class="mt-16">
+        <MudItem xs="5">
+            <MudText Typo="Typo.h5" GutterBottom="true">Cart</MudText>
+            <MudPaper Class="d-flex flex-column" Style="height:100%;" Outlined="true">
+                @if (ShoppingCartService.Order.Items != null && ShoppingCartService.Order.Items.Any())
+                {
+                    <MudList Clickable="true">
+                        @foreach (var orderItem in ShoppingCartService.Order.Items)
+                        {
+                            <MudListItem Icon="@Icons.Material.Filled.ContentCut">
+                                <div class="d-flex">
+                                    @if (itemDictionary.TryGetValue(orderItem.Id, out var item))
+                                    {
+                                        <MudText>@item.Title</MudText>
+                                        <MudText Inline="true" Class="ml-auto">@orderItem.Quantity</MudText>
+                                    }
+                                </div>
+                            </MudListItem>
+                        }
+                    </MudList>
+                }
+                else
+                {
+                    <div>No items in the shopping cart.</div>
+                }
+
+                <div class="mt-auto">
+                    <MudDivider />
+                    <div class="d-flex pa-4">
+                        <MudText>Total:</MudText>
+                        <MudText Class="ml-auto"><b>$53</b></MudText>
+                    </div>
+                </div>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    private Dictionary<int, Item> itemDictionary = new Dictionary<int, Item>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ShoppingCartService.OnInitializedAsync();
+        await LoadItems();
+    }
+    
+
+    private async Task LoadItems()
+    {
+        if (ShoppingCartService.Order?.Items != null)
+            foreach (var orderItem in ShoppingCartService.Order?.Items)
+            {
+                var item = await ItemService.GetByIdAsync(orderItem.ItemId);
+                Console.WriteLine(item.Title);
+                itemDictionary.Add(orderItem.Id, item);
+            }
+
+        StateHasChanged();
+    }
+}

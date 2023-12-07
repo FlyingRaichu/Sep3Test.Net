@@ -18,9 +18,9 @@ public class ItemHttpClient : IItemService
 
     public async Task<ICollection<Item>> GetItemsAsync(string? title, string? description,
         double? price, string? manufacturer,
-        int? stock, List<int>? tags)
+        int? stock, List<int>? tags,double? discountPercentage)
     {
-        var query = ConstructQuery(title, description, price, manufacturer, stock, tags);
+        var query = ConstructQuery(title, description, price, manufacturer, stock, tags, discountPercentage);
 
         var response = await client.GetAsync("/Items" + query);
         var content = await response.Content.ReadAsStringAsync();
@@ -65,9 +65,9 @@ public class ItemHttpClient : IItemService
         
         //send and receive
         var response = await client.SendAsync(request);
-        string content = await response.Content.ReadAsStringAsync();
+        var content = await response.Content.ReadAsStringAsync();
 
-        if (response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.Unauthorized)
+        if (response.StatusCode is HttpStatusCode.NotFound or HttpStatusCode.Unauthorized)
         {
             return null;
         }
@@ -149,8 +149,8 @@ public class ItemHttpClient : IItemService
         return item;
     }
 
-    private static string ConstructQuery(string? title, string? description, double? price, string? manufacturer, int? stock,
-        List<int>? tags)
+    private static string ConstructQuery(string? title, string? description, double? price, string? manufacturer, int? stock, 
+        List<int>? tags, double? discountPercentage)
     {
         var query = "";
 
@@ -182,6 +182,11 @@ public class ItemHttpClient : IItemService
         {
             query += string.IsNullOrEmpty(query) ? "?" : "&";
             query += $"stock={stock}";
+        }
+        if (stock != null)
+        {
+            query += string.IsNullOrEmpty(query) ? "?" : "&";
+            query += $"discountPercentage={discountPercentage}";
         }
 
         if (tags == null || !tags.Any()) return query;

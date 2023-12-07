@@ -32,9 +32,8 @@ public class ItemRpc : IRpcBase<Item>
         var client = new ItemService.ItemServiceClient(channel);
         try
         {
-            Console.WriteLine($"In RPC: {item.Manufacturer}");
             var response = client.addItem(item);
-            Console.WriteLine($"In RPC: {item.Manufacturer}");
+            
             Elements.Add(item);
             
         }
@@ -69,9 +68,9 @@ public class ItemRpc : IRpcBase<Item>
 
         try
         {
-            Item? item = Elements.FirstOrDefault(i => i.Id == id);
+            var item = Elements.FirstOrDefault(i => i.Id == id);
             var response = client.deleteItem(item);
-            Elements.Remove(item);
+            Elements.Remove(item!);
         }
         catch (Exception e)
         {

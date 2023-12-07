@@ -1,0 +1,58 @@
+@using BlazorApp.Service
+@inject NavService NavService
+@inject NavigationManager NavManager
+<MudItem xs="12" md="6" lg="4">
+    <MudCard>
+        <MudCardMedia Image="images/s.jpg" Height="200"/>
+        <MudCardContent>
+            <MudText Typo="Typo.h5">@Item.Title</MudText>
+            <MudText Typo="Typo.body2">@Item.Description</MudText>
+            <MudText Typo="Typo.body2">Manufactured by @Item.Manufacturer</MudText>
+        </MudCardContent>
+        <MudCardActions>
+            <MudGrid Justify="Justify.SpaceBetween" Class="d-flex align-items-center">
+                <MudItem>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="ViewItem">Details</MudButton>
+                </MudItem>
+                <MudItem>
+                      @if (Item.Stock == 0)
+                                {
+                                    <MudText Typo="Typo.h6" Color="Color.Error">OUT OF STOCK</MudText>
+                                }
+                      else
+                      {
+
+
+                          @if (Item.DiscountPercentage != 0)
+                          {
+                              var discountedPrice = Item.Price - (Item.Price * (Item.DiscountPercentage / 100));
+                              <MudText Typo="Typo.h4" Class="discounted-price" Color="Color.Primary">@discountedPrice.ToString("F2") DKK</MudText>
+                              <MudText Typo="Typo.h6" Style="text-decoration:line-through" Class="discount-percentage">@Item.Price.ToString("F2") DKK</MudText>
+
+                              <MudText Typo="Typo.h4" Class="discount-percentage">@Item.DiscountPercentage% off!</MudText>
+                          }
+                          else
+                          {
+                              <MudText Typo="Typo.h4" Color="Color.Primary">@Item.Price DKK</MudText>
+                              <MudText Typo="Typo.h6" Class="discount-percentage" Style="color: transparent"> Invisible text </MudText>
+                              <MudText Typo="Typo.h4" Style="color: transparent" Class="discount-percentage"> Invisible text</MudText>
+                          }
+                      }
+                </MudItem>
+            </MudGrid>
+        </MudCardActions>
+    </MudCard>
+</MudItem>
+
+@code {
+    [Parameter]
+    public Item Item { get; set; }
+
+    private void ViewItem()
+    {
+    // Reroute to viewdetails page, saving info about the item in navservice
+        NavService.Selected = Item;
+        NavService.CurrentPage = "ItemDetails";
+        NavManager.NavigateTo("/ItemDetails");
+    }
+}

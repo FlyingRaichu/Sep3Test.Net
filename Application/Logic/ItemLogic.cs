@@ -35,6 +35,7 @@ public class ItemLogic : IItemLogic
             Price = dto.Price,
             Manufacturer = dto.Manufacturer,
             Stock = dto.Stock,
+            DiscountPercentage = dto.DiscountPercentage,
         };
         item.Tags.AddRange(dto.Tags);
         var created = await itemDao.CreateAsync(item);
@@ -51,6 +52,7 @@ public class ItemLogic : IItemLogic
         var manufacturerToUse = dto.Manufacturer ?? existing.Manufacturer;
         var stockToUse = dto.Stock ?? existing.Stock;
         var tagsToUse = dto.Tags ?? existing.Tags.ToList();
+        var discountPercentage = dto.DiscountPercentage ?? existing.DiscountPercentage;
         
 
         Item updated = new()
@@ -61,6 +63,7 @@ public class ItemLogic : IItemLogic
             Price = priceToUse,
             Manufacturer = manufacturerToUse,
             Stock = stockToUse,
+            DiscountPercentage = discountPercentage,
         };
         
         updated.Tags.AddRange(tagsToUse);
@@ -71,7 +74,6 @@ public class ItemLogic : IItemLogic
 
     public async Task DeleteAsync(int id)
     {
-
         await itemDao.DeleteAsync(id);
     }
 

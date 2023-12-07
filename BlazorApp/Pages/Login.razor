@@ -8,30 +8,51 @@
 @inject AuthenticationStateProvider authState
 
 <h3>Login</h3>
+<MudGrid Justify="Justify.Center" Class="d-flex align-items-center">
+    <MudItem xs="12" md="5" lg="3">
+        <MudCard Outlined="true">
+            <MudCardContent>
+                <MudGrid Justify="Justify.Center" Class="text-center">
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.h4">Welcome to Knithub!</MudText>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.body1">Log in here:</MudText>
+                    </MudItem>
+                    <MudItem xs="12">
+                        @* tried putting ValueChanged="@StateHasChanged" for this to refresh in real time,
+                        but apparently ValueChanged is baked into bind-value, and won't let me do it 2x*@
+                        <MudTextField @bind-Value="@userName" Label="Username" Variant="Variant.Outlined"></MudTextField>
+                        <MudTextField @bind-Value="@password" Label="Password" InputType="InputType.Password" Variant="Variant.Outlined"></MudTextField>
+                    </MudItem>
+                    <MudItem xs="12">
+                        @if (userName == "" || password == "")
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Tertiary" Disabled="true" FullWidth="true">Log in</MudButton>
+                        }
+                        else
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="LoginAsync" FullWidth="true">Log in</MudButton>
+                        }
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.body2">Don't have an account? Make one <MudLink Href="/RegisterUser" Typo="Typo.body2">here.</MudLink></MudText>
+                    </MudItem>
+                </MudGrid>
 
-<div class="field">
-    <label>User name:</label>
-    <input type="text" @bind="userName"/>
-</div>
-<div class="field">
-    <label style="text-align: center">Password:</label>
-    <input type="password" @bind="password"/>
-</div>
-@if (!string.IsNullOrEmpty(msg))
-{
-    <div class="field">
-        <label style="color: red">
-            @msg
-        </label>
-    </div>
-}
-<div class="field">
-    <button class="loginbtn" @onclick="LoginAsync">Log in</button>
-</div>
+            </MudCardContent>
+        </MudCard>
+        @if (!string.IsNullOrEmpty(msg))
+        {
+            <MudText Color="Color.Error" Class="text-center">@msg</MudText>
+        }
+    </MudItem>
+</MudGrid>
+
 
 @code {
-    private string userName;
-    private string password;
+    private string userName = "";
+    private string password = "";
     private string msg;
 
     private async Task LoginAsync()

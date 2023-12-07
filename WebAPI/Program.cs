@@ -19,8 +19,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRpcBase<Item>, ItemRpc>();
 builder.Services.AddScoped<IRpcBase<User>, UserRpc>();
-builder.Services.AddScoped<IRpcBase<Tag>, TagRpc>();
 builder.Services.AddScoped<ITagRpc, TagRpc>();
+builder.Services.AddScoped<IRpcOrder, OrderRpc>();
 builder.Services.AddScoped<IReviewRpc, ReviewRpc>();
 
 builder.Services.AddScoped<IRpcFavorite<Favorite>, FavoriteRpc>();
@@ -29,6 +29,8 @@ builder.Services.AddScoped<IFavoriteDao, FavoriteDao>();
 builder.Services.AddScoped<IItemLogic, ItemLogic>();
 builder.Services.AddScoped<ITagDao, TagDao>();
 builder.Services.AddScoped<ITagLogic, TagLogic>();
+builder.Services.AddScoped<IOrderDao, OrderDao>();
+builder.Services.AddScoped<IOrderLogic, OrderLogic>();
 builder.Services.AddScoped<IReviewDao, ReviewDao>();
 
 builder.Services.AddScoped<IUserDao, UserDao>();

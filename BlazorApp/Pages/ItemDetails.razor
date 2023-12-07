@@ -4,6 +4,7 @@
 @using Domain.DTOs.Review
 @using HttpClients.Implementations
 @using HttpClients.Interfaces
+@inject ShoppingCartService ShoppingCartService;
 @using BlazorApp.Pages.Services
 @using System.Runtime.InteropServices.ComTypes
 @using System.ComponentModel
@@ -18,8 +19,8 @@
 <MudGrid Justify="Justify.Center">
     <!--Image section-->
     <MudItem md="6">
-        <MudPaper Class="pa-16 ma-2">
-            <MudImage Src="" Alt="@Navigation.Selected.Title">img</MudImage>
+        <MudPaper Class="pa-16 ma-2 d-flex justify-content-center">
+            <MudImage Src="images/s.jpg" Alt="@Navigation.Selected.Title">img</MudImage>
         </MudPaper>
     </MudItem>
 
@@ -40,13 +41,11 @@
                 </MudItem>
                 <MudItem xs="6">
                     <MudItem>
-                        <MudNumericField @bind-Value="quantity" Label="Quantity" Variant="Variant.Text" Min="0"/>
+                        <MudNumericField @bind-Value="quantity" Label="Quantity" Variant="Variant.Text" Min="1"/>
                     </MudItem>
                     <MudItem>
                         <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.AddShoppingCart"
-                                   OnClick="AddToCart" FullWidth="true" Class="ma-2" Color="Color.Tertiary">
-                            Add to Cart
-                        </MudButton>
+                                   OnClick="@(() => AddToCart(Navigation.Selected.Id))" FullWidth="true" Class="ma-2" Color="Color.Tertiary">Add to Cart</MudButton>
                     </MudItem>
                     <!--gotta check for authorization here, otherwise favoriting isn't permitted-->
                     <AuthorizeView>
@@ -54,19 +53,16 @@
                             @if (isFavorite)
                             {
                                 <MudButton Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.StarOutline"
-                                           OnClick="RemoveFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">
-                                    Unfavorite
-                                </MudButton>
+                                           OnClick="RemoveFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Unfavorite</MudButton>
                             }
                             else
                             {
                                 <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Star"
-                                           OnClick="AddFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">
-                                    Favorite
-                                </MudButton>
+                                           OnClick="AddFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Favorite</MudButton>
                             }
                         </Authorized>
                     </AuthorizeView>
+                    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ShoppingCart" FullWidth="true" Class="ma-2" Color="Color.Info" OnClick="Checkout">Go to Checkout</MudButton>
                 </MudItem>
             </MudGrid>
         </MudPaper>
@@ -119,13 +115,8 @@
     }
 </MudGrid>
 
-<MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Star"
-           OnClick="ViewFavorites" FullWidth="true" Class="ma-2" Color="Color.Warning">
-    View Favorites
-</MudButton>
-
 @code {
-    private int quantity { get; set; }
+    private int quantity { get; set; } = 1;
     private AuthenticationState authState;
     private bool isFavorite;
 
@@ -142,7 +133,7 @@
     {
         authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-    //if logged in, toggle isFavorite to change button display
+        //if logged in, toggle isFavorite to change button display
         if (authState.User.Identity?.IsAuthenticated ?? false)
         {
             FavoriteDto dto = new(Navigation.LoggedInUserId, Navigation.Selected.Id);
@@ -153,8 +144,8 @@
     }
 
     private async void AddFavorite()
-    {
-        FavoriteDto dto = new(Navigation.LoggedInUserId, Navigation.Selected.Id);
+     {
+         FavoriteDto dto = new(Navigation.LoggedInUserId, Navigation.Selected.Id);
         try
         {
             var createdFavorite = await FavService.CreateAsync(dto, UserHttpClient.Jwt);
@@ -166,7 +157,7 @@
         }
 
         StateHasChanged();
-    }
+     }
 
     private async void RemoveFavorite()
     {
@@ -181,9 +172,20 @@
             Console.WriteLine($"Error deleting favorite: {ex.Message}");
         }
 
-        StateHasChanged();
-    }
+         StateHasChanged();
+     }
 
+     private async Task AddToCart(int itemId)
+     {
+       await ShoppingCartService.AddOrderItem(itemId, quantity);
+         NavManager.NavigateTo("/ShoppingCart");
+     }
+
+    private void Checkout()
+    {
+        Navigation.CurrentPage = "Checkout";
+        NavManager.NavigateTo("/Checkout");
+    }
     private void AddToCart()
     {
     }
@@ -217,13 +219,4 @@
             Console.WriteLine(e);
         }
     }
-
-    //==========
-
-    private void ViewFavorites()
-    {
-        Navigation.CurrentPage = "Favorites";
-        NavManager.NavigateTo("/Favorites");
-    }
-
 }
