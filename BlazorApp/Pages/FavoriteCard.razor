@@ -7,16 +7,16 @@
 
 <MudPaper Class="pa-16 ma-2">
     <MudGrid Justify="Justify.Center" Class="d-flex align-items-center">
-        <MudItem md="2">
-            <MudImage Src="" Alt="@Item.Title"></MudImage>
+        <MudItem md="3">
+            <MudImage Src="images/s.jpg" Alt="@Item.Title"></MudImage>
         </MudItem>
-        <MudItem md="9">
+        <MudItem md="7">
             <MudText Typo="Typo.h5">@Item.Title</MudText>
             <MudText>@Item.Description</MudText>
             <MudText>Manufactured by @Item.Manufacturer</MudText>
             <MudText>@Item.Price DKK</MudText>
         </MudItem>
-        <MudItem md="1">
+        <MudItem md="2">
             <MudButton Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.StarOutline"
                 OnClick="RemoveFavorite" FullWidth="true" Class="ma-2" Color="Color.Warning">Unfavorite</MudButton>
         </MudItem>
