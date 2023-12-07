@@ -6,10 +6,11 @@ namespace BlazorApp.Service;
 public class ShoppingCartService
 {
    private readonly IJSRuntime _jsRuntime;
-
+   private static readonly Random random = new Random();
+   
         public Order Order { get; private set; } = new()
         {
-            Id = 99999
+            Id = random.Next()
         };
         
         private int itemIdCounter = 1;
