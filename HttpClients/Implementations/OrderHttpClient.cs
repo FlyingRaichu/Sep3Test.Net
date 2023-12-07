@@ -96,7 +96,7 @@ public class OrderHttpClient : IOrderService
 
     public async Task<IEnumerable<Order>> GetAllByUserIdAsync(int userId)
     {
-        var response = await client.GetAsync($"/Orders/{userId}");
+        var response = await client.GetAsync($"/history/{userId}");
         var content = await response.Content.ReadAsStringAsync();
 
         if (!response.IsSuccessStatusCode)
@@ -108,6 +108,30 @@ public class OrderHttpClient : IOrderService
         {
             PropertyNameCaseInsensitive = true
         })!;
+        
+        /*
+         * it doesn't auto-deserialize the order items within the order. so u gotta
+         * find them and manually map them
+         */
+        
+        var jsonDocument = JsonDocument.Parse(content);
+
+        foreach (var order in orders)
+        {
+            var orderItemsJson = jsonDocument.RootElement
+                .EnumerateArray()
+                .Where(j => j.GetProperty("id").GetInt32() == order.Id)
+                .Select(j => j.GetProperty("items").EnumerateArray())
+                .SelectMany(itemArray => itemArray.Select(item => new OrderItem
+                {
+                    Id = item.GetProperty("id").GetInt32(),
+                    ItemId = item.GetProperty("itemId").GetInt32(),
+                    OrderId = item.GetProperty("orderId").GetInt32(),
+                    Quantity = item.GetProperty("quantity").GetInt32()
+                }));
+
+            order.Items.AddRange(orderItemsJson);
+        }
         
         return orders;
     }

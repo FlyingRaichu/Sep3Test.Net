@@ -51,7 +51,7 @@ public class OrdersController : ControllerBase
         }
     }
     
-    [HttpGet("{userId:int}")]
+    [HttpGet("/history/{userId:int}")]
     public async Task<ActionResult<IEnumerable<Order>>> GetAllByUserIdAsync([FromRoute] int userId)
     {
         try

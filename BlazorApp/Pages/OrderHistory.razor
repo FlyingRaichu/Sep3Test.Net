@@ -4,7 +4,7 @@
 @using BlazorApp.Service
 @inject IOrderService OrderService
 @inject NavService NavService
-<h3>OrderHistory</h3>
+<h3>Order History</h3>
 
 <AuthorizeView>
     <Authorized>
@@ -16,7 +16,7 @@
         {
             @foreach (var order in orders)
             {
-                <MudPaper Class="pa-16 ma-2" Elevation="0">
+                <MudPaper Elevation="0">
                     <OrderCard Order="@order"></OrderCard>
                 </MudPaper>
             }
