@@ -16,12 +16,11 @@
             <MudItem Style="background-color: rgba(255, 255, 255, 0.9)" xs="12" sm="3">
                 <!-- Category buttons -->
              <MudButtonGroup Color="Color.Primary" Variant="Variant.Filled" VerticalAlign="true">
-                     <MudButton OnClick="@(() => FilterByCategory(null))">All</MudButton>
-                     <MudButton OnClick="@(() => FilterByCategory("Starter Kit"))">Starter Kit</MudButton>
-                     <MudButton OnClick="@(() => FilterByCategory("Yarn"))">Yarn</MudButton>
-                     <MudButton OnClick="@(() => FilterByCategory("Accessories"))">Accessories</MudButton>
-                     <!-- Add more category buttons as needed -->
-                 </MudButtonGroup>
+                 @foreach (var category in _allCategories)
+                 {
+                     <MudButton OnClick="@(() => FilterByCategory(category))">@category</MudButton>
+                 }
+             </MudButtonGroup>
 
                 <MudContainer Elevation="2" Class="p-3">
                     <MudContainer MaxWidth="MaxWidth.Medium">
@@ -63,8 +62,8 @@
                     <!-- MudSelect for Manufacturer -->
                     <ManufacturerFilter _manufacturerFilter="@_manufacturerFilter" _allManufacturers="@_allManufacturers" ManufacturerFilterChanged="HandleManufacturerFilterChange"/>
                     <!-- MudSliders -->
-                    <MudSlider @bind-Value="minPrice" Min="0" Max="200" Step="10" Color="Color.Info">Min Price: @minPrice.ToString() dollars</MudSlider>
-                    <MudSlider @bind-Value="maxPrice" Min="0" Max="200" Step="10" Color="Color.Error">Max Price: @maxPrice.ToString() yen</MudSlider>
+                    <MudSlider @bind-Value="minPrice" Min="0" Max="200" Step="10" Color="Color.Info">Min Price: @minPrice.ToString()</MudSlider>
+                    <MudSlider @bind-Value="maxPrice" Min="0" Max="200" Step="10" Color="Color.Error">Max Price: @maxPrice.ToString()</MudSlider>
                     <MudSelect T="string" Label="Select Tags" Clearable="true" ValueChanged="ToggleTagSelection" OnClearButtonClick="ResetTagsSelection">
                         @foreach (var tag in tagsDictionary.SelectMany(entry => entry.Value.Split(',').Select(t => t.Trim()).Distinct()))
                         {
@@ -141,7 +140,7 @@
     private bool sortByPriceHighToLow = false;
     private bool showOnlyDiscountedItems = false;
     private string selectedCategory = null;
-
+    private List<string> _allCategories = new List<string> { "All", "Starter Kit", "Yarn", "Accessories" };
 
     private string statusMessage = "";
 
@@ -234,14 +233,16 @@
     private void ApplyFilters()
     {
         var filteredItems = items;
+
     // Apply category filter
         if (!string.IsNullOrEmpty(selectedCategory))
         {
-            filteredItems = filteredItems.Where(item =>
-                tagsDictionary.ContainsKey(item.Id) &&
-                tagsDictionary[item.Id].Split(',').Select(t => t.Trim()).Contains(selectedCategory)
-                ).ToList();
+            filteredItems = filteredItems
+                .Where(item => tagsDictionary.ContainsKey(item.Id) &&
+                               tagsDictionary[item.Id].Split(',').Select(t => t.Trim()).Contains(selectedCategory))
+                .ToList();
         }
+
     // Apply manufacturer filter
         if (_manufacturerFilter != null)
         {
@@ -262,12 +263,11 @@
     // Apply tag filters
         if (_selectedTags.Any())
         {
-            filteredItems = filteredItems.Where(item =>
-                tagsDictionary.ContainsKey(item.Id) &&
-                _selectedTags.All(selectedTag =>
-                    tagsDictionary[item.Id].Split(',').Select(t => t.Trim()).Contains(selectedTag)
-                    )
-                ).ToList();
+            filteredItems = filteredItems
+                .Where(item => tagsDictionary.ContainsKey(item.Id) &&
+                               _selectedTags.All(selectedTag =>
+                                   tagsDictionary[item.Id].Split(',').Select(t => t.Trim()).Contains(selectedTag)))
+                .ToList();
         }
 
     // Update the displayed items
@@ -358,13 +358,9 @@
 
     private void FilterByCategory(string category)
     {
-       
+        
         selectedCategory = category;
-        
-    // Reset other filters that may interfere with category filtering
-        
         ApplyFilters();
     }
-
 
 }
