@@ -358,7 +358,11 @@
 
     private void FilterByCategory(string category)
     {
+       
         selectedCategory = category;
+        
+    // Reset other filters that may interfere with category filtering
+        
         ApplyFilters();
     }
 
