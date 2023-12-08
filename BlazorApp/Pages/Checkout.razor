@@ -1,4 +1,6 @@
+@inject IDiscountCodeService DiscountCodeService
 @page "/Checkout"
+@using HttpClients.Interfaces
 <MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
     <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Checkout</MudText>
     <MudGrid Spacing="6" Class="mt-16">
@@ -66,14 +68,30 @@
                 <div class="mt-auto">
                     <MudDivider />
                     <div class="d-flex pa-4">
-                        <MudText>Total:</MudText>
-                        <MudText Class="ml-auto"><b>$53</b></MudText>
-                    </div>
+                                   <MudText>Total:</MudText>
+                                   <MudText Class="ml-auto"><b>@orderTotal</b></MudText>
+                               </div>
                 </div>
             </MudPaper>
-        </MudItem>
+                    @if (discountPercentage > 0)
+                    {
+                        <div>
+                            <MudText Typo="Typo.h6">Discount Applied!</MudText>
+                            <MudText Typo="Typo.body2">Discount: @discountPercentage%</MudText>
+                        </div>
+                    }
+                    <MudTextField T="string" Label="Enter Discount Code" @bind-Value="discountCode" />
+                    @* <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="ApplyDiscount">Apply Discount</MudButton> *@
+                </MudItem>
+     
     </MudGrid>
 </MudContainer>
 @code {
     //ay for anyone who is working on checkout. make sure to link the item page button as well
+    
+    private string discountCode;
+    private decimal discountPercentage;
+    private decimal orderTotal = 53;
+
+    
 }

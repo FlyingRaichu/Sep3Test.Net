@@ -7,6 +7,7 @@
 @inject ITagService TagService
 @inject IJSRuntime JsRuntime
 @inject DiscountBannerService DiscountBannerService
+@inject IDiscountCodeService DiscountCodeService
 @attribute [Authorize("MustBeAdmin")]
 <BackOfficeNavMenu/>
 <h3>Back Office Items</h3>
@@ -23,6 +24,9 @@
     <MudButton Color="Color.Primary" @onclick="(args) => ChangeDiscount(50)">50%</MudButton>
     <MudButton Color="Color.Primary" @onclick="(args) => ChangeDiscount(99)"> YOLO WE ARE GOING OUT OF BUSINESS 99%</MudButton>
 </MudButtonGroup>
+
+
+
 <MudTable Items="@items" Hover="true" Breakpoint="Breakpoint.Sm"  LoadingProgressColor="Color.Info">
     <HeaderContent>
         <MudTh>Id</MudTh>
@@ -104,6 +108,8 @@
     private string? searchString = "";
     private Timer debounceTimer;
     List<int> tagIdsForSending;
+    private bool IsDiscountActivationModalVisible = false;
+    private string discountCode = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -226,7 +232,11 @@
             Console.WriteLine(e);
             msg = e.Message;
         }
+        
     }
+   
+    
+
 
 
 }
