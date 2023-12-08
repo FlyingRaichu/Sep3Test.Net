@@ -21,4 +21,8 @@ public class OrderUpdateDto
     {
         Id = id;
     }
+
+    public OrderUpdateDto()
+    {
+    }
 }

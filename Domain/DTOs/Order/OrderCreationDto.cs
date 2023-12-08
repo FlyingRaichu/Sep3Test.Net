@@ -29,4 +29,8 @@ public class OrderCreationDto
         OrderItems = orderItems ?? new List<OrderItemCreationDto>();
         UserId = userId;
     }
+
+    public OrderCreationDto()
+    {
+    }
 }
