@@ -3,14 +3,14 @@ using System.Text.Json.Serialization;
 
 public class DiscountCodeDto
 {
-    public int Id { get;  }
-    public string Code { get;  }
-    public int DiscountPercentage { get;  }
+    
+    public string Code { get; set; }
+    public int DiscountPercentage { get; set; }
 
     [JsonConstructor]
-    public DiscountCodeDto(int id, string code, int discountPercentage)
+    public DiscountCodeDto(string code, int discountPercentage)
     {
-        Id = id;
+        
         Code = code;
         DiscountPercentage = discountPercentage;
     }

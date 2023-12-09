@@ -2,6 +2,7 @@
 @using HttpClients.Implementations
 @using HttpClients.Interfaces
 @using Domain.DTOs.Item
+@using Domain.DTOs.DiscountCode
 @inject NavigationManager NavigationManager
 @inject IItemService ItemService
 @inject ITagService TagService
@@ -25,6 +26,14 @@
     <MudButton Color="Color.Primary" @onclick="(args) => ChangeDiscount(99)"> YOLO WE ARE GOING OUT OF BUSINESS 99%</MudButton>
 </MudButtonGroup>
 
+<!-- New code for discount codes -->
+<div>
+    <label>Discount Code:</label>
+    <input type="text" @bind="discountCode" />
+    <label>Percentage:</label>
+    <input type="number" @bind="discountPercentage" />
+    <button @onclick="AddDiscountCode">Add Discount Code</button>
+</div>
 
 
 <MudTable Items="@items" Hover="true" Breakpoint="Breakpoint.Sm"  LoadingProgressColor="Color.Info">
@@ -102,6 +111,7 @@
 
 @code {
     private ICollection<Item> items;
+    private ICollection<DiscountCode> discountCodes; // Add this variable
     private Dictionary<int, string> tagsDictionary = new Dictionary<int, string>();
     private string msg = "";
     private int itemToDeleteId;
@@ -110,11 +120,28 @@
     List<int> tagIdsForSending;
     private bool IsDiscountActivationModalVisible = false;
     private string discountCode = "";
+    private int discountPercentage;
 
     protected override async Task OnInitializedAsync()
     {
         await LoadItems();
         await LoadTags();
+        await LoadDiscountCodes();
+
+
+    }
+    private async Task LoadDiscountCodes()
+    {
+        try
+        {
+            discountCodes = await DiscountCodeService.GetDiscountCodesAsync(null  , null);
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
     }
 
     private void LoadItemsDebounced(ChangeEventArgs args)
@@ -233,6 +260,36 @@
             msg = e.Message;
         }
         
+    }
+    
+    private async Task AddDiscountCode()
+    {
+        try
+        {
+            
+            var newDiscountCode = new DiscountCodeDto(discountCode, discountPercentage);
+            Console.WriteLine(newDiscountCode);
+            await DiscountCodeService.CreateAsync(newDiscountCode);
+            
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
+    }
+    private async Task RemoveDiscountCode(DiscountCode code)
+    {
+        try
+        {
+            await DiscountCodeService.DeleteAsync(code.Id);
+           
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
     }
    
     

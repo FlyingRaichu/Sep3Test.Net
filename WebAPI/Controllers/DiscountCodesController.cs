@@ -11,11 +11,11 @@ namespace WebAPI.Controllers;
 
     [ApiController]
     [Route("[controller]")]
-    public class DiscountCodeController : ControllerBase
+    public class DiscountCodesController : ControllerBase
     {
         private readonly IDiscountCodeLogic discountCodeLogic;
 
-        public DiscountCodeController(IDiscountCodeLogic discountCodeLogic)
+        public DiscountCodesController(IDiscountCodeLogic discountCodeLogic)
         {
             this.discountCodeLogic = discountCodeLogic;
         }
@@ -26,7 +26,7 @@ namespace WebAPI.Controllers;
             try
             {
                 var result = await discountCodeLogic.CreateAsync(dto);
-                return Created($"/items/{result.Id}", result);
+                return Created($"/discountCodes/{result.Id}", result);
             }
             catch (Exception ex)
             {
@@ -53,8 +53,8 @@ namespace WebAPI.Controllers;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DiscountCode>>> GetAsync([FromQuery] string code,
-            [FromQuery] int discountPercentage)
+        public async Task<ActionResult<IEnumerable<DiscountCode>>> GetAsync([FromQuery] string? code,
+            [FromQuery] int? discountPercentage)
         {
             try
             {

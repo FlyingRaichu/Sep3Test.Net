@@ -17,8 +17,8 @@ namespace HttpClients.Implementations;
 
 
         public async Task<DiscountCode> CreateAsync(DiscountCodeDto dto)
-        {
-            var response = await client.PostAsJsonAsync(requestUri: "DiscountCodes", dto);
+        {Console.WriteLine($"create async method: {dto.Code}, {dto.DiscountPercentage}");
+            var response = await client.PostAsJsonAsync(requestUri: "/DiscountCodes", dto);
             var content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
@@ -56,18 +56,19 @@ namespace HttpClients.Implementations;
 
         private static string ConstructQuery(string? code, int? discountPercentage)
         {
-            var query = "";
+            var queryParams = new List<string>();
+
             if (!string.IsNullOrEmpty(code))
             {
-                query += string.IsNullOrEmpty(query) ? "?" : "&";
-                query += $"code={code}";
-            }
-            if (discountPercentage != null)
-            {
-                query += string.IsNullOrEmpty(query) ? "?" : "&";
-                query += $"discountPercentage={discountPercentage}";
+                queryParams.Add($"code={Uri.EscapeDataString(code)}");
             }
 
-            return query;
+            if (discountPercentage != null)
+            {
+                queryParams.Add($"discountPercentage={discountPercentage}");
+            }
+
+            return queryParams.Any() ? "?" + string.Join("&", queryParams) : "";
         }
+
     }

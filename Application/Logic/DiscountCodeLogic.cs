@@ -44,8 +44,9 @@ namespace Application.Logic
         {
             if (string.IsNullOrEmpty(dto.Code))
                 throw new Exception("Code may not be empty.");
-        
-            if (double.IsNegative(dto.DiscountPercentage) || double.IsInfinity(dto.DiscountPercentage)) throw new Exception("Invalid discount percentage.");
+
+            if (dto.DiscountPercentage < 0)
+                throw new Exception("Invalid discount percentage.");
         }
     }
 }
