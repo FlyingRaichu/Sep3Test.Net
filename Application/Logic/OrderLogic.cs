@@ -35,6 +35,7 @@ public class OrderLogic : IOrderLogic
             UserId = dto.UserId.Value
         };
         
+        
         if (dto.OrderItems != null || !dto.OrderItems.Any())
         {
             var orderItems = dto.OrderItems.Select(itemDto => new OrderItem
@@ -172,7 +173,7 @@ public class OrderLogic : IOrderLogic
         if (string.IsNullOrEmpty(dto.OrderFullName))
             throw new Exception("The name must be filled out");
 
-        if (dto.PostCode is >= 9999 or <= 1000)
+        if (dto.PostCode == null || dto.PostCode is >= 9999 or <= 1000)
             throw new Exception("The postal code is invalid.");
 
         if (string.IsNullOrEmpty(dto.Address))
@@ -181,7 +182,7 @@ public class OrderLogic : IOrderLogic
         if (string.IsNullOrEmpty(dto.City))
             throw new Exception("The city must be filled out.");
 
-        if (dto.PhoneNumber is >= 4599999999 or <= 4500000000)
+        if (dto.PhoneNumber == null || dto.PhoneNumber is >= 99999999 or <= 00000000)
             throw new Exception("invalid phone number.");
 
         if (string.IsNullOrEmpty(dto.Status))

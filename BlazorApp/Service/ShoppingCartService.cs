@@ -114,6 +114,25 @@ public class ShoppingCartService
             await SaveShoppingCartAsync();
         }
 
+        public async Task<int> UpdateOrderItemQuantity(int existingItemId, int quantity)
+        {
+            Order.Items.FirstOrDefault(oI => oI.Id == existingItemId)!.Quantity = quantity;
+            await SaveShoppingCartAsync();
+            return quantity;
+        }
+
+        public async Task RemoveOrderItem(OrderItem existingItem)
+        {
+            Order.Items.Remove(existingItem);
+            await SaveShoppingCartAsync();
+        }
+
+        public async Task ClearShoppingCart()
+        {
+            Order.Items.Clear();
+            await SaveShoppingCartAsync();
+        }
+
         private int GenerateUniqueItemId()
         {
             if (!Order.Items.Any()) return itemIdCounter;
