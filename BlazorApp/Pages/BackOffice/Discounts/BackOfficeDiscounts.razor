@@ -1,0 +1,248 @@
+@page "/BackOfficeDiscounts"
+@using HttpClients.Implementations
+@using HttpClients.Interfaces
+@using Domain.DTOs.Item
+@using Domain.DTOs.DiscountCode
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.JSInterop
+@inject NavigationManager NavigationManager
+@inject IItemService ItemService
+@inject ITagService TagService
+@inject IJSRuntime JsRuntime
+@inject DiscountBannerService DiscountBannerService
+@inject IDiscountCodeService DiscountCodeService
+@attribute [Authorize("MustBeAdmin")]
+<BackOfficeNavMenu/>
+
+<MudContainer Class="mt-16">
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Discounts</MudText>
+    <MudText Align="Align.Center">Select </MudText>
+    <MudGrid Class="mt-8" Justify="Justify.Center">
+        <MudItem xs="12" sm="6" md="4">
+            <MudCard Elevation="25" Class="rounded-lg pb-4">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h5" Align="Align.Center">Discount all the Items!</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <div class="d-flex justify-center">
+                        <MudText Typo="Typo.h3" Class="ml-1 mt-5" Color="Color.Secondary">$5</MudText>
+                        <MudText Typo="Typo.h5" Class="ml-1 mt-5" Color="Color.Secondary">/Monthly</MudText>
+                    </div>
+                    <MudItem Item="mx-auto mt-4" Style="width:300px;">
+                        <MudList Clickable="true" @bind-SelectedItem="selectedItem" @bind-SelectedValue="selectedValue">
+                            <MudListSubheader>
+                                        Your selected global discount:
+                                        <MudChip Color="Color.Secondary">
+                                            @(selectedItem?.Text ?? "No discounts today") (@(selectedValue.ToString() ?? "0"))
+                                        </MudChip>
+                                    </MudListSubheader>
+                            <MudListItem Text="0%" Value="0"/>
+                            <MudListItem Text="10%, nice" Value="10"/>
+                            <MudListItem Text="20%, big nice" Value="20"/>
+                            v <MudListItem Text="30%, oof" Value="30"/>
+                            <MudListItem Text="50%, big oof" Value="50"/>
+                             <MudListItem Text="99%, We are out!" Value="99"/>
+
+                        </MudList>
+
+                    </MudItem>
+                </MudCardContent>
+                <MudCardActions Class="d-flex justify-center">
+                    <MudButton    OnClick="@(() => ChangeDiscount(Convert.ToInt32(selectedValue)))"  Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Activate</MudButton>
+
+
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudCard Elevation="25" Class="rounded-lg pb-4">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h5" Align="Align.Center">Generate discount codes</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <div>
+                        <label>Discount Code:</label>
+                        <input type="text" @bind="discountCode"/>
+                        <label>Percentage:</label>
+                        <input type="number" @bind="discountPercentage"/>
+                        <button @onclick="AddDiscountCode">Add Discount Code</button>
+                    </div>
+                    <div class="d-flex justify-center">
+                        <MudText Typo="Typo.h3">$10</MudText>
+                        <MudText Typo="Typo.h5" Class="ml-1 mt-5" Color="Color.Secondary">/Monthly</MudText>
+                    </div>
+                    <MudList Class="mx-auto mt-4" Style="width:300px;">
+                        <MudListItem Icon="@Icons.Material.Filled.LiveHelp">
+                            Unlimited something
+                        </MudListItem>
+                        <MudListItem Icon="@Icons.Material.Filled.LiveHelp">
+                            10 something
+                        </MudListItem>
+                        <MudListItem Icon="@Icons.Material.Filled.LiveHelp">
+                            No something
+                        </MudListItem>
+                    </MudList>
+                </MudCardContent>
+                <MudCardActions Class="d-flex justify-center">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Activate</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+
+@code{
+    public bool Gutters { get; set; }
+    private ICollection<Item> items;
+    List<int> tagIdsForSending;
+    private Dictionary<int, string> tagsDictionary = new Dictionary<int, string>();
+    private string msg = "";
+    private ICollection<DiscountCode> discountCodes;
+    private string discountCode = "";
+    private int discountPercentage;
+    private bool IsDiscountActivationModalVisible = false;
+    
+    MudListItem selectedItem;
+    object selectedValue = 1;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadItems();
+        await LoadTags();
+        await LoadDiscountCodes();
+    }
+
+    private async Task LoadItems()
+    {
+        try
+        {
+            items = await ItemService.GetItemsAsync(null, null, null, null, null, null, null);
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
+    }
+
+    private async Task LoadDiscountCodes()
+    {
+        try
+        {
+            discountCodes = await DiscountCodeService.GetDiscountCodesAsync(null, null);
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
+    }
+    private async Task ChangeDiscount(int discountValue)
+    {
+        try
+        {
+            var discountPercentage = (double)discountValue;
+    
+    // Update the discount percentage for all items
+            foreach (var item in items)
+            {
+                tagIdsForSending = item.Tags.ToList();
+    
+    // Create a new DTO for each item
+                var dto = new ItemUpdateDto(item.Id)
+                {
+                    Title = item.Title,
+                    Description = item.Description,
+                    Price = item.Price,
+                    Manufacturer = item.Manufacturer,
+                    Stock = item.Stock,
+                    Tags = tagIdsForSending,
+                    DiscountPercentage = discountPercentage
+                };
+    
+    // Update the item with the new DTO
+                await ItemService.UpdateAsync(dto);
+            }
+    
+    // Reload items to reflect the changes
+            await LoadItems();
+            
+            DiscountBannerService.ShowDiscountBanner = true;
+            if (discountValue == 0)
+            {
+                DiscountBannerService.ShowDiscountBanner = false;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
+        
+    }
+
+  
+
+    private async Task LoadTags()
+    {
+        foreach (var item in items)
+        {
+            var tags = await GetTagsForItem(item);
+            var tagString = string.Join(", ", tags);
+            tagsDictionary.Add(item.Id, tagString);
+        }
+    }
+
+    private async Task<IEnumerable<string>> GetTagsForItem(Item item)
+    {
+        var ids = new List<int>();
+        if (item.Tags != null)
+        {
+            ids.AddRange(item.Tags);
+        }
+
+        var tags = await TagService.GetAllWithId(ids);
+        IEnumerable<string> tagsString = tags.Select(tag => tag.TagName).ToList();
+
+        return tagsString;
+    }
+
+    private async Task AddDiscountCode()
+    {
+        try
+        {
+            var newDiscountCode = new DiscountCodeDto(discountCode, discountPercentage);
+            Console.WriteLine(newDiscountCode);
+            await DiscountCodeService.CreateAsync(newDiscountCode);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
+    }
+
+    private async Task RemoveDiscountCode(DiscountCode code)
+    {
+        try
+        {
+            await DiscountCodeService.DeleteAsync(code.Id);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
+    }
+
+
+
+
+}
