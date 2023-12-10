@@ -9,13 +9,26 @@
 @attribute [Authorize("MustBeAdmin")]
 
 <h3>Create new item</h3>
-<span>
-    <input type="text" @bind="title" @bind:event="oninput" placeholder="Enter title..."/>
-    <input type="text" @bind="description" @bind:event="oninput" placeholder="Enter description..."/>
-    <input type="text" @bind="priceString" @bind:event="oninput" placeholder="Enter price..."/>
-    <input type="text" @bind="manufacturer" @bind:event="oninput" placeholder="Enter manufacturer..."/>
-    <input type="text" @bind="stockString" @bind:event="oninput" placeholder="Enter stock..."/>
-</span>
+<MudGrid>
+    <MudItem xs="12" sm="6" md="4">
+        <MudTextField @bind-Value="title" Label="Title" Placeholder="Enter title..." />
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudTextField @bind-Value="description" Label="Description" Placeholder="Enter description..." />
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudTextField @bind-Value="priceString" Label="Price" Placeholder="Enter price..." />
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudTextField Disabled="true"  @bind-Value="discountPercentageString" Label="Discount Percentage" Placeholder="Enter discount percentage..." />
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudTextField @bind-Value="manufacturer" Label="Manufacturer" Placeholder="Enter manufacturer..." />
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudTextField @bind-Value="stockString" Label="Stock" Placeholder="Enter stock..." />
+    </MudItem>
+</MudGrid>
 
 <div>
     <label>Select Tags:</label>
@@ -51,13 +64,15 @@
         }
     </ul>
 </div>
-<br/>
-<br/>
-<button @onclick="CreateAsync" disabled="@(string.IsNullOrEmpty(title) || string.IsNullOrEmpty(description) || string.IsNullOrEmpty(priceString))" class="acceptbtn">Create</button>
+
+<br />
+<br />
+<MudButton @onclick="CreateAsync" disabled="@(string.IsNullOrEmpty(title) || string.IsNullOrEmpty(description) || string.IsNullOrEmpty(priceString))" class="acceptbtn">Create</MudButton>
 <label style="color: red">@msg</label>
 
 @code {
     string title, description, priceString, manufacturer, stockString;
+    string discountPercentageString = "0";
     string msg = "";
     ICollection<Tag> tags;
     List<int> tagIdsForSending = new List<int>();
@@ -74,9 +89,11 @@
         var areFieldsValid = !string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(description) &&
                              !string.IsNullOrEmpty(priceString) && !string.IsNullOrEmpty(manufacturer) && !string.IsNullOrEmpty(stockString);
         msg = "";
-        if (double.TryParse(priceString, out var price) && int.TryParse(stockString, out var stock) && areFieldsValid)
+        if (double.TryParse(priceString, out var price) &&
+            double.TryParse(discountPercentageString, out var discountPercentage) &&
+            int.TryParse(stockString, out var stock) && areFieldsValid)
         {
-            var itemDto = new ItemCreationDto(title, description, price, manufacturer, stock, tagIdsForSending);
+            var itemDto = new ItemCreationDto(title, description, price, manufacturer, stock, tagIdsForSending, discountPercentage);
             await ItemService.CreateAsync(itemDto);
             NavigationManager.NavigateTo("/BackOfficeItems");
         }
@@ -107,5 +124,4 @@
     {
         tags = await TagService.GetTagsAsync(null);
     }
-
 }

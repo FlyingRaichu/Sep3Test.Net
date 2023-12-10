@@ -1,73 +1,77 @@
 ﻿@page "/BackOfficeItems"
 @using HttpClients.Implementations
 @using HttpClients.Interfaces
+@using Domain.DTOs.Item
 @inject NavigationManager NavigationManager
 @inject IItemService ItemService
 @inject ITagService TagService
 @inject IJSRuntime JsRuntime
+@inject DiscountBannerService DiscountBannerService
 @attribute [Authorize("MustBeAdmin")]
 <BackOfficeNavMenu/>
 <h3>Back Office Items</h3>
+<MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" @onclick="@(() => NavigationManager.NavigateTo("/BackOfficeCreateItem"))">
+</MudFab>
 <input type="text" @bind="searchString" @oninput="LoadItemsDebounced" placeholder="Search..."/>
 @* <button @onclick="LoadItems" disabled="@(string.IsNullOrEmpty(searchString))" class="acceptbtn">Confirm</button> *@
-<table class="table">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Manufacturer</th>
-        <th>Stock</th>
-        <th>Tags</th>
-    </tr>
-    </thead>
-    <tbody>
-    @if (items == null)
-    {
-    }
-    else if (!items.Any())
-    {
-        <p>No items to display.</p>
-    }
-    else
-    {
-        @foreach (Item item in items)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.Title</td>
-                <td>@item.Description</td>
-                <td>
-                    @item.Price
+<MudText Typo="Typo.h5">DISCOUNT ALL ITEMS!</MudText>
+<MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined" VerticalAlign="false">
+    <MudButton Color="Color.Primary" @onclick="(args) => ChangeDiscount(0)">No more discounts</MudButton>
+    <MudButton Color="Color.Primary" @onclick="(args) => ChangeDiscount(10)">10%</MudButton>
+    <MudButton Color="Color.Primary" @onclick="(args) => ChangeDiscount(20)">20%</MudButton>
+    <MudButton Color="Color.Primary" @onclick="(args) => ChangeDiscount(30)">30%</MudButton>
+    <MudButton Color="Color.Primary" @onclick="(args) => ChangeDiscount(50)">50%</MudButton>
+    <MudButton Color="Color.Primary" @onclick="(args) => ChangeDiscount(99)"> YOLO WE ARE GOING OUT OF BUSINESS 99%</MudButton>
+</MudButtonGroup>
+<MudTable Items="@items" Hover="true" Breakpoint="Breakpoint.Sm"  LoadingProgressColor="Color.Info">
+    <HeaderContent>
+        <MudTh>Id</MudTh>
+        <MudTh>Title</MudTh>
+        <MudTh>Description</MudTh>
+        <MudTh>Price</MudTh>
+          <MudTh>Discount Percentage</MudTh>
+        <MudTh>Manufacturer</MudTh>
+        <MudTh>Stock</MudTh>
+        <MudTh>Tags</MudTh>
+        <MudTh></MudTh> <!-- Empty header cell for actions -->
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Title">@context.Title</MudTd>
+        <MudTd DataLabel="Description">@context.Description</MudTd>
+        <MudTd DataLabel="Price">@context.Price</MudTd>
+        <MudTd DataLabel="Price">@context.DiscountPercentage</MudTd>
+        <MudTd DataLabel="Manufacturer">@context.Manufacturer</MudTd>
+        <MudTd DataLabel="Stock">@context.Stock</MudTd>
+        <MudTd DataLabel="Tags">
+            @if (tagsDictionary.ContainsKey(@context.Id))
+            {
+                @tagsDictionary[@context.Id]
+            }
+            else
+            {
+                <span>Item has no tags.</span>
+            }
+        </MudTd>
+        <MudTd>
+            <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit" @onclick="@(() => NavigationManager.NavigateTo($"/BackOfficeEditItem/{@context.Id}"))">
+                
+            </MudFab>
 
-                </td>
-                <td>@item.Manufacturer</td>
-                <td>@item.Stock</td>
-                @if (tagsDictionary.ContainsKey(item.Id))
-                {
-                    <td>@tagsDictionary[item.Id]</td>
-                }
-                else
-                {
-                    <td>Item has no tags.</td>
-                }
-                <td>
-                    <button style="margin-left: 50px" @onclick="@(() => NavigationManager.NavigateTo($"/BackOfficeEditItem/{@item.Id}"))">
-                        <i style="padding: 0 12px" class="oi oi-pencil"></i>
-                    </button>
+            <MudFab Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large"  OnClick="(e) => ShowDeleteConfirmation(context.Id)" Data-toggle="modal" Data-target="#deleteConfirmationModal">
+            </MudFab>
+        </MudTd>
+        
+        
 
-                    <button style="margin-left: 5px" @onclick="(e) => ShowDeleteConfirmation(item.Id)" data-toggle="modal" data-target="#deleteConfirmationModal">
-                        <i style="padding: 0 12px" class="oi oi-trash"></i>
-                    </button>
-                </td>
-            </tr>
-        }
-    }
-    </tbody>
-</table>
+    </RowTemplate>
+</MudTable>
 
-<button class="oi oi-plus" @onclick="@(() => NavigationManager.NavigateTo("/BackOfficeCreateItem"))"></button>
+
+
+
+
+
 
 @* Pop-up code *@
 <div class="modal" id="deleteConfirmationModal" tabindex="-1" role="dialog">
@@ -99,6 +103,7 @@
     private int itemToDeleteId;
     private string? searchString = "";
     private Timer debounceTimer;
+    List<int> tagIdsForSending;
 
     protected override async Task OnInitializedAsync()
     {
@@ -117,7 +122,7 @@
     {
         try
         {
-            items = await ItemService.GetItemsAsync(searchString, null, null, null, null, null);
+            items = await ItemService.GetItemsAsync(searchString, null, null, null, null, null,null);
             StateHasChanged();
         }
         catch (Exception e)
@@ -180,4 +185,48 @@
 
         return tagsString;
     }
+    private async Task ChangeDiscount(int discountValue)
+    {
+        try
+        {
+            var discountPercentage = (double)discountValue;
+
+    // Update the discount percentage for all items
+            foreach (var item in items)
+            {
+                tagIdsForSending = item.Tags.ToList();
+
+    // Create a new DTO for each item
+                var dto = new ItemUpdateDto(item.Id)
+                {
+                    Title = item.Title,
+                    Description = item.Description,
+                    Price = item.Price,
+                    Manufacturer = item.Manufacturer,
+                    Stock = item.Stock,
+                    Tags = tagIdsForSending,
+                    DiscountPercentage = discountPercentage
+                };
+
+    // Update the item with the new DTO
+                await ItemService.UpdateAsync(dto);
+            }
+
+    // Reload items to reflect the changes
+            await LoadItems();
+            
+            DiscountBannerService.ShowDiscountBanner = true;
+            if (discountValue == 0)
+            {
+                DiscountBannerService.ShowDiscountBanner = false;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
+    }
+
+
 }

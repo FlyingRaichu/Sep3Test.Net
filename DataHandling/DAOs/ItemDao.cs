@@ -47,6 +47,10 @@ public class ItemDao : IItemDao
         {
             items = items.Where(item => item.Stock == searchParameters.Stock);
         }
+        if (searchParameters.DiscountPercentage != null)
+        {
+            items = items.Where(item => item.DiscountPercentage.Equals(searchParameters.DiscountPercentage));
+        }
 
         if (searchParameters.ContainsTags != null && searchParameters.ContainsTags.Any())
         {

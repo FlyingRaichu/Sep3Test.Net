@@ -6,256 +6,361 @@
 @inject ITagService TagService
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager;
 @inject NavService NavService;
+@inject DiscountBannerService DiscountBannerService
 
-<MudLayout><!--REMOVE APPBAR HERE, WE GOT SEARCHBAR KEK-->
-    <MudDrawer Open="true" Elevation="2" DisableOverlay="true" Variant="@DrawerVariant.Persistent">
-        <MudDrawerHeader>
-            <MudText Typo="Typo.h5" Class="mt-1">Filter Items</MudText>
-        </MudDrawerHeader>
-        <MudContainer MaxWidth="MaxWidth.Medium">
-            <!-- MudSelect for Manufacturer -->
-             <ManufacturerFilter _manufacturerFilter="@_manufacturerFilter" _allManufacturers="@_allManufacturers" ManufacturerFilterChanged="HandleManufacturerFilterChange" />
-            <!--MudSliders-->
-            <MudSlider @bind-Value="minPrice" Min="0" Max="200" Step="10" Color="Color.Info">Min Price: @minPrice.ToString() dollars</MudSlider>
-            <MudSlider @bind-Value="maxPrice" Min="0" Max="200" Step="10" Color="Color.Error">Max Price: @maxPrice.ToString() yen</MudSlider>
-            
-              <MudSelect T="string" Label="Select Tags" Clearable="true" ValueChanged="ToggleTagSelection" OnClearButtonClick="ResetTagsSelection">
-                   @foreach (var tag in tagsDictionary.SelectMany(entry => entry.Value.Split(',').Select(t => t.Trim()).Distinct()))
-                   {
-                       <MudSelectItem T="string" Value="@tag"  />
-                   }
-               </MudSelect>
-            <div>
-                <MudTextField @bind-Value="_selectedTagsDisplay" Label="Selected Tags" Disabled="true" />
-         </div>
-         
-       
-        <MudPaper Width="300px">
- 
-        </MudPaper>
-            @if (maxPrice.HasValue && maxPrice <= 10)
+
+<MudMainContent>
+    <MudContainer Class="p-3">
+        <MudGrid>
+            <!-- Filtering options on the left -->
+            <MudItem Style="background-color: rgba(255, 255, 255, 0.9)" xs="12" sm="3">
+                <!-- Category buttons -->
+             <MudButtonGroup Color="Color.Primary" Variant="Variant.Filled" VerticalAlign="true">
+                 @foreach (var category in _allCategories)
+                 {
+                     <MudButton OnClick="@(() => FilterByCategory(category))">@category</MudButton>
+                 }
+             </MudButtonGroup>
+
+                <MudContainer Elevation="2" Class="p-3">
+                    <MudContainer MaxWidth="MaxWidth.Medium">
+                        @if (DiscountBannerService.ShowDiscountBanner)
                         {
-                            <MudText Typo="Typo.body2" Class="mt-2">You poor bastard, lol</MudText>
+                            <div style="background-color: yellow; padding: 10px; text-align: center;">
+                                All items are now discounted!!!
+                            </div>
                         }
+                    </MudContainer>
+                    <!-- Buttons: Sort and Show Only Discounted -->
+                    <MudItem xs="12" sm="9">
+                        <MudContainer Class="mb-2">
+                            <MudButton ToggleOnClick="true" OnClick="ToggleSortOrder">
+                                Sort by Price: @GetSortOrderText()
+                            </MudButton>
 
-        </MudContainer>
-    </MudDrawer>
+                        </MudContainer>
+                        <MudContainer Class="mb-2">
+                            <MudButton OnClick="ToggleShowOnlyDiscountedItems">
+                                @if (showOnlyDiscountedItems)
+                                {
+                                    <span>Show All Items</span>
+                                }
+                                else
+                                {
+                                    <span>Show Only Discounted Items</span>
+                                }
+                            </MudButton>
+                        </MudContainer>
 
-    <MudMainContent>
-        @if (items != null)
-        {
-            var filteredItems = items;
+                        @if (items != null)
+                        {
+                            <!-- ... existing code ... -->
+                        }
+                    </MudItem>
 
-            // Apply manufacturer filter
-            if (_manufacturerFilter != null)
-            {
-                filteredItems = filteredItems.Where(item => item.Manufacturer == _manufacturerFilter).ToList();
-            }
-
-            // Apply price range filters
-            if (minPrice.HasValue)
-            {
-                filteredItems = filteredItems.Where(item => item.Price >= minPrice).ToList();
-            }
-
-            if (maxPrice.HasValue)
-            {
-                filteredItems = filteredItems.Where(item => item.Price <= maxPrice).ToList();
-            }
-
-            @if (!filteredItems.Any())
-            {
-                <p>No items to display.</p>
-            }
-            else
-            {
-                <MudContainer>
-                    <MudPaper Elevation="0" Class="m-2 p-2">
-                        <MudGrid>
-                            @foreach (var item in filteredItems)
-                            {
-                                <ItemCard Item="@item"></ItemCard>
-                            }
-                        </MudGrid>
+                    <MudText Typo="Typo.h5" Class="mt-1">Filter Items</MudText>
+                    <!-- MudSelect for Manufacturer -->
+                    <ManufacturerFilter _manufacturerFilter="@_manufacturerFilter" _allManufacturers="@_allManufacturers" ManufacturerFilterChanged="HandleManufacturerFilterChange"/>
+                    <!-- MudSliders -->
+                    <MudSlider @bind-Value="minPrice" Min="0" Max="200" Step="10" Color="Color.Info">Min Price: @minPrice.ToString()</MudSlider>
+                    <MudSlider @bind-Value="maxPrice" Min="0" Max="200" Step="10" Color="Color.Error">Max Price: @maxPrice.ToString()</MudSlider>
+                    <MudSelect T="string" Label="Select Tags" Clearable="true" ValueChanged="ToggleTagSelection" OnClearButtonClick="ResetTagsSelection">
+                        @foreach (var tag in tagsDictionary.SelectMany(entry => entry.Value.Split(',').Select(t => t.Trim()).Distinct()))
+                        {
+                            <MudSelectItem T="string" Value="@tag"/>
+                        }
+                    </MudSelect>
+                    <div>
+                        <MudTextField @bind-Value="_selectedTagsDisplay" Label="Selected Tags" Disabled="true"/>
+                    </div>
+                    <MudPaper Width="300px">
+                        @if (maxPrice.HasValue && maxPrice <= 10)
+                        {
+                            <MudText Typo="Typo.body2" Class="mt-2">You has no money?</MudText>
+                        }
                     </MudPaper>
                 </MudContainer>
-            }
-        }
-    </MudMainContent>
+            </MudItem>
 
-    @code {
-        private double? minPrice;
-        private double? maxPrice;
-        private string _manufacturerFilter;
-        private IEnumerable<Item> items;
-        private IEnumerable<string> _allManufacturers = Enumerable.Empty<string>();
-        private IEnumerable<string> _manufacturers = Enumerable.Empty<string>();
-        private Dictionary<int, string> tagsDictionary = new Dictionary<int, string>();
-        private HashSet<string> _selectedTags = new HashSet<string>();
-        private string _selectedTagsDisplay = "";
-
-
-        private string statusMessage = "";
-
-        protected override async Task OnInitializedAsync()
-        {
-            await LoadItems();
-            NavService.CurrentPage = "Index";
-        }
-
-        private async Task LoadItems()
-        {
-            try
-            {
-                items = await ItemService.GetItemsAsync(null, null, null, _manufacturerFilter, null, null);
-
-                if (_manufacturerFilter != null)
+            <!-- Display filtered items on the right -->
+            <MudItem xs="12" sm="9">
+                @if (items != null)
                 {
+                    var filteredItems = items;
+                    // Apply manufacturer filter
+                    if (_manufacturerFilter != null)
+                    {
+                        filteredItems = filteredItems.Where(item => item.Manufacturer == _manufacturerFilter).ToList();
+                    }
+                    // Apply price range filters
+                    if (minPrice.HasValue)
+                    {
+                        filteredItems = filteredItems.Where(item => item.Price >= minPrice).ToList();
+                    }
+                    if (maxPrice.HasValue)
+                    {
+                        filteredItems = filteredItems.Where(item => item.Price <= maxPrice).ToList();
+                    }
+                    @if (!filteredItems.Any())
+                    {
+                        <MudPaper Elevation="2" Class="m-2 p-2">
+                            <MudContainer Align="Align.Center">
+                                <MudTypography Typo="Typo.h6" Class="mb-2">Sorry, we couldn't find any items matching your criteria.</MudTypography>
+                                <MudTypography Typo="Typo.body2" Class="mt-2">Please try adjusting your filters or explore our other products.</MudTypography>
+                            </MudContainer>
+                        </MudPaper>
+                    }
+                    else
+                    {
+                        <MudPaper Elevation="2" Class="m-2 p-2">
+                            <MudGrid>
+                                @foreach (var item in filteredItems)
+                                {
+                                    <ItemCard Item="@item"></ItemCard>
+                                }
+                            </MudGrid>
+                        </MudPaper>
+                    }
                 }
-                if (!_allManufacturers.Any())
-                {
-                    _allManufacturers = items?.Select(item => item.Manufacturer)?.Distinct() ?? Enumerable.Empty<string>();
-                }
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</MudMainContent>
 
-                _manufacturers = _allManufacturers;
-                StateHasChanged();
-                await LoadTags();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                statusMessage = e.Message;
-            }
-        }
+@code {
+    private double? minPrice;
+    private double? maxPrice;
+    private string _manufacturerFilter;
+    private IEnumerable<Item> items;
+    private IEnumerable<string> _allManufacturers = Enumerable.Empty<string>();
+    private IEnumerable<string> _manufacturers = Enumerable.Empty<string>();
+    private Dictionary<int, string> tagsDictionary = new Dictionary<int, string>();
+    private HashSet<string> _selectedTags = new HashSet<string>();
+    private string _selectedTagsDisplay = "";
+    private bool sortByPriceHighToLow = false;
+    private bool showOnlyDiscountedItems = false;
+    private string selectedCategory = null;
+    private List<string> _allCategories = new List<string> { "All", "Starter Kit", "Yarn", "Accessories" };
 
-        private void HandleManufacturerFilterChange(string value)
+    private string statusMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadItems();
+        NavService.CurrentPage = "Index";
+    }
+
+    private async Task LoadItems()
+    {
+        try
         {
-            _manufacturerFilter = value;
-            LoadItems();
-        }
+            items = await ItemService.GetItemsAsync(null, null, null, _manufacturerFilter, null, null, null);
 
-        private async Task LoadTags()
-        {
-            foreach (var item in items)
-            {
-                var tags = await GetTagsForItem(item);
-                var tagString = string.Join(", ", tags);
-                tagsDictionary.Add(item.Id, tagString);
-                Console.WriteLine($"tags: {tagsDictionary[item.Id]}");
-            }
-        }
-
-        private async Task<IEnumerable<string>> GetTagsForItem(Item item)
-        {
-            var ids = new List<int>();
-            if (item.Tags != null)
-            {
-                ids.AddRange(item.Tags);
-            }
-
-            var tags = await TagService.GetAllWithId(ids);
-            IEnumerable<string> tagsString = tags.Select(tag => tag.TagName).ToList();
-
-            return tagsString;
-        }
-
-        private void FilterItemsByTag(string tag)
-        {
-        // Implement filtering logic based on the selected tag
-            var filteredItems = items.Where(item => tagsDictionary.ContainsKey(item.Id) && tagsDictionary[item.Id].Split(',').Select(t => t.Trim()).Contains(tag)).ToList();
-
-        // Update the displayed items
-            items = filteredItems;
-        }
-       
-        private void ToggleTagSelection(string tag)
-        {
-            if (_selectedTags.Contains(tag))
-            {
-                _selectedTags.Remove(tag);
-            }
-            else
-            {
-                _selectedTags.Add(tag);
-            }
-
-            UpdateSelectedTagsDisplay();
-            ApplyFilters();
-        }
-
-        private void ApplyFilters()
-        {
-            var filteredItems = items;
-
-        // Apply manufacturer filter
             if (_manufacturerFilter != null)
             {
-                filteredItems = filteredItems.Where(item => item.Manufacturer == _manufacturerFilter).ToList();
             }
-
-        // Apply price range filters
-            if (minPrice.HasValue)
+            if (!_allManufacturers.Any())
             {
-                filteredItems = filteredItems.Where(item => item.Price >= minPrice).ToList();
+                _allManufacturers = items?.Select(item => item.Manufacturer)?.Distinct() ?? Enumerable.Empty<string>();
             }
 
-            if (maxPrice.HasValue)
-            {
-                filteredItems = filteredItems.Where(item => item.Price <= maxPrice).ToList();
-            }
-
-        // Apply tag filters
-            if (_selectedTags.Any())
-            {
-                filteredItems = filteredItems.Where(item =>
-                    tagsDictionary.ContainsKey(item.Id) &&
-                    _selectedTags.All(selectedTag =>
-                        tagsDictionary[item.Id].Split(',').Select(t => t.Trim()).Contains(selectedTag)
-                        )
-                    ).ToList();
-            }
-
-        // Update the displayed items
-            items = filteredItems;
+            _manufacturers = _allManufacturers;
+            StateHasChanged();
+            await LoadTags();
         }
-
-        private void ResetTagsSelection()
+        catch (Exception e)
         {
-            _selectedTags.Clear();
-            UpdateSelectedTagsDisplay();
-            ApplyFilters();
-            LoadAllItems();
-            
+            Console.WriteLine(e);
+            statusMessage = e.Message;
         }
-        private void UpdateSelectedTagsDisplay()
-        {
-            _selectedTagsDisplay = string.Join(", ", _selectedTags);
-        }
-        private async Task LoadAllItems()
-        {
-            try
-            {
-                items = await ItemService.GetItemsAsync(null, null, null, _manufacturerFilter, null, null);
-                StateHasChanged();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                statusMessage = e.Message;
-            }
-        }
-
-        private void GoToCheckoutPage()
-        {
-            NavigationManager.NavigateTo("/Checkout");
-        }
-
-        private void ViewItem(Item selected)
-        {//reroute to viewdetails page, saving info about the item in navservice
-            NavService.Selected = selected;
-            NavService.CurrentPage = "ItemDetails";
-            NavigationManager.NavigateTo("/ItemDetails");
-        }
-
     }
-</MudLayout>
+
+    private void HandleManufacturerFilterChange(string value)
+    {
+        _manufacturerFilter = value;
+        LoadItems();
+    }
+
+    private async Task LoadTags()
+    {
+        foreach (var item in items)
+        {
+            var tags = await GetTagsForItem(item);
+            var tagString = string.Join(", ", tags);
+            tagsDictionary.Add(item.Id, tagString);
+            Console.WriteLine($"tags: {tagsDictionary[item.Id]}");
+        }
+    }
+
+    private async Task<IEnumerable<string>> GetTagsForItem(Item item)
+    {
+        var ids = new List<int>();
+        if (item.Tags != null)
+        {
+            ids.AddRange(item.Tags);
+        }
+
+        var tags = await TagService.GetAllWithId(ids);
+        IEnumerable<string> tagsString = tags.Select(tag => tag.TagName).ToList();
+
+        return tagsString;
+    }
+
+    private void FilterItemsByTag(string tag)
+    {
+    // Implement filtering logic based on the selected tag
+        var filteredItems = items.Where(item => tagsDictionary.ContainsKey(item.Id) && tagsDictionary[item.Id].Split(',').Select(t => t.Trim()).Contains(tag)).ToList();
+
+    // Update the displayed items
+        items = filteredItems;
+    }
+
+    private void ToggleTagSelection(string tag)
+    {
+        if (_selectedTags.Contains(tag))
+        {
+            _selectedTags.Remove(tag);
+        }
+        else
+        {
+            _selectedTags.Add(tag);
+        }
+
+        UpdateSelectedTagsDisplay();
+        ApplyFilters();
+    }
+
+    private void ApplyFilters()
+    {
+        var filteredItems = items;
+
+    // Apply category filter
+        if (!string.IsNullOrEmpty(selectedCategory))
+        {
+            filteredItems = filteredItems
+                .Where(item => tagsDictionary.ContainsKey(item.Id) &&
+                               tagsDictionary[item.Id].Split(',').Select(t => t.Trim()).Contains(selectedCategory))
+                .ToList();
+        }
+
+    // Apply manufacturer filter
+        if (_manufacturerFilter != null)
+        {
+            filteredItems = filteredItems.Where(item => item.Manufacturer == _manufacturerFilter).ToList();
+        }
+
+    // Apply price range filters
+        if (minPrice.HasValue)
+        {
+            filteredItems = filteredItems.Where(item => item.Price >= minPrice).ToList();
+        }
+
+        if (maxPrice.HasValue)
+        {
+            filteredItems = filteredItems.Where(item => item.Price <= maxPrice).ToList();
+        }
+
+    // Apply tag filters
+        if (_selectedTags.Any())
+        {
+            filteredItems = filteredItems
+                .Where(item => tagsDictionary.ContainsKey(item.Id) &&
+                               _selectedTags.All(selectedTag =>
+                                   tagsDictionary[item.Id].Split(',').Select(t => t.Trim()).Contains(selectedTag)))
+                .ToList();
+        }
+
+    // Update the displayed items
+        items = filteredItems;
+    }
+
+    private void ResetTagsSelection()
+    {
+        _selectedTags.Clear();
+        UpdateSelectedTagsDisplay();
+        ApplyFilters();
+        LoadAllItems();
+    }
+
+    private void UpdateSelectedTagsDisplay()
+    {
+        _selectedTagsDisplay = string.Join(", ", _selectedTags);
+    }
+
+    private async Task LoadAllItems()
+    {
+        try
+        {
+            items = await ItemService.GetItemsAsync(null, null, null, _manufacturerFilter, null, null, null);
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            statusMessage = e.Message;
+        }
+    }
+
+    private void GoToCheckoutPage()
+    {
+        NavigationManager.NavigateTo("/Checkout");
+    }
+
+    private void ViewItem(Item selected)
+    {
+    //reroute to viewdetails page, saving info about the item in navservice
+        NavService.Selected = selected;
+        NavService.CurrentPage = "ItemDetails";
+        NavigationManager.NavigateTo("/ItemDetails");
+    }
+
+    private void ToggleSortOrder()
+    {
+        sortByPriceHighToLow = !sortByPriceHighToLow;
+        ApplySorting();
+    }
+
+    private void ApplySorting()
+    {
+        if (sortByPriceHighToLow)
+        {
+            items = items.OrderByDescending(item => item.Price).ToList();
+        }
+        else
+        {
+            items = items.OrderBy(item => item.Price).ToList();
+        }
+    }
+
+    private string GetSortOrderText()
+    {
+        return sortByPriceHighToLow ? "High to Low" : "Low to High";
+    }
+
+    private void ToggleShowOnlyDiscountedItems()
+    {
+        showOnlyDiscountedItems = !showOnlyDiscountedItems;
+        ApplyDiscountFilter();
+    }
+
+    private void ApplyDiscountFilter()
+    {
+        if (showOnlyDiscountedItems)
+        {
+            items = items.Where(item => item.DiscountPercentage != 0).ToList();
+        }
+        else
+        {
+    // Load all items without discount filter
+            LoadAllItems();
+        }
+    }
+
+    private void FilterByCategory(string category)
+    {
+        
+        selectedCategory = category;
+        ApplyFilters();
+    }
+
+}
