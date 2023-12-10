@@ -5,12 +5,14 @@
 @using Domain.DTOs.DiscountCode
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.JSInterop
+@using IDialogService = MudBlazor.IDialogService
 @inject NavigationManager NavigationManager
 @inject IItemService ItemService
 @inject ITagService TagService
 @inject IJSRuntime JsRuntime
 @inject DiscountBannerService DiscountBannerService
 @inject IDiscountCodeService DiscountCodeService
+@inject IDialogService DialogService
 @attribute [Authorize("MustBeAdmin")]
 <BackOfficeNavMenu/>
 
@@ -37,7 +39,7 @@
                                             @(selectedItem?.Text ?? "No discounts today")
                                         </MudChip>
                                     </MudListSubheader>
-                            <MudListItem Text="0%" Value="0"/>
+                            <MudListItem Text="0%, No more discounts for now" Value="0"/>
                             <MudListItem Text="10%, nice" Value="10"/>
                             <MudListItem Text="20%, big nice" Value="20"/>
                             <MudListItem Text="30%, oof" Value="30"/>
@@ -75,9 +77,24 @@
                 </MudCardActions>
             </MudCard>
         </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+                     <MudCard Elevation="25" Class="rounded-lg pb-4">
+                         <MudCardHeader>
+                             <CardHeaderContent>
+                                 <MudText Typo="Typo.h5" Align="Align.Center">Deactivate discount codes</MudText>
+                             </CardHeaderContent>
+                         </MudCardHeader>
+                         <MudCardContent>
+                               
+                         </MudCardContent>
+                         <MudCardActions Class="d-flex justify-center">
+                             <MudButton Variant="Variant.Filled" OnClick="@AddDiscountCode" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Activate</MudButton>
+                         </MudCardActions>
+                     </MudCard>
+                 </MudItem>
     </MudGrid>
 </MudContainer>
-
+ 
 
 @code{
     private ICollection<Item> items;
@@ -201,14 +218,15 @@
         try
         {
             var newDiscountCode = new DiscountCodeDto(discountCode, discountPercentage);
-            Console.WriteLine(newDiscountCode);
             await DiscountCodeService.CreateAsync(newDiscountCode);
+           
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             msg = e.Message;
         }
+        
     }
 
     private async Task RemoveDiscountCode(DiscountCode code)
@@ -223,6 +241,7 @@
             msg = e.Message;
         }
     }
+  
 
 
 
