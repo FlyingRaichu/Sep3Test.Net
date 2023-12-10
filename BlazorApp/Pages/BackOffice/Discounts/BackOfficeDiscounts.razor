@@ -15,8 +15,8 @@
 <BackOfficeNavMenu/>
 
 <MudContainer Class="mt-16">
-    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Discounts</MudText>
-    <MudText Align="Align.Center">Select </MudText>
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true"  >Discounts</MudText>
+
     <MudGrid Class="mt-8" Justify="Justify.Center">
         <MudItem xs="12" sm="6" md="4">
             <MudCard Elevation="25" Class="rounded-lg pb-4">
@@ -27,32 +27,27 @@
                 </MudCardHeader>
                 <MudCardContent>
                     <div class="d-flex justify-center">
-                        <MudText Typo="Typo.h3" Class="ml-1 mt-5" Color="Color.Secondary">$5</MudText>
-                        <MudText Typo="Typo.h5" Class="ml-1 mt-5" Color="Color.Secondary">/Monthly</MudText>
+                        <MudText Typo="Typo.h3" Class="ml-1 mt-5" Color="Color.Secondary">@selectedValue % </MudText>
                     </div>
                     <MudItem Item="mx-auto mt-4" Style="width:300px;">
                         <MudList Clickable="true" @bind-SelectedItem="selectedItem" @bind-SelectedValue="selectedValue">
                             <MudListSubheader>
                                         Your selected global discount:
                                         <MudChip Color="Color.Secondary">
-                                            @(selectedItem?.Text ?? "No discounts today") (@(selectedValue.ToString() ?? "0"))
+                                            @(selectedItem?.Text ?? "No discounts today")
                                         </MudChip>
                                     </MudListSubheader>
                             <MudListItem Text="0%" Value="0"/>
                             <MudListItem Text="10%, nice" Value="10"/>
                             <MudListItem Text="20%, big nice" Value="20"/>
-                            v <MudListItem Text="30%, oof" Value="30"/>
+                            <MudListItem Text="30%, oof" Value="30"/>
                             <MudListItem Text="50%, big oof" Value="50"/>
                              <MudListItem Text="99%, We are out!" Value="99"/>
-
                         </MudList>
-
                     </MudItem>
                 </MudCardContent>
                 <MudCardActions Class="d-flex justify-center">
                     <MudButton    OnClick="@(() => ChangeDiscount(Convert.ToInt32(selectedValue)))"  Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Activate</MudButton>
-
-
                 </MudCardActions>
             </MudCard>
         </MudItem>
@@ -64,31 +59,19 @@
                     </CardHeaderContent>
                 </MudCardHeader>
                 <MudCardContent>
-                    <div>
-                        <label>Discount Code:</label>
-                        <input type="text" @bind="discountCode"/>
-                        <label>Percentage:</label>
-                        <input type="number" @bind="discountPercentage"/>
-                        <button @onclick="AddDiscountCode">Add Discount Code</button>
-                    </div>
                     <div class="d-flex justify-center">
-                        <MudText Typo="Typo.h3">$10</MudText>
-                        <MudText Typo="Typo.h5" Class="ml-1 mt-5" Color="Color.Secondary">/Monthly</MudText>
+                                            <MudText Typo="Typo.h3" Class="ml-1 mt-5" Color="Color.Secondary">@discountCode</MudText>
+                                        </div>
+                   
+                    <div class="d-flex justify-center">
                     </div>
+                    <MudTextField @bind-Value="discountCode" Label="Discount Code" HelperText="Type your new code here" Variant="Variant.Text"/>
+                    <MudNumericField @bind-Value="discountPercentage" Label="Discount Percentage" Variant="Variant.Text" Min="0" Max="99"/>
                     <MudList Class="mx-auto mt-4" Style="width:300px;">
-                        <MudListItem Icon="@Icons.Material.Filled.LiveHelp">
-                            Unlimited something
-                        </MudListItem>
-                        <MudListItem Icon="@Icons.Material.Filled.LiveHelp">
-                            10 something
-                        </MudListItem>
-                        <MudListItem Icon="@Icons.Material.Filled.LiveHelp">
-                            No something
-                        </MudListItem>
                     </MudList>
                 </MudCardContent>
                 <MudCardActions Class="d-flex justify-center">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Activate</MudButton>
+                    <MudButton Variant="Variant.Filled"  OnClick="@AddDiscountCode"  Color="Color.Primary" Size="Size.Large" Style="width:50%;">Activate</MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>
@@ -97,7 +80,6 @@
 
 
 @code{
-    public bool Gutters { get; set; }
     private ICollection<Item> items;
     List<int> tagIdsForSending;
     private Dictionary<int, string> tagsDictionary = new Dictionary<int, string>();
@@ -108,7 +90,7 @@
     private bool IsDiscountActivationModalVisible = false;
     
     MudListItem selectedItem;
-    object selectedValue = 1;
+    object selectedValue = 0;
     
     protected override async Task OnInitializedAsync()
     {
