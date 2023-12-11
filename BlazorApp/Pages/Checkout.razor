@@ -1,97 +1,94 @@
 @inject IDiscountCodeService DiscountCodeService
 @page "/Checkout"
+@using BlazorApp.Service
+@using Domain.DTOs.Order
 @using HttpClients.Interfaces
+@using System.Globalization
+@using Domain.DTOs.Item
+@using Domain.DTOs.OrderItem
+@inject ShoppingCartService ShoppingCartService
+@inject IOrderService OrderService
+@inject NavService NavService
+@inject NavigationManager NavManager
+@inject IItemService ItemService
+
 <MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
     <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Checkout</MudText>
     <MudGrid Spacing="6" Class="mt-16">
-        <MudItem xs="7">
+        <MudItem xs="12">
             <MudText Typo="Typo.h5" GutterBottom="true">Billing address</MudText>
             <MudGrid>
                 <MudItem xs="12">
-                    <MudTextField T="string" Label="Email" />
+                    <MudTextField @bind-Value="mobileNumber" T="string" Label="Mobile number"/>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField @bind-Value="firstName" T="string" Label="First name"/>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField @bind-Value="lastName" T="string" Label="Last name"/>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField @bind-Value="postCode" T="string" Label="Postal code"/>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField @bind-Value="city" T="string" Label="City"/>
                 </MudItem>
                 <MudItem xs="12">
-                    <MudTextField T="string" Label="Mobile number" />
-                </MudItem>
-                <MudItem xs="12">
-                    <MudTextField T="string" Label="Personal number" />
-                </MudItem>
-                <MudItem xs="6">
-                    <MudTextField T="string" Label="First name" />
-                </MudItem>
-                <MudItem xs="6">
-                    <MudTextField T="string" Label="Last name" />
-                </MudItem>
-                <MudItem xs="12">
-                    <MudTextField T="string" Label="Address" />
-                </MudItem>
-                <MudItem xs="6">
-                    <MudTextField T="string" Label="Postal code" />
-                </MudItem>
-                <MudItem xs="6">
-                    <MudTextField T="string" Label="Postal Area" />
+                    <MudTextField @bind-Value="address" T="string" Label="Address"/>
                 </MudItem>
                 <MudItem xs="12" Class="d-flex justify-center">
-                    <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" Size="Size.Large" Class="mt-8">Continue to Payment</MudButton>
+                    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowBack" DisableElevation="true" Color="Color.Transparent" Size="Size.Large" Class="mt-8" OnClick="ShoppingCart">Back to shopping cart</MudButton>
+                    <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" Size="Size.Large" Class="mt-8 ml-8" Disabled="isOrderButtonDisabled()" OnClick="MakeOrderAsync">Make order</MudButton>
                 </MudItem>
+                <MudText Style="color: #ff0000">@msg</MudText>
             </MudGrid>
         </MudItem>
-        <MudItem xs="5">
-            <MudText Typo="Typo.h5" GutterBottom="true">Cart</MudText>
-            <MudPaper Class="d-flex flex-column" Style="height:100%;" Outlined="true">
-                <MudList Clickable="true">
-                    <MudListItem Icon="@Icons.Material.Filled.ContentCut">
-                        <div class="d-flex">
-                            <MudText>Scissor - Big</MudText>
-                            <MudText Inline="true" Class="ml-auto">$5</MudText>
-                        </div>
-                    </MudListItem>
-                    <MudListItem Icon="@Icons.Material.Filled.AirplanemodeActive">
-                        <div class="d-flex">
-                            <MudText>Model Airplane</MudText>
-                            <MudText Class="ml-auto">$20</MudText>
-                        </div>
-                    </MudListItem>
-                    <MudListItem Icon="@Icons.Material.Filled.Create">
-                        <div class="d-flex">
-                            <MudText>Plastic Glue</MudText>
-                            <MudText Class="ml-auto">$12</MudText>
-                        </div>
-                    </MudListItem>
-                    <MudListItem Icon="@Icons.Material.Filled.ColorLens">
-                        <div class="d-flex">
-                            <MudText>Color set - Modern planes</MudText>
-                            <MudText Class="ml-auto">$16</MudText>
-                        </div>
-                    </MudListItem>
-                </MudList>
-                <div class="mt-auto">
-                    <MudDivider />
-                    <div class="d-flex pa-4">
-                                   <MudText>Total:</MudText>
-                                   <MudText Class="ml-auto"><b>@orderTotal</b></MudText>
-                               </div>
-                </div>
-            </MudPaper>
-                    @if (discountPercentage > 0)
-                    {
-                        <div>
-                            <MudText Typo="Typo.h6">Discount Applied!</MudText>
-                            <MudText Typo="Typo.body2">Discount: @discountPercentage%</MudText>
-                        </div>
-                    }
-                    <MudTextField T="string" Label="Enter Discount Code" @bind-Value="discountCode" />
-                    @* <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="ApplyDiscount">Apply Discount</MudButton> *@
-                </MudItem>
-     
     </MudGrid>
 </MudContainer>
-@code {
-    //ay for anyone who is working on checkout. make sure to link the item page button as well
-    
-    private string discountCode;
-    private decimal discountPercentage;
-    private decimal orderTotal = 53;
 
+@code {
+    private string? firstName, lastName, city, address;
+    private string? postCode, mobileNumber;
+    private string msg;
+    private bool processing;
     
+    
+    private async Task MakeOrderAsync()
+    {
+        try
+        {
+            var postCodeLoc = int.Parse(postCode);
+            var mobileNumberLoc = long.Parse(mobileNumber);
+            var orderItemCreationDtos = ShoppingCartService.Order.Items.Select(orderItem => new OrderItemCreationDto(orderItem.ItemId, orderItem.OrderId, orderItem.Quantity)).ToList();
+
+            foreach (var item in orderItemCreationDtos)
+            {
+                var itemToUpdate = await ItemService.GetByIdAsync(item.ItemId);
+                var itemToUpdateDto = new ItemUpdateDto(item.ItemId)
+                {
+                    Stock = itemToUpdate.Stock - item.Quantity
+                };
+                await ItemService.UpdateAsync(itemToUpdateDto);
+            }
+
+            var dto = new OrderCreationDto($"{firstName} {lastName}", postCodeLoc, address, city, mobileNumberLoc, "Pending approval", DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), orderItemCreationDtos, NavService.LoggedInUserId);
+            await OrderService.CreateAsync(dto);
+            await ShoppingCartService.ClearShoppingCart();
+            NavManager.NavigateTo("/SuccessfulOrder");
+        }
+        catch (Exception e)
+        {
+            msg = e.Message;
+        }
+    }
+
+    private void ShoppingCart()
+    {
+        NavManager.NavigateTo("/SHoppingCart");
+    }
+
+    private bool isOrderButtonDisabled()
+    {
+        return string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName) || string.IsNullOrEmpty(city) || string.IsNullOrEmpty(address) || string.IsNullOrEmpty(postCode) || string.IsNullOrEmpty(mobileNumber);
+    }
 }

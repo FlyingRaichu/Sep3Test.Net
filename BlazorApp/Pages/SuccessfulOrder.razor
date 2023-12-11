@@ -1,0 +1,15 @@
+@page "/SuccessfulOrder"
+@inject NavigationManager NavManager
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
+<MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Your order has been placed</MudText>
+       <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowBack" DisableElevation="true" Color="Color.Primary" Size="Size.Large" FullWidth="true" Class="mt-8" OnClick="HomePage">Back to home page</MudButton>
+</MudContainer>
+
+@code {
+
+
+       private void HomePage()
+       {
+              NavManager.NavigateTo("/");
+       }
+}
