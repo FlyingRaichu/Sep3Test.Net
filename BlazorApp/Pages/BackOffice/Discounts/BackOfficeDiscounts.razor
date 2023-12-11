@@ -17,7 +17,7 @@
 <BackOfficeNavMenu/>
 
 <MudContainer Class="mt-16">
-    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true"  >Discounts</MudText>
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Discounts</MudText>
 
     <MudGrid Class="mt-8" Justify="Justify.Center">
         <MudItem xs="12" sm="6" md="4">
@@ -34,22 +34,22 @@
                     <MudItem Item="mx-auto mt-4" Style="width:300px;">
                         <MudList Clickable="true" @bind-SelectedItem="selectedItem" @bind-SelectedValue="selectedValue">
                             <MudListSubheader>
-                                        Your selected global discount:
-                                        <MudChip Color="Color.Secondary">
-                                            @(selectedItem?.Text ?? "No discounts today")
-                                        </MudChip>
-                                    </MudListSubheader>
+                                Your selected global discount:
+                                <MudChip Color="Color.Secondary">
+                                    @(selectedItem?.Text ?? "No discounts today")
+                                </MudChip>
+                            </MudListSubheader>
                             <MudListItem Text="0%, No more discounts for now" Value="0"/>
                             <MudListItem Text="10%, nice" Value="10"/>
                             <MudListItem Text="20%, big nice" Value="20"/>
                             <MudListItem Text="30%, oof" Value="30"/>
                             <MudListItem Text="50%, big oof" Value="50"/>
-                             <MudListItem Text="99%, We are out!" Value="99"/>
+                            <MudListItem Text="99%, We are out!" Value="99"/>
                         </MudList>
                     </MudItem>
                 </MudCardContent>
                 <MudCardActions Class="d-flex justify-center">
-                    <MudButton    OnClick="@(() => ChangeDiscount(Convert.ToInt32(selectedValue)))"  Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Activate</MudButton>
+                    <MudButton OnClick="@(() => ChangeDiscount(Convert.ToInt32(selectedValue)))" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Activate</MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>
@@ -62,9 +62,9 @@
                 </MudCardHeader>
                 <MudCardContent>
                     <div class="d-flex justify-center">
-                                            <MudText Typo="Typo.h3" Class="ml-1 mt-5" Color="Color.Secondary">@discountCode</MudText>
-                                        </div>
-                   
+                        <MudText Typo="Typo.h3" Class="ml-1 mt-5" Color="Color.Secondary">@discountCode</MudText>
+                    </div>
+
                     <div class="d-flex justify-center">
                     </div>
                     <MudTextField @bind-Value="discountCode" Label="Discount Code" HelperText="Type your new code here" Variant="Variant.Text"/>
@@ -73,28 +73,29 @@
                     </MudList>
                 </MudCardContent>
                 <MudCardActions Class="d-flex justify-center">
-                    <MudButton Variant="Variant.Filled"  OnClick="@AddDiscountCode"  Color="Color.Primary" Size="Size.Large" Style="width:50%;">Activate</MudButton>
+                    <MudButton Variant="Variant.Filled" OnClick="@AddDiscountCode" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Activate</MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>
         <MudItem xs="12" sm="6" md="4">
-                     <MudCard Elevation="25" Class="rounded-lg pb-4">
-                         <MudCardHeader>
-                             <CardHeaderContent>
-                                 <MudText Typo="Typo.h5" Align="Align.Center">Deactivate discount codes</MudText>
-                             </CardHeaderContent>
-                         </MudCardHeader>
-                         <MudCardContent>
-                               
-                         </MudCardContent>
-                         <MudCardActions Class="d-flex justify-center">
-                             <MudButton Variant="Variant.Filled" OnClick="@AddDiscountCode" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Activate</MudButton>
-                         </MudCardActions>
-                     </MudCard>
-                 </MudItem>
+            <MudCard Elevation="25" Class="rounded-lg pb-4">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h5" Align="Align.Center">Deactivate discount codes</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+
+
+                </MudCardContent>
+                <MudCardActions Class="d-flex justify-center">
+                    <MudButton Variant="Variant.Filled" OnClick="@AddDiscountCode" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Activate</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
     </MudGrid>
 </MudContainer>
- 
+
 
 @code{
     private ICollection<Item> items;
@@ -105,10 +106,10 @@
     private string discountCode = "";
     private int discountPercentage;
     private bool IsDiscountActivationModalVisible = false;
-    
+
     MudListItem selectedItem;
     object selectedValue = 0;
-    
+
     protected override async Task OnInitializedAsync()
     {
         await LoadItems();
@@ -143,17 +144,18 @@
             msg = e.Message;
         }
     }
+
     private async Task ChangeDiscount(int discountValue)
     {
         try
         {
             var discountPercentage = (double)discountValue;
-    
+
     // Update the discount percentage for all items
             foreach (var item in items)
             {
                 tagIdsForSending = item.Tags.ToList();
-    
+
     // Create a new DTO for each item
                 var dto = new ItemUpdateDto(item.Id)
                 {
@@ -165,14 +167,14 @@
                     Tags = tagIdsForSending,
                     DiscountPercentage = discountPercentage
                 };
-    
+
     // Update the item with the new DTO
                 await ItemService.UpdateAsync(dto);
             }
-    
+
     // Reload items to reflect the changes
             await LoadItems();
-            
+
             DiscountBannerService.ShowDiscountBanner = true;
             if (discountValue == 0)
             {
@@ -184,10 +186,8 @@
             Console.WriteLine(e);
             msg = e.Message;
         }
-        
     }
 
-  
 
     private async Task LoadTags()
     {
@@ -219,14 +219,12 @@
         {
             var newDiscountCode = new DiscountCodeDto(discountCode, discountPercentage);
             await DiscountCodeService.CreateAsync(newDiscountCode);
-           
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             msg = e.Message;
         }
-        
     }
 
     private async Task RemoveDiscountCode(DiscountCode code)
@@ -241,9 +239,5 @@
             msg = e.Message;
         }
     }
-  
-
-
-
 
 }
