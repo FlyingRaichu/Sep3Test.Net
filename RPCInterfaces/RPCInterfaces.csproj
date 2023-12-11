@@ -30,4 +30,10 @@
             <Generator>MSBuild:Compile</Generator>
         </Protobuf>
     </ItemGroup>
+    <ItemGroup>
+      <Compile Remove="Generated\proto\UsersGrpc.cs" />
+      <Compile Remove="Generated\proto\Users.cs" />
+      <Compile Remove="Generated\proto\Tags.cs" />
+      <Compile Remove="Generated\proto\Reviews.cs" />
+    </ItemGroup>
 </Project>

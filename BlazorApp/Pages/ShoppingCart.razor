@@ -1,30 +1,37 @@
 @page "/ShoppingCart"
 @using HttpClients.Interfaces
 @using BlazorApp.Service
+@using System.ComponentModel.Design.Serialization
 @inject IItemService ItemService;
+@inject NavigationManager NavManager
 @inject ShoppingCartService ShoppingCartService;
 <MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
     <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Your shopping Cart</MudText>
     <MudGrid Spacing="6" Class="mt-16">
-        <MudItem xs="5">
-            <MudText Typo="Typo.h5" GutterBottom="true">Cart</MudText>
+        <MudItem xs="12">
             <MudPaper Class="d-flex flex-column" Style="height:100%;" Outlined="true">
                 @if (ShoppingCartService.Order.Items != null && ShoppingCartService.Order.Items.Any())
                 {
-                    <MudList Clickable="true">
-                        @foreach (var orderItem in ShoppingCartService.Order.Items)
-                        {
-                            <MudListItem Icon="@Icons.Material.Filled.ContentCut">
-                                <div class="d-flex">
-                                    @if (itemDictionary.TryGetValue(orderItem.Id, out var item))
-                                    {
-                                        <MudText>@item.Title</MudText>
-                                        <MudText Inline="true" Class="ml-auto">@orderItem.Quantity</MudText>
-                                    }
-                                </div>
-                            </MudListItem>
-                        }
-                    </MudList>
+                    <MudTable Items="@itemDictionary" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+                        <HeaderContent>
+                            <MudTh>Name</MudTh>
+                            <MudTh>Manufacturer</MudTh>
+                            <MudTh>Price</MudTh>
+                            <MudTh></MudTh>
+                            <MudTh></MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Title">@context.Value.Title</MudTd>
+                            <MudTd DataLabel="Manufacturer">@context.Value.Manufacturer</MudTd>
+                            <MudTd DataLabel="Price">@context.Value.Price DKK</MudTd>
+                            <MudTd DataLabel="Quantity">
+                                <MudItem>
+                                    <MudNumericField Value="context.Key.Quantity" Label="Quantity" ValueChanged="@((int value) => UpdateItemQuantities(context.Key.Id, value))" Variant="Variant.Text" Min="1"/>
+                                </MudItem>
+                            </MudTd>
+                            <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.RemoveCircle" OnClick="@(() => RemoveOrderItem(context.Key))" FullWidth="false" Class="mt-4" Color="Color.Error">Remove</MudButton>
+                        </RowTemplate>
+                    </MudTable>
                 }
                 else
                 {
@@ -34,25 +41,28 @@
                 <div class="mt-auto">
                     <MudDivider />
                     <div class="d-flex pa-4">
-                        <MudText>Total:</MudText>
-                        <MudText Class="ml-auto"><b>$53</b></MudText>
+                        <MudText Class="ml-auto">Total:</MudText>
+                        <MudText Class="ml-auto"><b>@finalPrice DKK</b></MudText>
                     </div>
                 </div>
             </MudPaper>
         </MudItem>
+        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ShoppingCart" FullWidth="true" Class="ma-2" Color="Color.Info" OnClick="Checkout">Go to Checkout</MudButton>
+        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowBack" FullWidth="false" Class="ma-2" Color="Color.Transparent" OnClick="BackToStore">Back to store</MudButton>
     </MudGrid>
 </MudContainer>
 
 @code {
-    private Dictionary<int, Item> itemDictionary = new Dictionary<int, Item>();
+    private Dictionary<OrderItem, Item> itemDictionary = new Dictionary<OrderItem, Item>();
+    private double finalPrice;
 
     protected override async Task OnInitializedAsync()
     {
         await ShoppingCartService.OnInitializedAsync();
         await LoadItems();
+        CalculateTotalPrice();
     }
     
-
     private async Task LoadItems()
     {
         if (ShoppingCartService.Order?.Items != null)
@@ -60,9 +70,43 @@
             {
                 var item = await ItemService.GetByIdAsync(orderItem.ItemId);
                 Console.WriteLine(item.Title);
-                itemDictionary.Add(orderItem.Id, item);
+                itemDictionary.Add(orderItem, item);
             }
 
         StateHasChanged();
+    }
+
+    private async Task RemoveOrderItem(OrderItem existingItem)
+    {
+        await ShoppingCartService.RemoveOrderItem(existingItem);
+        itemDictionary.Remove(existingItem);
+            CalculateTotalPrice();
+            StateHasChanged();
+    }
+
+    private async Task UpdateItemQuantities(int orderItemId, int quantity)
+    {
+        await ShoppingCartService.UpdateOrderItemQuantity(orderItemId, quantity);
+        CalculateTotalPrice();
+        StateHasChanged();
+    }
+    
+    private void CalculateTotalPrice()
+    {
+        finalPrice = 0;
+        foreach (var item in itemDictionary)
+        {
+            finalPrice += item.Key.Quantity * item.Value.Price;
+        }
+    }
+
+    private void Checkout()
+    {
+        NavManager.NavigateTo("/Checkout");
+    }
+
+    private void BackToStore()
+    {
+        NavManager.NavigateTo("/");
     }
 }

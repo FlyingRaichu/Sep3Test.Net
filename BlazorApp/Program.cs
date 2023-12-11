@@ -28,6 +28,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthProvider>();
 builder.Services.AddSingleton<DiscountBannerService>();
 builder.Services.AddScoped<NavigationService>();
 builder.Services.AddScoped<ShoppingCartService>();
+builder.Services.AddScoped<IDiscountCodeService, DiscountCodeHttpClient>();
 
 AuthorizationPolicies.AddPolicies(builder.Services);
 builder.Services.AddSingleton<NavService>();
