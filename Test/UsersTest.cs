@@ -35,7 +35,7 @@ namespace Test
         }
 
         [Test]
-        public void ValidateUser()
+        public async Task ValidateUser()
         {
             var mockUserDao = new Mock<IUserDao>();
             var logic = new UserLogic(mockUserDao.Object);
@@ -45,10 +45,12 @@ namespace Test
             mockUserDao.Setup(dao => dao.ValidateUser(It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(expectedUser);
 
-            var result = logic.ValidateUser(dto);
+            var result = await logic.ValidateUser(dto.Username, dto.Password);
 
             Assert.IsNotNull(result);
-            Assert.That(result.Result, Is.EqualTo(expectedUser));
+            Assert.AreEqual(expectedUser.Id, result.Id);
+            Assert.AreEqual(expectedUser.Username, result.Username);
+            Assert.AreEqual(expectedUser.Role, result.Role);
             mockUserDao.Verify(dao => dao.ValidateUser(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
 
