@@ -47,8 +47,8 @@
                 </div>
             </MudPaper>
         </MudItem>
-        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ShoppingCart" FullWidth="true" Class="ma-2" Color="Color.Info" OnClick="Checkout">Go to Checkout</MudButton>
-        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowBack" FullWidth="false" Class="ma-2" Color="Color.Transparent" OnClick="BackToStore">Back to store</MudButton>
+        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ShoppingCart" FullWidth="true" Class="ma-2" Color="Color.Info" Disabled="@(!ShoppingCartService.Order.Items.Any())" OnClick="Checkout">Go to Checkout</MudButton>
+        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowBack" FullWidth="false" Class="ma-2" Color="Color.Transparent"  OnClick="BackToStore">Back to store</MudButton>
     </MudGrid>
 </MudContainer>
 
