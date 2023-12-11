@@ -10,6 +10,9 @@
     </ActivatorContent>
     <ChildContent>
         <MudMenuItem OnClick="@(() => Navigate("cart"))">View Shopping Cart</MudMenuItem>
+        <AuthorizeView Policy="MustBeAdmin">
+            <MudMenuItem OnClick="@(() => Navigate("backOffice"))">Back Office</MudMenuItem>
+        </AuthorizeView>
         <AuthorizeView>
             <NotAuthorized>
                 <MudMenuItem OnClick="@Login">Log in</MudMenuItem>
@@ -43,7 +46,7 @@
         {
             case "cart":
                 NavigationService.ReturnUrl = NavigationManager.Uri;
-                NavigationManager.NavigateTo("/");
+                NavigationManager.NavigateTo("/ShoppingCart");
                 break;
             case "favorites":
                 NavigationService.ReturnUrl = NavigationManager.Uri;
@@ -52,6 +55,10 @@
             case "history":
                 NavigationService.ReturnUrl = NavigationManager.Uri;
                 NavigationManager.NavigateTo("/OrderHistory");
+                break;
+            case "backOffice":
+                NavigationService.ReturnUrl = NavigationManager.Uri;
+                NavigationManager.NavigateTo("/BackOfficeItems");
                 break;
         }
     }
