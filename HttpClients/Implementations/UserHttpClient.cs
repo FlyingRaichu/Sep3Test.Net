@@ -3,6 +3,8 @@ using System.Security.Claims;
 using System.Text.Json;
 using Domain.DTOs.User;
 using HttpClients.Interfaces;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace HttpClients.Implementations;
 
@@ -58,38 +60,50 @@ public class UserHttpClient : IUserService
 
     public async Task<User> RegisterAsync(UserCreationDto dto)
     {
-        HttpResponseMessage response = await client.PostAsJsonAsync("/users", dto);
-        string result = await response.Content.ReadAsStringAsync();
-        if (!response.IsSuccessStatusCode)
+        try
         {
-            throw new Exception(result);
-        }
+            // Hash the password before sending it to the server
+            dto.Password = HashPassword(dto.Password);
 
-        User user = JsonSerializer.Deserialize<User>(result, new JsonSerializerOptions
+            HttpResponseMessage response = await client.PostAsJsonAsync("/users", dto);
+            response.EnsureSuccessStatusCode();
+
+            string result = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<User>(result, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            })!;
+        }
+        catch (HttpRequestException ex)
         {
-            PropertyNameCaseInsensitive = true
-        })!;
-        return user;
+            // Log the exception or handle it based on your application's requirements.
+            throw new Exception("Error during user registration.", ex);
+        }
     }
 
     public async Task LoginAsync(string userName, string password)
     {
-        UserValidationDto dto = new(userName, password);
-
-        HttpResponseMessage response = await client.PostAsJsonAsync("/users/login", dto);
-        string result = await response.Content.ReadAsStringAsync();
-
-        if (!response.IsSuccessStatusCode)
+        try
         {
-            throw new Exception(result);
+            // Hash the password before sending it to the server
+            password = HashPassword(password);
+
+            UserValidationDto dto = new(userName, password);
+
+            HttpResponseMessage response = await client.PostAsJsonAsync("/users/login", dto);
+            response.EnsureSuccessStatusCode();
+
+            Jwt = await response.Content.ReadAsStringAsync();
+
+            var principal = CreateClaimsPrincipal();
+            Console.WriteLine($"{dto.Username}, {password}"); // Note: Logging the hashed password for demonstration purposes
+            OnAuthStateChanged.Invoke(principal);
         }
-
-        Jwt = result;
-
-        var principal = CreateClaimsPrincipal();
-        //Console.WriteLine($"### {principal.Claims}");
-        Console.WriteLine($"{dto.Username}, {dto.Password}");
-        OnAuthStateChanged.Invoke(principal);
+        catch (HttpRequestException ex)
+        {
+            // Log the exception or handle it based on your application's requirements.
+            throw new Exception("Error during user login.", ex);
+        }
     }
 
     public Task LogoutAsync()
@@ -105,4 +119,13 @@ public class UserHttpClient : IUserService
         ClaimsPrincipal principal = CreateClaimsPrincipal();
         return Task.FromResult(principal);
     }
+    private static string HashPassword(string password)
+    {
+        using (var sha256 = SHA256.Create())
+        {
+            byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+        }
+    }
+    
 }

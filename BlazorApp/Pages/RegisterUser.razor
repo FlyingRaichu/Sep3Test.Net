@@ -1,8 +1,8 @@
 ﻿@page "/RegisterUser"
 @using HttpClients.Interfaces
 @using Domain.DTOs.User
-@inject IUserService userService;
-@inject NavigationManager NavigationManager;
+@inject IUserService userService
+@inject NavigationManager NavigationManager
 
 <h3>Register User</h3>
 <MudGrid Justify="Justify.Center" Class="d-flex align-items-center">
@@ -17,14 +17,16 @@
                         <MudText Typo="Typo.body1">Register here:</MudText>
                     </MudItem>
                     <MudItem xs="12">
-                        @* tried putting ValueChanged="@StateHasChanged" for this to refresh in real time,
-                        but apparently ValueChanged is baked into bind-value, and won't let me do it 2x*@
                         <MudTextField @bind-Value="@email" Label="Email" Variant="Variant.Outlined"></MudTextField>
                         <MudTextField @bind-Value="@username" Label="Username" Variant="Variant.Outlined"></MudTextField>
                         <MudTextField @bind-Value="@password" Label="Password" InputType="InputType.Password" Variant="Variant.Outlined"></MudTextField>
+                        @if (!string.IsNullOrEmpty(password) && !IsPasswordStrong(password))
+                        {
+                            <MudText Color="Color.Error" Typo="Typo.body2">Password should be at least 8 characters long and contain a combination of letters, numbers, and special characters.</MudText>
+                        }
                     </MudItem>
                     <MudItem xs="12">
-                        @if (username == "" || password == "" || email == "")
+                        @if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(email) || !IsPasswordStrong(password))
                         {
                             <MudButton Variant="Variant.Filled" Color="Color.Tertiary" Disabled="true" FullWidth="true">Register</MudButton>
                         }
@@ -46,14 +48,11 @@
     </MudItem>
 </MudGrid>
 
-
-
 @code {
     private string username = "";
     private string password = "";
     private string email = "";
     private string role = "user";
-
     private string resultMsg = "";
 
     private async Task Create()
@@ -91,4 +90,15 @@
             resultMsg = $"Error: {e.Message}";
         }
     }
+    private bool IsPasswordStrong(string password)
+    {
+    // Add your password strength criteria here
+    // For example, a password should be at least 8 characters long
+    // and contain a combination of letters, numbers, and special characters.
+        return password.Length >= 8 &&
+               password.Any(char.IsLetter) &&
+               password.Any(char.IsDigit) &&
+               (password.Any(char.IsSymbol) || password.Any(char.IsPunctuation));
+    }
+
 }

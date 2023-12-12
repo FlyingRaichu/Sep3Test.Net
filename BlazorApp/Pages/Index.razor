@@ -14,11 +14,12 @@
         <MudGrid>
             <!-- Filtering options on the left -->
             <MudItem Style="background-color: rgba(255, 255, 255, 0.9)" xs="12" sm="3">
+            <MudText Typo="Typo.h5" Class="mt-1">Select Category</MudText>
                 <!-- Category buttons -->
-             <MudButtonGroup Color="Color.Primary" Variant="Variant.Filled" VerticalAlign="true">
+             <MudButtonGroup Color="Color.Primary" Variant="Variant.Text" VerticalAlign="true">
                  @foreach (var category in _allCategories)
                  {
-                     <MudButton OnClick="@(() => FilterByCategory(category))">@category</MudButton>
+                     <MudButton Style="width: 250px" OnClick="@(() => FilterByCategory(category))">@category</MudButton>
                  }
              </MudButtonGroup>
 
@@ -33,13 +34,13 @@
                     </MudContainer>
                     <!-- Buttons: Sort and Show Only Discounted -->
                     <MudItem xs="12" sm="9">
-                        <MudContainer Class="mb-2">
+                        <MudContainer Style="width: 300px" Class="mb-2">
                             <MudButton ToggleOnClick="true" OnClick="ToggleSortOrder">
                                 Sort by Price: @GetSortOrderText()
                             </MudButton>
 
                         </MudContainer>
-                        <MudContainer Class="mb-2">
+                        <MudContainer Style="width: 300px; align-content: flex-start" Class="mb-2">
                             <MudButton OnClick="ToggleShowOnlyDiscountedItems">
                                 @if (showOnlyDiscountedItems)
                                 {
@@ -112,7 +113,7 @@
                     }
                     else
                     {
-                        <MudPaper Elevation="2" Class="m-2 p-2">
+                        <MudPaper Elevation="0" Class="m-2 p-2">
                             <MudGrid>
                                 @foreach (var item in filteredItems)
                                 {
@@ -239,7 +240,10 @@
         {
             filteredItems = filteredItems
                 .Where(item => tagsDictionary.ContainsKey(item.Id) &&
-                               tagsDictionary[item.Id].Split(',').Select(t => t.Trim()).Contains(selectedCategory))
+                               tagsDictionary[item.Id]
+                                   .Split(',')
+                                   .Select(t => t.Trim())
+                                   .Contains(selectedCategory))
                 .ToList();
         }
 
@@ -266,7 +270,10 @@
             filteredItems = filteredItems
                 .Where(item => tagsDictionary.ContainsKey(item.Id) &&
                                _selectedTags.All(selectedTag =>
-                                   tagsDictionary[item.Id].Split(',').Select(t => t.Trim()).Contains(selectedTag)))
+                                   tagsDictionary[item.Id]
+                                       .Split(',')
+                                       .Select(t => t.Trim())
+                                       .Contains(selectedTag)))
                 .ToList();
         }
 
@@ -278,7 +285,7 @@
     {
         _selectedTags.Clear();
         UpdateSelectedTagsDisplay();
-        ApplyFilters();
+        // ApplyFilters();
         LoadAllItems();
     }
 
@@ -356,11 +363,23 @@
         }
     }
 
-    private void FilterByCategory(string category)
+    private async Task FilterByCategory(string category)
     {
-        
-        selectedCategory = category;
-        ApplyFilters();
+        ResetTagsSelection();
+
+    // Check if the selected category is "All"
+        if (category == "All")
+        {
+    // Load all items without applying additional filters
+            await LoadAllItems();
+        }
+        else
+        {
+    // Apply filters for other categories
+            selectedCategory = category;
+            await LoadAllItems();
+            ApplyFilters();
+        }
     }
 
 }

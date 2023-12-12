@@ -34,6 +34,7 @@ public class UserLogic :IUserLogic
         return created;
     }
 
+    //when creating a user
     private void ValidateUser(UserCreationDto user)
     {
         if (string.IsNullOrEmpty(user.Username) || string.IsNullOrEmpty(user.Password))
@@ -69,6 +70,8 @@ public class UserLogic :IUserLogic
         return user;
     }
 
+    
+    //when logging in
     public Task<User> ValidateUser(UserValidationDto dto)
     {
         return userDao.ValidateUser(dto.Username, dto.Password);
