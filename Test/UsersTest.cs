@@ -45,7 +45,7 @@ namespace Test
             mockUserDao.Setup(dao => dao.ValidateUser(It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(expectedUser);
 
-            var result = await logic.ValidateUser(dto.Username, dto.Password);
+            var result = await logic.ValidateUser(dto);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedUser.Id, result.Id);

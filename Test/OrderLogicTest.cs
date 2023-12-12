@@ -28,9 +28,9 @@ public class OrderLogicTest
                 PostCode = 8700,
                 Address = "Address 1",
                 City = "Horsens",
-                PhoneNumber = 4512345678,
+                PhoneNumber = 12345678,
                 Status = "in progress",
-                Date = "2023-12-08",
+                Date = "2023-12-12",
                 OrderItems = new List<OrderItemCreationDto>(),
                 UserId = 1,
             };
