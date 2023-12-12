@@ -9,6 +9,7 @@ namespace HttpClients.Implementations;
 public class OrderHttpClient : IOrderService
 {
     private readonly HttpClient client;
+    
 
     public OrderHttpClient(HttpClient client)
     {

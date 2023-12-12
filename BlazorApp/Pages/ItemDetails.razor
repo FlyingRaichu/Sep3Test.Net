@@ -32,7 +32,8 @@
                     <MudText Typo="Typo.h5">@Navigation.Selected.Title</MudText>
                 </MudItem>
                 <MudItem xs="6">
-                    <MudText>@Navigation.Selected.Price DKK</MudText>
+                    <MudText>@(Navigation.Selected.Price - (Navigation.Selected.Price * Navigation.Selected.DiscountPercentage / 100)) DKK</MudText>
+
                 </MudItem>
             </MudGrid>
             <MudGrid>
