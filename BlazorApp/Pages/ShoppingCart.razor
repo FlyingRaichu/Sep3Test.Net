@@ -5,6 +5,7 @@
 @inject IItemService ItemService;
 @inject NavigationManager NavManager
 @inject ShoppingCartService ShoppingCartService;
+@inject IDiscountCodeService DiscountCodeService
 <MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
     <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Your shopping Cart</MudText>
     <MudGrid Spacing="6" Class="mt-16">
@@ -38,13 +39,29 @@
                     <div>No items in the shopping cart.</div>
                 }
 
-                <div class="mt-auto">
-                    <MudDivider />
-                    <div class="d-flex pa-4">
-                        <MudText Class="ml-auto">Total:</MudText>
-                        <MudText Class="ml-auto"><b>@finalPrice DKK</b></MudText>
-                    </div>
-                </div>
+               <div class="mt-auto">
+                              <MudDivider />
+                              <div class="d-flex flex-column pa-4">
+                                  <MudText Class="ml-auto">Total:</MudText>
+                                  @if (discountPercentage > 0)
+                                  {
+                                      <div class="d-flex flex-column">
+                                          <MudText Style="text-decoration:line-through" Class="ml-auto"><b> Original price: @finalPrice DKK</b> </MudText>
+                                          <MudText Class="ml-auto"><b> Applied code discount : @discountPercentage % </b> </MudText>
+                                          <MudText Class="ml-auto"><b> Price after discount:  @string.Format("{0:F2}" , discountedPrice) DKK</b> </MudText>
+                                      </div>
+                                  }
+                                  else
+                                  {
+                                      <MudText Class="ml-auto"><b> Original price: @finalPrice DKK</b> </MudText>
+                                  }
+                              </div>
+                          </div>
+              
+                          <div class="d-flex flex-column ma-2">
+                              <MudTextField @bind-Value="discountCode" Label="Discount Code" Variant="Variant.Text" Size="Size.Small" Class="mb-2" />
+                              <MudButton Variant="Variant.Filled" FullWidth="false" Class="mt-2" Size="Size.Small" Color="Color.Primary" OnClick="ActivateDiscount">Activate</MudButton>
+                          </div>
             </MudPaper>
         </MudItem>
         <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ShoppingCart" FullWidth="true" Class="ma-2" Color="Color.Info" Disabled="@(!ShoppingCartService.Order.Items.Any())" OnClick="Checkout">Go to Checkout</MudButton>
@@ -55,12 +72,18 @@
 @code {
     private Dictionary<OrderItem, Item> itemDictionary = new Dictionary<OrderItem, Item>();
     private double finalPrice;
+    private string discountCode;
+    private int discountPercentage;
+    private double discountedPrice;
+    
+
 
     protected override async Task OnInitializedAsync()
     {
         await ShoppingCartService.OnInitializedAsync();
         await LoadItems();
         CalculateTotalPrice();
+      
     }
     
     private async Task LoadItems()
@@ -99,7 +122,6 @@
             finalPrice += item.Key.Quantity * item.Value.Price;
         }
     }
-
     private void Checkout()
     {
         NavManager.NavigateTo("/Checkout");
@@ -108,5 +130,33 @@
     private void BackToStore()
     {
         NavManager.NavigateTo("/");
+    }
+    private async Task ActivateDiscount()
+    {
+        var discounts = await DiscountCodeService.GetDiscountCodesAsync(discountCode, null);
+
+        if (discounts != null && discounts.Any())
+        {
+            var discount = discounts.FirstOrDefault();
+            discountPercentage = discount.DiscountPercentage;
+            discountedPrice = finalPrice * (1 -(double)discountPercentage / 100);
+            
+            Console.WriteLine(finalPrice);
+            Console.WriteLine($"Discount found: {discountPercentage}%");
+            Console.WriteLine($"Discounted price: {discountedPrice} DKK");
+        }
+        else
+        {
+    // Handle invalid discount code or no discount found
+            discountPercentage = 0;
+            discountedPrice = finalPrice;
+
+    // Debug information
+            Console.WriteLine("No discount found or invalid discount code.");
+    // You might want to add some UI feedback for the user
+    // e.g., display an error message or change the color of the discount code field
+        }
+
+        StateHasChanged();
     }
 }

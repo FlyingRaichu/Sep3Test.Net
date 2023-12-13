@@ -1,0 +1,103 @@
+@page "/BackOfficeOrders"
+@using HttpClients.Interfaces
+@using Domain.DTOs.Order
+@inject IOrderService OrderService
+
+<h3>Back Office Orders</h3>
+
+@if (orders != null && orders.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Customer Name</th>
+                <th>Total Items</th>
+                <th>Order status</th>
+                <th>Actions</th> <!-- New column for buttons -->
+                <!-- Add more columns as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in orders)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.Date</td>
+                    <td>@order.OrderFullName</td>
+                    <td>@order.Items.Sum(item => item.Quantity)</td>
+                    <td>@order.Status</td>
+                    <td>
+                        <button class="btn btn-success" @onclick="() => ApproveOrder(order.Id)">Approve</button>
+                        <button class="btn btn-danger" @onclick="() => CancelOrder(order.Id)">Cancel</button>
+                    </td>
+                    <!-- Add more cells based on your Order model -->
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No orders found.</p>
+}
+
+@code {
+    private ICollection<Order> orders;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshOrders();
+    }
+
+    private async Task ApproveOrder(int orderId)
+    {
+    // Retrieve the existing order
+        var existingOrder = await OrderService.GetByIdAsync(orderId);
+
+    // Update only the order status to "Approved"
+        existingOrder.Status = "Approved";
+
+    // Create an OrderUpdateDto with the updated properties
+        var updateDto = new OrderUpdateDto(existingOrder.Id)
+        {
+            Status = existingOrder.Status
+    // Add other properties if needed
+        };
+
+    // Call the OrderService to update the order using the OrderUpdateDto
+        await OrderService.UpdateAsync(updateDto);
+
+    // Refresh the orders list
+        await RefreshOrders();
+    }
+
+    private async Task CancelOrder(int orderId)
+    {
+    // Retrieve the existing order
+        var existingOrder = await OrderService.GetByIdAsync(orderId);
+
+    // Update only the order status to "Canceled"
+        existingOrder.Status = "Canceled";
+
+    // Create an OrderUpdateDto with the updated properties
+        var updateDto = new OrderUpdateDto(existingOrder.Id)
+        {
+            Status = existingOrder.Status
+    // Add other properties if needed
+        };
+
+    // Call the OrderService to update the order using the OrderUpdateDto
+        await OrderService.UpdateAsync(updateDto);
+
+    // Refresh the orders list
+        await RefreshOrders();
+    }
+
+    private async Task RefreshOrders()
+    {
+        orders = await OrderService.GetOrdersAsync(null, null, null, null, null, null, null);
+        StateHasChanged();
+    }
+}

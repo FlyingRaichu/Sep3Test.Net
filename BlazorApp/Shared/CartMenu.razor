@@ -1,0 +1,34 @@
+@using BlazorApp.Pages.Services
+@using BlazorApp.Service
+@using HttpClients.Interfaces
+@inject NavigationService NavigationService
+@inject NavigationManager NavigationManager
+@inject ShoppingCartService ShoppingCartService
+@inject IJSRuntime JSRuntime
+
+<MudMenu>
+    <ActivatorContent>
+            <div style="font-size: 40px; color: red" class="cart-item-count">
+                @ShoppingCartService.Order.Items.Sum(item => item.Quantity)
+            </div>
+        <MudIconButton OnClick="@(() => Navigate("cart"))" Icon="@Icons.Material.Filled.ShoppingCart" Color="Color.Inherit" Size="Size.Large"/>
+    </ActivatorContent>
+</MudMenu>
+
+@code {
+    private void Navigate(string path)
+    {
+        switch (path)
+        {
+            case "cart":
+                NavigationService.ReturnUrl = NavigationManager.Uri;
+                NavigationManager.NavigateTo("/ShoppingCart");
+                break;
+        }
+    }
+    
+    private void UpdateItemCount()
+    {
+        JSRuntime.InvokeAsync<object>("eval", "location.reload(true)");
+    }
+}

@@ -85,12 +85,36 @@
                     </CardHeaderContent>
                 </MudCardHeader>
                 <MudCardContent>
+                    <MudItem>
+                        <MudCard>
+                            <MudCardHeader>
+                                <CardHeaderContent>
+                                    <MudText Typo="Typo.h5" Align="Align.Center">All Discount Codes</MudText>
+                                </CardHeaderContent>
+                            </MudCardHeader>
+                            <MudCardContent>
+                                <MudList>
+                                    @if (discountCodes != null)
+                                    {
+                                        @foreach (var dcode in discountCodes)
+                                        {
+                                            <MudListItem>
+                                                @dcode.Code - @dcode.DiscountPercentage%
+                                                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" OnClick="@(() => RemoveDiscountCode(dcode))" Color="Color.Error"  Class="ml-auto">Delete </MudButton>
 
+                                            </MudListItem>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>No discount codes available.</p>
+                                    }
+                                </MudList>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
 
                 </MudCardContent>
-                <MudCardActions Class="d-flex justify-center">
-                    <MudButton Variant="Variant.Filled" OnClick="@AddDiscountCode" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Activate</MudButton>
-                </MudCardActions>
             </MudCard>
         </MudItem>
     </MudGrid>
@@ -232,6 +256,7 @@
         try
         {
             await DiscountCodeService.DeleteAsync(code.Id);
+            await LoadDiscountCodes();
         }
         catch (Exception e)
         {
