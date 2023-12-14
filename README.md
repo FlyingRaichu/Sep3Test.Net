@@ -11,7 +11,7 @@
 <br/>
 
 ![image](https://github.com/FlyingRaichu/Sep3Test.Net/assets/112940119/817b0e84-3087-4e48-af11-8cf63042a22c)
-
+https://www.youtube.com/watch?v=l5zY2D_Elg8
 <br/>
 
 <p>The third semester is geared towards the design and implementation of diverse software solutions, introducing programming languages such as Java, C#, and incorporating advanced frameworks like Spring and MudBlazor.
