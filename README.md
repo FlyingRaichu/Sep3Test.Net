@@ -1,4 +1,4 @@
-<h3 align="center">KNITHUB</h3>
+<h1 align="center">KNITHUB</h3>
 
   <p align="center">
     <br />
