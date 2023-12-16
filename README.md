@@ -5,8 +5,7 @@
     https://www.youtube.com/watch?v=l5zY2D_Elg8
     
 
-[![Video](![image](https://github.com/FlyingRaichu/Sep3Test.Net/assets/115037163/45949faf-caa8-406b-8789-814b68e8470d)
-)]([https://www.youtube.com/watch?v=jXnoFqcAkQA](https://www.youtube.com/watch?v=l5zY2D_Elg8))
+[![Video](BlazorApp/wwwroot/images/youtube-logo-png-46031-Windows.ico)]([https://www.youtube.com/watch?v=jXnoFqcAkQA](https://www.youtube.com/watch?v=l5zY2D_Elg8))
     
   </p>
 </div>
