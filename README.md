@@ -5,7 +5,7 @@
     https://www.youtube.com/watch?v=l5zY2D_Elg8
     
 
-[![Video](https://icons8.com/icon/download/19318)]([https://www.youtube.com/watch?v=jXnoFqcAkQA](https://www.youtube.com/watch?v=l5zY2D_Elg8))
+[![Video](https://img.icons8.com/ios/250/FFFFFF/tv-show.png)]([https://www.youtube.com/watch?v=jXnoFqcAkQA](https://www.youtube.com/watch?v=l5zY2D_Elg8))
     
   </p>
 </div>
@@ -127,4 +127,4 @@ This holistic project not only exposes us to the intricacies of 3-tier architect
 [Spring-url]: <URL to Spring documentation or official website>
 
 [.NETCore-badge]: https://img.shields.io/badge/.NET%20Core-512BD4?style=for-the-badge&logo=.net&logoColor=white
-[.NETCore-url]: <URL to .NET Core documentation or official website>
+[.NETCore-url]: <URL to .NET Core documentation or official website
